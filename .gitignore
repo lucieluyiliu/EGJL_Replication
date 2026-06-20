@@ -1,0 +1,59 @@
+# ============================================================================
+# EGJL_Replication — Git ignore rules
+# Policy: the Git/GitHub repo tracks CODE + OUTPUTS + DOCS only.
+# The data (~2.4 GB, several files >100 MB) is distributed separately
+# (Dropbox / a DOI archive such as Zenodo or Dataverse) and is NOT versioned
+# in Git. See DATA_AVAILABILITY.md for how to obtain it.
+# ============================================================================
+
+# ── Data: distributed separately, never committed ──────────────────────────
+Data/
+
+# ── IDE config (machine-specific, do not ship) ─────────────────────────────
+.idea/
+*.iml
+
+# ── Working references, not deliverables ───────────────────────────────────
+# The MNSC checklist PDF is our internal guide; its footer says not to ship it.
+MNSC-replication-package-checklist-*.pdf
+
+# ── OS / editor cruft ──────────────────────────────────────────────────────
+.DS_Store
+._*
+*~
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+*.Rproj.user/
+.Rproj.user/
+
+# ── R / renv ───────────────────────────────────────────────────────────────
+# Track renv.lock, renv/activate.R, renv/settings.json (committed for reproducibility).
+# Ignore the local library and scratch dirs (machine-specific, large).
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+
+# ── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# ── Secrets / credentials (never commit) ───────────────────────────────────
+.Renviron
+.pgpass
+*.pem
+*.key
+
+# ── Build / temp artifacts ─────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak

@@ -1,0 +1,14 @@
+# Conda environment for the EGJL "Excess Default Correlations" replication package.
+# Mirrors the env that produced the published results (Python 3.11).
+#   conda env create -f environment.yml
+#   conda activate egjl-replication
+name: egjl-replication
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pandoc>=1.12.3   # system tool required by R's rmarkdown to knit the Step 3 .Rmd exhibits
+  - pip
+  - pip:
+      - -r requirements.txt

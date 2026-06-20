@@ -1,0 +1,12 @@
+name: wrds
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - ipykernel
+  - spyder
+  - pytables
+  - jupyterlab
+variables:
+  # OPENAI_API_KEY removed for security — the exposed key must be ROTATED. Not needed for replication.
+# prefix removed (machine-specific path)

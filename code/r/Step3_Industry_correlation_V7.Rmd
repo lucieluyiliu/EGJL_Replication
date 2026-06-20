@@ -1,0 +1,951 @@
+---
+title: "Motivating Facts"
+output:
+  html_document: 
+    toc: yes
+    code_folding: hide
+    df_print: paged
+    highlight: espresso
+    self_contained: yes
+    theme: cosmo
+    toc_float: yes
+  pdf_document:
+    keep_tex: true
+date: "2025-10-14"
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+maketitle <- function(name, L = 2)
+{
+  pander::pandoc.p('')
+  pander::pandoc.header(name, level = L)
+  pander::pandoc.p('')
+  
+}
+
+library(tidyverse)
+library (fixest)
+library(kableExtra)
+library(viridis)
+library(stringi)
+library(psych)
+library(ggforce) # for 'geom_arc_bar'
+library(ggrepel)
+library(ggplot2)
+library(cowplot)
+library(knitr)
+library(pander)
+library(lmtest)
+library(sandwich)
+library(broom)
+panderOptions('digits', 3)
+library(gt)
+library(modelsummary)
+options(modelsummary_format_numeric_latex = "plain")
+#define not in operator
+"%ni%"<-Negate("%in%")
+## --- Paths (MNSC item 13: relative; run from the package root) ---------------
+## Resolve the package root whether knit from the root or interactively from code/r,
+## then load the central relative paths from config.R.
+if (!file.exists("config.R") && file.exists("../../config.R")) {
+  knitr::opts_knit$set(root.dir = normalizePath("../.."))
+  setwd("../..")
+}
+source("config.R")              # path, data_dir, est_dir, table_dir, fig_dir
+source("code/r/functions_V4.1.R")
+
+start_date<-as.Date("1987-06-30") # sample start date
+
+end_date=as.Date("2023-12-31") # sample end date
+
+
+FF48<-read_csv(paste0(data_dir, 'FF48_industry.csv'))
+
+ifUpdateCorr=F
+
+block_length=4
+
+bstrap_dir<-paste0(est_dir, "length", block_length,'/')
+
+```
+
+
+```{r parameters,echo=FALSE, message=FALSE}
+
+y_vars=c('PROB','MKTLEV', 'CS5y', 'EXRET','SIGMA')
+
+y_vars1=c('PROB','PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA') #Displays
+
+funda_vars=c('EBITDA','EARN1Q','NIMTA','CASHMTA','ASSETS','PROFIT','SALES')
+
+for_vars=c('EARN1Q','EARN1Y')
+
+firm_variables<-c(funda_vars, for_vars, y_vars)
+
+agg_vars=c('IP', 'CFNAI', 'EPU', 'UNRATE', 'DeltaLiq' , 'MACROU', 'REALU', 'NGDP', 'FEDFUNDS','ICR')
+
+horizons<-c("1q","1y","2y","5y")
+
+subsamples<- c("Full Sample", "Pre-GFC", "Post-GFC", "Ex-Recessions","Annual","Biennial")
+
+```
+
+
+```{r import data unconditional correlations,echo=FALSE, message=FALSE}
+
+load(paste0(est_dir, 'unconCorr.RData'))
+
+
+#Keep used variables
+
+unconCorr<-unconCorr%>%filter(variable%in%firm_variables)
+
+unconCorr<-unconCorr%>%filter(subsample%in%subsamples)
+
+unconCorr$subsample<-factor(unconCorr$subsample, levels=subsamples)
+
+
+```
+
+
+```{r import bootstrapped correlations,echo=FALSE, message=FALSE}
+
+#Load unconditional correlation .Rdata file
+uncon_files<-list.files(path=bstrap_dir, pattern="\\.RData", full.names=TRUE)
+
+for(file in uncon_files){
+  load(file)
+}
+
+#Load bootstrapped average conditional correlation .rds files
+con_files <- list.files(path = bstrap_dir, pattern = "Corr.*\\.rds$", full.names = TRUE)
+
+#Load each file into variable that is the same as filename
+for (file in con_files) {
+  nm <- tools::file_path_sans_ext(basename(file))  # e.g. "defCorrEq"
+  assign(nm, readRDS(file), envir = .GlobalEnv)
+}
+
+
+
+```
+
+
+```{r proportion of significant correlations, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+# How many unconditional corr is significant among unrelated pairs
+threshold<-0.05
+
+unconCorr<-unconCorr%>%mutate(p=1-pnorm(corr/se))%>%
+  mutate(sig=ifelse(p<threshold,1,0))
+
+unconCorrUnrelated<-unconCorr%>%filter(pairname%in%unrelated_pairnames)
+
+#check CS data availability by industry
+#Not a lot of coverage of Ships 25
+# CS_range<-ind_sorts_long %>%
+#   filter(str_detect(variable, "CS"), !is.na(value)) %>%
+#   group_by(ffi48, variable, horizon) %>%
+#   summarise(
+#     first_date = min(date),
+#     last_date = max(date),
+#     .groups = "drop"
+#   )%>%
+#   arrange(ffi48, variable)
+
+unconCorr_freq_sig<-unconCorr%>%
+  group_by(variable, subsample)%>%
+  summarize(nsig=sum(sig==1&!is.na(sig)),
+            n=sum(!is.na(sig)))%>%
+            mutate(freq=nsig/n)%>%
+  select(variable,freq,subsample)%>%
+  pivot_wider(names_from=variable,values_from=freq, id_cols=subsample)
+  
+
+unconCorr_unrelated_freq_sig<-unconCorr%>%
+  filter(pairname%in%unrelated_pairnames & !is.na(sig))%>%
+  group_by(variable, subsample)%>%
+  summarize(nsig=sum(sig==1&!is.na(sig)),
+            n=sum(!is.na(sig)))%>%
+            mutate(freq=nsig/n)%>%
+  select(variable, subsample, freq)%>%
+  pivot_wider(names_from=variable,values_from=freq, id_cols=subsample)
+
+
+```
+
+
+# 0. Data description
+
+## 0-A Variable definitions 
+
+The sample is from 1987 Q2 - 2020 Q4, quarterly. Industry-variables are the lagged market-cap weighted average across all firms in an industry. This version calculates the excess correlation as the correlation in the residuals from regressions of default probability and equity moments on aggregate shocks and industry-level fundamental changes.
+
+Here we run the following first-pass regression, either as a time-series regession for individual industry or as a panel regression pooling all 42 industries:
+
+\begin{align}
+\Delta y_{i,t}=\alpha+\beta \Delta \mathbf{X}_{i,t}+\gamma \mathbf{S}_{t}+\epsilon_{it}
+\end{align}
+
+Where $y\in \{ PROB, CS, MKTLEV, D2D, EXRET, SIGMA\}$ are asset pricing quantities, $\mathbf{X}_{i,t}=[EBITDA_{i,t},NIMTA_{i,t},CASHMTA_{i,t},ASSETS_{i,t},PROFIT_{i,t},SALES_{i,t}]'$ is a vector of fundamental shocks. $\mathbf{S}_t$ is one of the ten aggregate shocks IP, CFNAI, EPU, UNRATE, DeltaLiq, MACROU, REALU, NGDP, FEDFUNDS, ICR. We calculate cross-industry conditional correlation controlling for aggregate shocks for industry-pair $\{i, j\}$ as the unconditional correlation between residuals.
+
+\begin{align}
+\rho_k^{Excess}=\mathbb{C}orr(\epsilon_{it},\epsilon_{jt})
+\end{align}
+
+Standard errors are calculated as $se(\rho)=\sqrt{\frac{1-\rho^2}{T-2}}$ for individual pairs, and using bootstrap for average correlation across pair groups. The bootstrap block length is `r block_length`.
+
+# 1. 18 unrelated industsry pairs
+
+## Total Correlations Table A2, A3.
+
+### Total Correlations Unrelated Pairs Details (A2, A3)
+
+```{r tabulate unrelated industry pair details, echo=FALSE, message=FALSE, fig.width=24,fig.height=20,warning = FALSE, results='asis'}
+#Only present details for full sample
+
+sub<-'Full Sample'
+
+tmp<-unconCorrUnrelated%>%
+  filter(subsample==sub&variable%in%c(funda_vars, for_vars, y_vars))%>%
+  select(pairname, variable , corr, se)%>%
+  pivot_longer(cols=c('corr', 'se'), names_to = 'stat', values_to = 'value')%>%
+  mutate(
+    formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                              stat=='se'~paste0("(",round(value, 3),")"))
+  ) %>%
+  pivot_wider(id_cols=c(pairname, stat),names_from = variable, values_from = formatted_value)%>%
+  mutate(pairname=ifelse(stat=='corr', pairname, ''))%>%
+  select(-stat)
+
+tmp_freq<-unconCorr_unrelated_freq_sig%>%filter(subsample==sub)%>%
+  select(all_of(c(funda_vars, for_vars, y_vars)))%>%
+  mutate(pairname='Frequency sig 5%')%>%
+  mutate(across(all_of(c(funda_vars, for_vars, y_vars)), ~as.character(round(.,3))))
+  
+
+tmp_avg<-unconCorrUnrelated%>%filter(subsample==sub&variable%in%c(funda_vars, for_vars, y_vars))%>%
+  group_by(variable)%>%
+  summarize(avg=mean(corr, na.rm=TRUE))%>%
+  pivot_wider(names_from=variable, values_from=avg)%>%
+  mutate(pairname='Average')%>%
+  mutate(across(all_of(c(funda_vars, for_vars, y_vars)), ~as.character(round(.,3))))
+  
+unconCorr_Tbl<-bind_rows(tmp, tmp_freq, tmp_avg)
+
+maketitle('Funda Corr Unrelated Industry Pairs A2', 4)
+
+unconCorr_Tbl%>%
+  select(all_of(c('pairname', funda_vars)))%>%
+  kable(caption='Total Fundamental Correlations Unrelated Industry Pairs')%>%print()
+
+maketitle('Funda Corr Unrelated Industry Pairs A3', 4)
+
+unconCorr_Tbl%>%
+  select(all_of(c('pairname', y_vars)))%>%
+  kable(caption='Total Fundamental Correlations Unrelated Industry Pairs')%>%print()
+
+
+
+unconCorr_Tbl$pairname <- gsub("_", "\\\\&", unconCorr_Tbl$pairname)  # Replace _ with &
+unconCorr_Tbl$pairname <- gsub("%", "\\\\%", unconCorr_Tbl$pairname)  # Replace _ with &
+#unconCorr_tex$pairname <- toupper(unconCorr_tex$pairname)          # Convert to uppercase
+
+#Fundamental variables
+unconCorr_Tbl%>%
+  select(all_of(c('pairname', funda_vars)))%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'TableA2_Unrelated_pairs_total_corr_funda.tex'))
+
+
+#Valuation varibales
+unconCorr_Tbl%>%
+  select(all_of(c('pairname', y_vars)))%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'TableA3_Unrelated_pairs_total_corr_value.tex'))
+
+
+```
+
+
+### Total Correlations - Robustness of A2 and A3.
+```{r tabulate unrelated industry pair asset price correlations, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+# unconCorrBstrap18 use the one with bootstrapped se for average
+
+tmp<-unconCorrBstrap18%>%
+  select(-c(p))%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Total Correlation')%>%
+  select(all_of(c('subsample',funda_vars, y_vars)))%>%
+  filter(subsample%in%subsamples)
+
+unconCorr_Rob<-tibble()
+
+for (sub in subsamples){
+  
+#rho<-unconCorr_unrelated_freq_sig%>%filter(horizon=='0')%>%pull(EXRET) %>% as.numeric()
+
+tmp_freq<-unconCorr_unrelated_freq_sig%>%filter(subsample==sub)%>%
+  select(all_of(c('subsample',funda_vars, y_vars)))%>%
+  mutate(stat='Frequency sig 5%')%>%
+  mutate(across(all_of(c(funda_vars, y_vars)), ~as.character(round(.,3))))
+
+#fill in EXRET correlation
+
+tmp_avg<-tmp%>%filter(subsample==sub)
+  
+# tmp_avg<-unconCorrUnrelated%>%filter(subsample==sub&variable%in%c(funda_vars, y_vars))%>%
+#   group_by(variable)%>%
+#   summarize(avg=mean(corr, na.rm=TRUE))%>%
+#   pivot_wider(names_from=variable, values_from=avg)%>%
+#   mutate(stat='Average')%>%
+#   mutate(across(all_of(c(funda_vars, y_vars)), ~as.character(round(.,3))))
+
+tmp_avg$subsample<-""
+  
+unconCorr_Rob<-bind_rows(unconCorr_Rob, tmp_freq, tmp_avg)
+
+}
+
+unconCorr_Rob<-unconCorr_Rob%>%select(all_of(c('subsample','stat', funda_vars , y_vars)))
+
+unconCorr_Rob <- unconCorr_Rob %>%
+  mutate(stat = coalesce(stat, ""))
+
+unconCorr_Rob%>%kable(title='Total Correlations Unrelated Industry Pairs Robustness')%>%print()
+
+unconCorr_Rob%>%
+  select(all_of(c('subsample','stat', funda_vars)))%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'TableA2_Unrelated_pairs_total_corr_funda_robustness.tex'))
+
+unconCorr_Rob%>%
+  select(all_of(c('subsample','stat', y_vars)))%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'TableA3_Unrelated_pairs_total_corr_value_robustness.tex'))
+
+  
+```
+
+
+# 2. Total and Excess Correlations
+
+
+```{r merge total and conditional correlations, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+#merge total correlations
+
+#Add |Eq labels to orthogonalized default correlation
+
+defCorrEq18<-defCorrEqBstrap18%>%mutate(variable=paste0(variable,'|Eq'))
+
+totalCorr18<-bind_rows(unconCorrBstrap18, defCorrEq18)%>%filter(variable%in%y_vars1)
+
+totalCorr18<-totalCorr18%>%filter(subsample%in%subsamples)
+
+totalCorr18$subsample<-factor(totalCorr18$subsample, levels=subsamples)
+
+totalCorr18$variable<-factor(totalCorr18$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+defCorrEq<-defCorrEqBstrap%>%mutate(variable=paste0(variable,'|Eq'))
+
+totalCorr<-bind_rows(unconCorrBstrap, defCorrEq)%>%filter(variable%in%y_vars1)
+
+totalCorr<-totalCorr%>%filter(subsample%in%subsamples)
+
+totalCorr$subsample<-factor(totalCorr$subsample, levels=subsamples)
+
+totalCorr$variable<-factor(totalCorr$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+#merge conditional correlation with fundamental variables and agg vars
+
+defCorrEqFdAg18<-defCorrEqFdAgBstrap18%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAg18<-bind_rows(allCorrFdAgBstrap18, defCorrEqFdAg18)%>%
+  filter(variable%in%y_vars1)
+
+conCorrFdAg18$variable<-factor(conCorrFdAg18$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+conCorrFdAg18<-conCorrFdAg18%>%filter(subsample %in% subsamples)
+
+conCorrFdAg18$subsample<-conCorrFdAg18$subsample %>% factor(levels=subsamples)
+
+defCorrEqFdAg<-defCorrEqFdAgBstrap%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAg<-bind_rows(allCorrFdAgBstrap, defCorrEqFdAg)%>%
+  filter(variable%in%y_vars1)
+
+conCorrFdAg$variable<-factor(conCorrFdAg$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+conCorrFdAg<-conCorrFdAg%>%filter(subsample %in% subsamples)
+
+conCorrFdAg$subsample<-conCorrFdAg$subsample %>% factor(levels=subsamples)
+
+
+#merge conditional correlation with fundamental variables and agg vars and EARN1Q
+
+defCorrEqFdAgEx1q18<-defCorrEqFdAgEx1qBstrap18%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1q18<-bind_rows(allCorrFdAgEx1qBstrap18, defCorrEqFdAgEx1q18)%>%
+  filter(variable%in%y_vars1)
+
+conCorrFdAgEx1q18$variable<-factor(conCorrFdAgEx1q18$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+conCorrFdAgEx1q18<-conCorrFdAgEx1q18%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1q18$subsample<-conCorrFdAgEx1q18$subsample %>% factor(levels=subsamples)
+
+defCorrEqFdAgEx1q<-defCorrEqFdAgEx1qBstrap%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1q<-bind_rows(allCorrFdAgEx1qBstrap, defCorrEqFdAgEx1q)%>%
+  filter(variable%in%y_vars1)
+
+conCorrFdAgEx1q$variable<-factor(conCorrFdAgEx1q$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+conCorrFdAgEx1q<-conCorrFdAgEx1q%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1q$subsample<-conCorrFdAgEx1q$subsample %>% factor(levels=subsamples)
+
+#Merge conditional correlation with fundamental variables and agg vars and EARN1Y
+
+defCorrEqFdAgEx1y18<-defCorrEqFdAgEx1yBstrap18%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1y18<-bind_rows(allCorrFdAgEx1yBstrap18, defCorrEqFdAgEx1y18)%>%
+  filter(variable%in%y_vars1)
+
+conCorrFdAgEx1y18<-conCorrFdAgEx1y18%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1y18$subsample<-conCorrFdAgEx1y18$subsample %>% factor(levels=subsamples)
+
+conCorrFdAgEx1y18$variable<-factor(conCorrFdAgEx1y18$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+defCorrEqFdAgEx1y<-defCorrEqFdAgEx1yBstrap%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1y<-bind_rows(allCorrFdAgEx1yBstrap, defCorrEqFdAgEx1y)%>%
+  filter(variable%in%y_vars1)
+
+conCorrFdAgEx1y<-conCorrFdAgEx1y%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1y$subsample<-conCorrFdAgEx1y$subsample %>% factor(levels=subsamples)
+
+conCorrFdAgEx1y$variable<-factor(conCorrFdAgEx1y$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+
+```
+
+## 2.1 Main table (Table 1)
+
+
+```{r Table 1, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+#Unrelated pairs
+
+Tbl1_AvgCorr18<-totalCorr18%>%
+  filter(subsample=='Full Sample')%>%
+  select(-c(p, subsample))%>%
+  pivot_longer(cols=-c(variable), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=stat, names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Total Correlation')%>%
+  select(all_of(c("group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+# Excess Corr unrelated industries
+
+#Without expected earnings
+Tbl1_conCorr18<-conCorrFdAg18%>%
+  filter(subsample=='Full Sample')%>%
+  select(-c(p, subsample))%>%
+  pivot_longer(cols=-c(variable), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=stat, names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Excess Correlation')%>%
+  select(all_of(c("group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#With expected earnings
+Tbl1_conCorrEx1q18<-conCorrFdAgEx1q18%>%
+  filter(subsample=='Full Sample')%>%
+  select(-c(p, subsample))%>%
+  pivot_longer(cols=-c(variable), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=stat, names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Excess Correlation Ctrl Ex Funda')%>%
+  select(all_of(c("group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#All industry pairs
+
+# Total
+Tbl1_AvgCorr<-totalCorr%>%
+  filter(subsample=='Full Sample')%>%
+  select(-c(p, subsample))%>%
+  pivot_longer(cols=-c(variable), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=stat, names_from=variable, values_from=formatted_value)%>%
+  mutate(group='All Total Correlation')%>%
+  select(all_of(c("group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+
+#Without expected earnings
+Tbl1_conCorr<-conCorrFdAg%>%
+  filter(subsample=='Full Sample')%>%
+  select(-c(p, subsample))%>%
+  pivot_longer(cols=-c(variable), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=stat, names_from=variable, values_from=formatted_value)%>%
+  mutate(group='All Excess Correlation')%>%
+  select(all_of(c("group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#With expected earnings
+Tbl1_conCorrEx1q<-conCorrFdAgEx1q%>%
+  filter(subsample=='Full Sample')%>%
+  select(-c(p, subsample))%>%
+  pivot_longer(cols=-c(variable), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=stat, names_from=variable, values_from=formatted_value)%>%
+  mutate(group='All Excess Correlation Ctrl Ex Funda')%>%
+  select(all_of(c("group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+
+   
+Table1<-bind_rows(Tbl1_AvgCorr18, Tbl1_conCorr18, Tbl1_conCorrEx1q18, Tbl1_AvgCorr, Tbl1_conCorr, Tbl1_conCorrEx1q)
+
+Table1<-Table1%>%select(all_of(c("group", "PROB","PROB|Eq", "MKTLEV","CS5y","EXRET", "SIGMA")))
+
+
+Table1%>%kable(caption='Total and Excess Correlations')%>%print()
+
+Table1%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'Table1_Total_and_Excess_Corr_main.tex'))
+
+
+
+```
+
+
+## 2.1 Main table Robustness (Table 1)
+
+### 2.1-A Sub-sample and annual Unrelated
+
+```{r Table 1 subsample unrelated, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+#Unrelated pairs
+excl<-c('Full Sample','Till 2020Q4','Ex-Covid')
+
+Tbl1_AvgCorr18<-totalCorr18%>%
+  filter(subsample%ni%excl)%>%
+  select(-p)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Total Correlation')%>%
+  select(all_of(c("subsample","group" ,"PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+# Excess Corr unrelated industries
+
+#Without expected earnings
+Tbl1_conCorr18<-conCorrFdAg18%>%
+  filter(subsample%ni%excl)%>%
+  select(-p)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Excess Correlation')%>%
+  select(all_of(c( "subsample","group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#With expected earnings
+Tbl1_conCorrEx1q18<-conCorrFdAgEx1q18%>%
+  filter(subsample%ni%excl)%>%
+  select(-p)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Excess Correlation Ctrl Ex Funda')%>%
+  select(all_of(c("subsample", "group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#All industry pairs
+Table1<-bind_rows(Tbl1_AvgCorr18, Tbl1_conCorr18, Tbl1_conCorrEx1q18)
+
+Table1$group<-factor(Table1$group, levels=c('Total Correlation', 'Excess Correlation', 'Excess Correlation Ctrl Ex Funda'))
+Table1$subsample<-factor(Table1$subsample, levels=subsamples[subsamples!='Full Sample'])
+
+Table1<-Table1%>%arrange(subsample, group)
+
+Table1<-Table1%>%select(all_of(c("subsample","group", "PROB","PROB|Eq", "MKTLEV","CS5y","EXRET", "SIGMA")))
+
+Table1%>%kable(caption='Total and Excess Correlations')%>%print()
+
+Table1%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'Table1_Total_and_Excess_Corr_Subsample_Unrelated.tex'))
+
+
+
+```
+
+### 2.1-B Sub-sample and annual All Industries
+
+```{r Table 1 subsample all industries, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+# Total
+
+Tbl1_AvgCorr<-totalCorr%>%
+  filter(subsample%ni%excl)%>%
+  select(-p)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Total Correlation')%>%
+  select(all_of(c("subsample","group" ,"PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+# Excess Corr unrelated industries
+
+#Without expected earnings
+Tbl1_conCorr<-conCorrFdAg%>%
+  filter(subsample%ni%excl)%>%
+  select(-p)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Excess Correlation')%>%
+  select(all_of(c( "subsample","group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#With expected earnings
+Tbl1_conCorrEx1q<-conCorrFdAgEx1q%>%
+  filter(subsample%ni%excl)%>%
+  select(-p)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'))%>%
+  select(-columns)%>%
+  mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+  pivot_wider(id_cols=c(stat, subsample), names_from=variable, values_from=formatted_value)%>%
+  mutate(group='Excess Correlation Ctrl Ex Funda')%>%
+  select(all_of(c("subsample", "group", "PROB","PROB|Eq", "CS5y", "MKTLEV","EXRET", "SIGMA")))
+
+#All industry pairs
+Table1<-bind_rows(Tbl1_AvgCorr, Tbl1_conCorr, Tbl1_conCorrEx1q)
+
+Table1$group<-factor(Table1$group, levels=c('Total Correlation', 'Excess Correlation', 'Excess Correlation Ctrl Ex Funda'))
+Table1$subsample<-factor(Table1$subsample, levels=subsamples[subsamples!='Full Sample'])
+
+Table1<-Table1%>%arrange(subsample, group)
+
+Table1<-Table1%>%select(all_of(c("subsample","group", "PROB","PROB|Eq", "MKTLEV","CS5y","EXRET", "SIGMA")))
+
+Table1%>%kable(caption='Total and Excess Correlations')%>%print()
+
+Table1%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'Table1_Total_and_Excess_Corr_Subsample_All.tex'))
+
+
+
+```
+
+
+# 3. Industry pairs within market capitalization and book leverage share groups
+
+
+```{r merge total and conditional correlations MV tercile, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+# Large industry - small industry
+
+# With expected earnings
+
+#EARN1Q
+
+defCorrEqFdAgEx1qMV3<-defCorrEqFdAgEx1qBstrapMV3%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1qMV3<-bind_rows(allCorrFdAgEx1qBstrapMV3, defCorrEqFdAgEx1qMV3)%>%filter(variable%in%y_vars1)
+
+conCorrFdAgEx1qMV3<-conCorrFdAgEx1qMV3%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1qMV3$subsample<-factor(conCorrFdAgEx1qMV3$subsample, levels=subsamples)
+
+conCorrFdAgEx1qMV3$variable<-factor(conCorrFdAgEx1qMV3$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+
+
+```
+
+```{r merge total and conditional correlations BOOKLEV tercile, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+# High BOOKLEV industry - Low BOOKLEV industry
+
+#EARN1Q
+
+defCorrEqFdAgEx1qBOOKLEV3<-defCorrEqFdAgEx1qBstrapBOOKLEV3%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1qBOOKLEV3<-bind_rows(allCorrFdAgEx1qBstrapBOOKLEV3, defCorrEqFdAgEx1qBOOKLEV3)%>%filter(variable%in%y_vars1)
+
+conCorrFdAgEx1qBOOKLEV3$subsample<-factor(conCorrFdAgEx1qBOOKLEV3$subsample, levels=subsamples)
+
+conCorrFdAgEx1qBOOKLEV3<-conCorrFdAgEx1qBOOKLEV3%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1qBOOKLEV3$variable<-factor(conCorrFdAgEx1qBOOKLEV3$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+
+```
+
+
+```{r merge total and conditional correlations ST debt tercile, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+# High ST debt industry - Low ST debt industry
+
+#EARN1Q
+
+defCorrEqFdAgEx1qDEBTST3<-defCorrEqFdAgEx1qBstrapDEBTST3%>%mutate(variable=paste0(variable,'|Eq'))
+
+conCorrFdAgEx1qDEBTST3<-bind_rows(allCorrFdAgEx1qBstrapDEBTST3, defCorrEqFdAgEx1qDEBTST3)%>%filter(variable%in%y_vars1)
+
+conCorrFdAgEx1qDEBTST3<-conCorrFdAgEx1qDEBTST3%>%filter(subsample %in% subsamples)
+
+conCorrFdAgEx1qDEBTST3$subsample<-factor(conCorrFdAgEx1qDEBTST3$subsample, levels=subsamples)
+
+conCorrFdAgEx1qDEBTST3$variable<-factor(conCorrFdAgEx1qDEBTST3$variable, levels=c('PROB', 'PROB|Eq','MKTLEV','CS5y','EXRET','SIGMA'))
+
+
+```
+
+
+
+
+# 3.1 Table 2 Compare Industry by Size and Book Leverage
+```{r Table 2 excess corr by size and booklev prepare, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+tmpMV<-conCorrFdAgEx1qMV3%>%
+  select(-p)%>%
+  arrange(variable)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'),
+         group=case_when(grepl('2', columns)~'Small', #Note! I specify pairname1 as the big group.
+                         grepl('1', columns)~'Big',
+                         grepl('diff', columns)~'Big-Small'))%>%
+    select(-columns)%>%
+    mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+    pivot_wider(id_cols=c(group, stat, subsample),names_from=variable, values_from=formatted_value)
+
+tmpMV$group<-factor(tmpMV$group, c('Big', 'Small', 'Big-Small'))
+
+tmpMV<-tmpMV%>%arrange(subsample, group, stat)
+
+
+tmpLEV<-conCorrFdAgEx1qBOOKLEV3%>%
+  select(-p)%>%
+  arrange(variable)%>%
+  pivot_longer(cols=-c(variable, subsample), names_to='columns', values_to='value')%>%
+  mutate(stat=case_when(grepl('se',columns)~'se',
+                        T~'corr'),
+         group=case_when(grepl('2', columns)~'Low', #Note! I specify pairname1 as the big group.
+                         grepl('1', columns)~'High',
+                         grepl('diff', columns)~'High-Low'))%>%
+    select(-columns)%>%
+    mutate(formatted_value=case_when(stat=='corr'~sprintf("%.3f", value),
+                   stat=='se'~paste0("(",round(value, 3),")")))%>%
+    pivot_wider(id_cols=c(group, stat, subsample),names_from=variable, values_from=formatted_value)
+
+tmpLEV$group<-factor(tmpLEV$group, c('High', 'Low', 'High-Low'))
+
+tmpLEV<-tmpLEV%>%arrange(subsample, group, stat)
+
+```
+
+```{r Table 2 excess corr by size and booklev, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+Table2MV<-tmpMV%>%filter(subsample=='Full Sample')%>%select(-subsample)
+
+Table2MV%>%kable(caption='Total and Excess Correlations by Industry Size')%>%print()
+
+Table2LEV<-tmpLEV%>%filter(subsample=='Full Sample')%>%select(-subsample)
+
+Table2LEV%>%kable(caption='Total and Excess Correlations by Industry Book Leverage')%>%print()
+
+Table2MV%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'Table2_Excess_Corr_BySize.tex'))
+
+Table2LEV%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'Table2_Excess_Corr_ByBOOKLEV.tex'))
+
+
+
+```
+
+```{r Table IA7 excess corr by size robustness, echo=FALSE, message=FALSE, fig.width=24,fig.height=11,warning = FALSE, results='asis'}
+
+
+Table2MV_Robust<-tmpMV%>%filter(subsample %ni% c('Full Sample','Till 2020Q4','Ex-Covid'))
+
+Table2MV_Robust%>%kable(caption='Total and Excess Correlations by Industry Size - Robustness')%>%print()
+
+Table2MV_Robust%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'TableIA7_Excess_Corr_BySize_Robust.tex'))
+
+
+Table2LEV_Robust<-tmpLEV%>%filter(subsample %ni% c('Full Sample','Till 2020Q4','Ex-Covid'))
+
+Table2LEV_Robust%>%kable(caption='Total and Excess Correlations by Industry Book Leverage - Robustness')%>%print()
+
+Table2LEV_Robust%>%
+  kable(format='latex', digits=3, linesep = "")%>%
+  writeLines(paste0(table_dir, 'TableIA8_Excess_Corr_ByBOOKLEV_Robust.tex'))
+
+
+```
+
+# 3.2 Industry default correlation (Average) vs Book Leverage
+
+```{r Industry default correlation vs book leverage, echo=FALSE, message=FALSE, fig.width=8,fig.height=6,warning = FALSE, results='asis'}
+
+#Load industry characteristics
+ind_sorts<-read_csv(paste0(data_dir,'industry_sorts.csv'))
+
+ind_sorts<-ind_sorts%>%inner_join(FF48, by=c("ffi48"="Code"))
+
+#Exclude financials and utilities
+ind_sorts<-ind_sorts%>%filter(!grepl("Banks|Insur|RlEst|Fin|Other|Util", Name, ignore.case = TRUE))%>%
+  filter(date<=end_date) #filter for sample end date
+
+#Compute industry-level avarage for industry sorts
+ind_vars <- ind_sorts %>%
+  select(ffi48, Name, date, DEBTST=debtST, MSHARE=mktcap_share,ESHARE=ebitda_share,ASHARE=assets_share,MAT=avgmat, BOOKLEV=book_leverage)%>%
+  group_by(ffi48, Name) %>%
+  summarise(across(
+    c(DEBTST , MSHARE, ESHARE, ASHARE, MAT, BOOKLEV),
+    function(x) mean(x, na.rm = TRUE)
+  ))%>%
+  ungroup()
+
+#Load pairwise conditional correlation
+
+#Load bootstrapped average conditional correlation .rds files
+con_files <- list.files(path = est_dir, pattern = "Corr.*\\.rds$", full.names = TRUE)
+
+#Load each file into variable that is the same as filename
+for (file in con_files) {
+  nm <- tools::file_path_sans_ext(basename(file))  # e.g. "defCorrEq"
+  assign(nm, readRDS(file), envir = .GlobalEnv)
+}
+
+#Average pairwise excess correlation by industry
+
+#Form pairs
+
+industry_pairs <- ind_sorts %>% fctFormPairs()
+
+indNames<-ind_sorts$Name%>%unique()
+
+avgConCorr<-tibble()
+
+for (ind in indNames){
+  
+  all_pairs<-industry_pairs%>%filter(Ind1==ind|Ind2==ind)%>%pull(pairname)
+  
+  avg<-allCorrFdAgEx1q%>%
+    filter(pairname %in% all_pairs&variable=='PROB')%>%
+    summarize(avg_corr = mean(corr, na.rm = TRUE))
+  
+  tmp<-tibble(Name=ind,
+              conCorr=avg$avg_corr)
+  
+  avgConCorr<-bind_rows(avgConCorr, tmp)
+  
+}
+
+avg<-mean(avgConCorr%>%pull(conCorr), na.rm=TRUE)
+
+df_plot<-ind_vars%>%select(Name, BOOKLEV)%>%
+  inner_join(avgConCorr, by='Name')
+
+p <- df_plot %>%
+  ggplot(aes(x = BOOKLEV, y = conCorr)) +
+  geom_point() +
+  geom_smooth(
+    aes(color = "Empirical association", linetype = "Empirical association"),
+    method = "lm", se = TRUE
+  ) +
+  geom_hline(
+    aes(yintercept = avg, color = "Average", linetype = "Average")
+  ) +
+  scale_color_manual(values = c("Empirical association" = "blue",
+                                "Average" = "black")) +
+  scale_linetype_manual(values = c("Empirical association" = "solid",
+                                   "Average" = "dashed")) +
+  labs(
+    x = "Industry Book Leverage",
+    y = "Industry Excess Default Correlation",
+    color = NULL, linetype = NULL
+  ) +
+  mytheme_white+
+  theme(legend.position = "bottom")
+
+print(p)
+
+ggsave(p, filename=paste0(fig_dir, 'fig_Excess_Default_Corr_vs_BookLeverage.png'), width=8, height=6)
+
+
+
+
+
+```
+

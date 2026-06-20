@@ -1,0 +1,32 @@
+# Python dependencies for the EGJL "Excess Default Correlations" replication package.
+#
+# Versions are pinned to the conda env that produced the published results
+# (Python 3.11; see environment.yml). The complete pip freeze of that env is in
+# wrds-packages.txt — this file is the curated subset the code actually uses.
+#
+# Install into a dedicated environment (do NOT use the system/homebrew Python):
+#   conda env create -f environment.yml          # creates Python 3.11 + these
+#   # or, with a venv on Python 3.11:
+#   python3.11 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+
+# --- core scientific stack ---
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.12.0
+matplotlib==3.9.0
+
+# --- pandas I/O backends (NOT auto-installed by pandas; required by the scripts) ---
+tables==3.10.1        # HDF5 .h5/.hdf  (PyTables)
+openpyxl==3.1.2       # .xlsx read
+pyarrow==19.0.0       # parquet (TRACE); fastparquet==2024.11.0 is an alternative engine
+
+# --- data sources / formats ---
+wrds==3.2.0           # WRDS (CRSP, Compustat, IBES); pulls in SQLAlchemy/psycopg2
+pandas-datareader==0.10.0   # FRED macro series
+pyreadstat==1.2.7     # read .sas7bdat (campbelldefrisk)
+duckdb==1.3.2         # TRACE parquet processing (MakeCreditSpread)
+
+# --- utilities ---
+tqdm==4.66.4
+python-dateutil==2.8.2
+fuzzywuzzy==0.18.0    # CRSP-IBES name matching (iclink.py); falls back to difflib
