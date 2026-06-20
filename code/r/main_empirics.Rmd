@@ -1,0 +1,498 @@
+---
+title: "Excess correlation among U.S. industries"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    theme: cosmo
+    df_print: paged
+    self_contained: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results = 'asis')
+
+library(tidyverse)
+library(kableExtra)
+library(fixest)    # feols (Figure OA.4 fit)
+library(readxl)    # read_xlsx (distress measures)
+library(zoo)       # as.yearqtr
+
+"%ni%" <- Negate("%in%")
+
+end_date <- as.Date("2023-12-31")   # sample end
+
+## standardize a predictor using stored mu/sdev (set in the Figure OA.4 chunk)
+z <- function(x, nm) (x - mu[[nm]]) / sdev[[nm]]
+
+## --- Paths (relative; run from the package root) -----------------------------
+## Resolve the package root whether knit from the root (master.R) or
+## interactively from code/r, then load the central relative paths.
+if (!file.exists("config.R") && file.exists("../../config.R")) {
+  knitr::opts_knit$set(root.dir = normalizePath("../.."))
+  setwd("../..")
+}
+source("config.R")               # path, data_dir, est_dir, table_dir, fig_dir
+source("code/r/functions_V4.1.R")  # provides unrelated_pairnames (18 unrelated industry pairs)
+
+block_length <- 4
+bstrap_dir   <- paste0(est_dir, "length", block_length, "/")
+
+## Variable display order and column labels (paper Table 3)
+y_vars1   <- c("PROB", "PROB|Eq", "MKTLEV", "CS5y", "EXRET", "SIGMA")
+col_labs  <- c("Default probability",
+               "Default probability ⊥ Equity moments",
+               "Leverage", "Credit spread",
+               "Excess returns", "Volatility")
+```
+
+```{r load-bootstrap-estimates}
+## Bootstrapped average correlations produced by Step 2 (block length = 4).
+## .RData holds the unconditional (total) correlation objects; .rds holds the
+## conditional (excess) correlation objects. Each file loads into an object
+## named after the file.
+for (f in list.files(bstrap_dir, pattern = "\\.RData$", full.names = TRUE)) load(f)
+for (f in list.files(bstrap_dir, pattern = "Corr.*\\.rds$", full.names = TRUE)) {
+  assign(tools::file_path_sans_ext(basename(f)), readRDS(f), envir = .GlobalEnv)
+}
+```
+
+```{r build-correlation-objects}
+## Total correlation = unconditional; the |Eq column is default probability
+## orthogonalized to equity moments. Excess correlation = orthogonalized to
+## realized AND expected (1Q) fundamentals and aggregate shocks.
+prep <- function(df) {
+  df %>%
+    filter(subsample == "Full Sample", variable %in% y_vars1) %>%
+    mutate(variable = factor(variable, levels = y_vars1)) %>%
+    arrange(variable)
+}
+
+## Panel A — 18 unrelated industry pairs
+totalCorr18  <- prep(bind_rows(unconCorrBstrap18,
+                               defCorrEqBstrap18 %>% mutate(variable = paste0(variable, "|Eq"))))
+excessCorr18 <- prep(bind_rows(allCorrFdAgEx1qBstrap18,
+                               defCorrEqFdAgEx1qBstrap18 %>% mutate(variable = paste0(variable, "|Eq"))))
+
+## Panel B — all 861 industry pairs
+totalCorr    <- prep(bind_rows(unconCorrBstrap,
+                               defCorrEqBstrap %>% mutate(variable = paste0(variable, "|Eq"))))
+excessCorr   <- prep(bind_rows(allCorrFdAgEx1qBstrap,
+                               defCorrEqFdAgEx1qBstrap %>% mutate(variable = paste0(variable, "|Eq"))))
+```
+
+# 1. Main results
+
+## Table 3. Excess correlations across industries
+
+```{r table3}
+## Each correlation object -> two display rows: point estimate and (SE).
+make_rows <- function(df, label) {
+  d    <- df[match(y_vars1, as.character(df$variable)), ]
+  corr <- ifelse(is.na(d$corr), "", sprintf("%.3f", d$corr))
+  se   <- ifelse(is.na(d$se),   "", sprintf("(%.3f)", d$se))
+  m <- rbind(corr, se); colnames(m) <- y_vars1
+  cbind(data.frame(` ` = c(label, ""), check.names = FALSE),
+        as.data.frame(m, stringsAsFactors = FALSE))
+}
+
+tbl <- bind_rows(
+  make_rows(totalCorr18,  "Total Correlation"),
+  make_rows(excessCorr18, "Excess Correlation"),
+  make_rows(totalCorr,    "Total Correlation"),
+  make_rows(excessCorr,   "Excess Correlation")
+)
+
+## Descriptive labels in col.names (escape=FALSE preserves $\perp$ in LaTeX);
+## Default-risk / Equity-moments group spanners above. No column numbers.
+col_labs_tex <- c("Default probability",
+                  "Default probability $\\perp$ Equity moments",
+                  "Leverage", "Credit spread", "Excess returns", "Volatility")
+
+## --- on-screen (HTML) ---
+kbl(tbl, row.names = FALSE, col.names = c(" ", col_labs), align = c("l", rep("c", 6)),
+    caption = "Table 3. Excess correlations across industries") %>%
+  kable_styling(full_width = FALSE, position = "left",
+                bootstrap_options = c("striped", "condensed")) %>%
+  add_header_above(c(" " = 1, "Default risk" = 4, "Equity moments" = 2)) %>%
+  pack_rows("Panel A: Unrelated industries", 1, 4) %>%
+  pack_rows("Panel B: All industries", 5, 8)
+
+## --- LaTeX file for the paper ---
+tex <- kbl(tbl, format = "latex", booktabs = TRUE, escape = FALSE, row.names = FALSE,
+           col.names = c(" ", col_labs_tex), align = c("l", rep("c", 6)),
+           caption = "Excess correlations across industries") %>%
+  add_header_above(c(" " = 1, "Default risk" = 4, "Equity moments" = 2)) %>%
+  pack_rows("Panel A: Unrelated industries", 1, 4) %>%
+  pack_rows("Panel B: All industries", 5, 8)
+
+writeLines(as.character(tex), paste0(table_dir, "Table3_Excess_Corr_Industries.tex"))
+```
+
+# 2. Online Appendix tables
+
+```{r per-pair-unrelated}
+## Per-pair total (unconditional) correlations for the 18 unrelated industry pairs.
+load(paste0(est_dir, "unconCorr.RData"))   # object: unconCorr (pairname, variable, corr, se, subsample)
+
+unconCorrUnrelated <- unconCorr %>%
+  filter(pairname %in% unrelated_pairnames, subsample == "Full Sample")
+
+## One 18-pair table for a set of variables: a point-estimate row and an (SE) row
+## per pair, columns in the requested order, pair names as "Ind1 & Ind2".
+pair_table <- function(vars) {
+  unconCorrUnrelated %>%
+    filter(variable %in% vars) %>%
+    mutate(variable = factor(variable, levels = vars)) %>%
+    select(pairname, variable, corr, se) %>%
+    pivot_longer(c(corr, se), names_to = "stat", values_to = "value") %>%
+    mutate(fmt = case_when(is.na(value)    ~ "",
+                           stat == "corr"  ~ sprintf("%.3f", value),
+                           TRUE            ~ sprintf("(%.3f)", value))) %>%
+    pivot_wider(id_cols = c(pairname, stat), names_from = variable, values_from = fmt) %>%
+    mutate(pairname = ifelse(stat == "corr", gsub("_", " & ", pairname), "")) %>%
+    select(all_of(c("pairname", vars)))   # force column order to match `vars` (paper order)
+}
+```
+
+## Table OA.4. Correlations in firm fundamentals among unrelated industries
+
+```{r table-oa4}
+vars_funda <- c("EBITDA", "EARN1Q", "NIMTA", "CASHMTA", "ASSETS", "PROFIT", "SALES")
+oa4 <- pair_table(vars_funda)
+
+kbl(oa4, row.names = FALSE, col.names = c("Industry pair", vars_funda),
+    align = c("l", rep("c", 7)),
+    caption = "Table OA.4. Correlations in firm fundamentals among unrelated industries") %>%
+  kable_styling(full_width = FALSE, position = "left",
+                bootstrap_options = c("striped", "condensed")) %>%
+  add_header_above(c(" " = 1, "Fundamental variables" = 7))
+
+tex <- kbl(oa4, format = "latex", booktabs = TRUE, escape = TRUE, row.names = FALSE,
+           col.names = c("Industry pair", vars_funda), align = c("l", rep("c", 7)),
+           caption = "Correlations in firm fundamentals among unrelated industries") %>%
+  add_header_above(c(" " = 1, "Fundamental variables" = 7))
+writeLines(as.character(tex), paste0(table_dir, "TableOA4_Funda_Corr_Unrelated.tex"))
+```
+
+## Table OA.5. Correlations in default risk and equity moments among unrelated industries
+
+```{r table-oa5}
+vars_y <- c("PROB", "MKTLEV", "CS5y", "EXRET", "SIGMA")
+labs_y <- c("Default prob.", "Leverage", "Credit Spread", "Excess return", "Volatility")
+oa5 <- pair_table(vars_y)
+
+kbl(oa5, row.names = FALSE, col.names = c("Industry pair", labs_y),
+    align = c("l", rep("c", 5)),
+    caption = "Table OA.5. Correlations in default risk and equity moments among unrelated industries") %>%
+  kable_styling(full_width = FALSE, position = "left",
+                bootstrap_options = c("striped", "condensed")) %>%
+  add_header_above(c(" " = 1, "Default risk" = 3, "Equity moments" = 2))
+
+tex <- kbl(oa5, format = "latex", booktabs = TRUE, escape = TRUE, row.names = FALSE,
+           col.names = c("Industry pair", labs_y), align = c("l", rep("c", 5)),
+           caption = "Correlations in default risk and equity moments among unrelated industries") %>%
+  add_header_above(c(" " = 1, "Default risk" = 3, "Equity moments" = 2))
+writeLines(as.character(tex), paste0(table_dir, "TableOA5_DefRisk_Equity_Corr_Unrelated.tex"))
+```
+
+## Table OA.6. Correlations in firm fundamentals among unrelated industries - Robustness
+
+```{r table-oa6}
+## Frequency of significantly positive pairwise correlations across the 18 unrelated
+## pairs, and the bootstrap average correlation (with SE), by subsample.
+freq_sig <- unconCorr %>%
+  mutate(sig = as.integer((1 - pnorm(corr / se)) < 0.05)) %>%
+  filter(pairname %in% unrelated_pairnames, !is.na(sig)) %>%
+  group_by(variable, subsample) %>%
+  summarize(freq = mean(sig), .groups = "drop")
+
+avg18 <- unconCorrBstrap18   # bootstrap average corr + se, by variable x subsample
+
+subs_oa6 <- c("Full Sample", "Pre-GFC", "Post-GFC", "Ex-Recessions", "Annual")  # Biennial removed
+
+## One subsample -> three rows: Frequ. p<5%, Average (corr), (SE).
+oa6_panel <- function(s) {
+  fr <- freq_sig %>% filter(subsample == s); fr <- fr[match(vars_funda, fr$variable), ]
+  av <- avg18    %>% filter(subsample == s); av <- av[match(vars_funda, av$variable), ]
+  m <- rbind(sprintf("%.3f", fr$freq), sprintf("%.3f", av$corr), sprintf("(%.3f)", av$se))
+  colnames(m) <- vars_funda
+  cbind(data.frame(` ` = c("Frequ. p<5%", "Average", ""), check.names = FALSE),
+        as.data.frame(m, stringsAsFactors = FALSE))
+}
+
+oa6 <- do.call(rbind, lapply(subs_oa6, oa6_panel)); rownames(oa6) <- NULL
+
+build_oa6 <- function(fmt) {
+  k <- kbl(oa6, format = fmt, row.names = FALSE, col.names = c(" ", vars_funda),
+           align = c("l", rep("c", 7)), booktabs = (fmt == "latex"), escape = TRUE,
+           caption = if (fmt == "latex")
+             "Correlations in firm fundamentals among unrelated industries - Robustness"
+           else
+             "Table OA.6. Correlations in firm fundamentals among unrelated industries - Robustness")
+  if (fmt != "latex")
+    k <- kable_styling(k, full_width = FALSE, position = "left",
+                       bootstrap_options = c("striped", "condensed"))
+  for (i in seq_along(subs_oa6)) k <- pack_rows(k, subs_oa6[i], 3 * i - 2, 3 * i)
+  k
+}
+
+build_oa6("html")
+writeLines(as.character(build_oa6("latex")),
+           paste0(table_dir, "TableOA6_Funda_Corr_Unrelated_Robustness.tex"))
+```
+
+## Table OA.7. Total and excess correlations among unrelated industries - Robustness
+
+```{r table-oa7}
+## Total and excess (Ctrl-Ex-Funda) correlations for the 18 unrelated pairs, all subsamples.
+total18_all  <- bind_rows(unconCorrBstrap18,
+                          defCorrEqBstrap18 %>% mutate(variable = paste0(variable, "|Eq"))) %>%
+  filter(variable %in% y_vars1)
+excess18_all <- bind_rows(allCorrFdAgEx1qBstrap18,
+                          defCorrEqFdAgEx1qBstrap18 %>% mutate(variable = paste0(variable, "|Eq"))) %>%
+  filter(variable %in% y_vars1)
+
+## (object, subsample, label) -> a point-estimate row and an (SE) row, y_vars1 order.
+## Missing cells (e.g. Pre-GFC excess credit spread) render as "-".
+corr_se_rows <- function(df, s, label) {
+  d <- df %>% filter(subsample == s)
+  d <- d[match(y_vars1, as.character(d$variable)), ]
+  corr <- ifelse(is.na(d$corr), "-", sprintf("%.3f", d$corr))
+  se   <- ifelse(is.na(d$se),   "-", sprintf("(%.3f)", d$se))
+  m <- rbind(corr, se); colnames(m) <- y_vars1
+  cbind(data.frame(` ` = c(label, ""), check.names = FALSE),
+        as.data.frame(m, stringsAsFactors = FALSE))
+}
+
+subs_oa7  <- c("Pre-GFC", "Post-GFC", "Ex-Recessions", "Annual")
+panel_oa7 <- c("Panel A: Pre-GFC", "Panel B: Post-GFC",
+               "Panel C: Ex-Recessions", "Panel D: Annual Frequency")
+oa7 <- do.call(rbind, lapply(subs_oa7, function(s)
+  rbind(corr_se_rows(total18_all,  s, "Total Correlation"),
+        corr_se_rows(excess18_all, s, "Excess Correlation"))))
+rownames(oa7) <- NULL
+
+oa7_labs     <- c("Default prob.", "Default prob. ⊥ Equity.", "Leverage",
+                  "Credit spread", "Excess return", "Volatility")
+oa7_labs_tex <- c("Default prob.", "Default prob. $\\perp$ Equity.", "Leverage",
+                  "Credit spread", "Excess return", "Volatility")
+
+build_oa7 <- function(fmt) {
+  labs <- if (fmt == "latex") oa7_labs_tex else oa7_labs
+  k <- kbl(oa7, format = fmt, row.names = FALSE, col.names = c(" ", labs),
+           align = c("l", rep("c", 6)), booktabs = (fmt == "latex"), escape = FALSE,
+           caption = if (fmt == "latex")
+             "Total and excess correlations among unrelated industries - Robustness"
+           else
+             "Table OA.7. Total and excess correlations among unrelated industries - Robustness")
+  if (fmt != "latex")
+    k <- kable_styling(k, full_width = FALSE, position = "left",
+                       bootstrap_options = c("striped", "condensed"))
+  k <- add_header_above(k, c(" " = 1, "Default risk" = 4, "Equity moments" = 2))
+  for (i in seq_along(subs_oa7)) k <- pack_rows(k, panel_oa7[i], 4 * i - 3, 4 * i)
+  k
+}
+
+build_oa7("html")
+writeLines(as.character(build_oa7("latex")),
+           paste0(table_dir, "TableOA7_Total_Excess_Corr_Unrelated_Robustness.tex"))
+```
+
+## Table OA.8. Total and excess correlations among all industries - Robustness
+
+```{r table-oa8}
+## Same layout as OA.7, but for all 861 industry pairs (non-"18" objects).
+total_all  <- bind_rows(unconCorrBstrap,
+                        defCorrEqBstrap %>% mutate(variable = paste0(variable, "|Eq"))) %>%
+  filter(variable %in% y_vars1)
+excess_all <- bind_rows(allCorrFdAgEx1qBstrap,
+                        defCorrEqFdAgEx1qBstrap %>% mutate(variable = paste0(variable, "|Eq"))) %>%
+  filter(variable %in% y_vars1)
+
+oa8 <- do.call(rbind, lapply(subs_oa7, function(s)
+  rbind(corr_se_rows(total_all,  s, "Total Correlation"),
+        corr_se_rows(excess_all, s, "Excess Correlation"))))
+rownames(oa8) <- NULL
+
+build_oa8 <- function(fmt) {
+  labs <- if (fmt == "latex") oa7_labs_tex else oa7_labs
+  k <- kbl(oa8, format = fmt, row.names = FALSE, col.names = c(" ", labs),
+           align = c("l", rep("c", 6)), booktabs = (fmt == "latex"), escape = FALSE,
+           caption = if (fmt == "latex")
+             "Total and excess correlations among all industries - Robustness"
+           else
+             "Table OA.8. Total and excess correlations among all industries - Robustness")
+  if (fmt != "latex")
+    k <- kable_styling(k, full_width = FALSE, position = "left",
+                       bootstrap_options = c("striped", "condensed"))
+  k <- add_header_above(k, c(" " = 1, "Default risk" = 4, "Equity moments" = 2))
+  for (i in seq_along(subs_oa7)) k <- pack_rows(k, panel_oa7[i], 4 * i - 3, 4 * i)
+  k
+}
+
+build_oa8("html")
+writeLines(as.character(build_oa8("latex")),
+           paste0(table_dir, "TableOA8_Total_Excess_Corr_All_Robustness.tex"))
+```
+
+## Table OA.9. Excess correlations comparison across size and book leverage terciles
+
+```{r table-oa9}
+## Tercile objects encode three groups per variable: corr1/se1 = top tercile,
+## corr2/se2 = bottom tercile, diff/sediff = top - bottom. Excess (Ctrl-Ex-Funda),
+## Full Sample. Returns 6 rows (3 groups x corr/se) with row labels.
+mk_tercile <- function(allobj, defobj, labels) {
+  tt <- bind_rows(allobj, defobj %>% mutate(variable = paste0(variable, "|Eq"))) %>%
+    filter(variable %in% y_vars1, subsample == "Full Sample") %>%
+    select(-any_of("p")) %>%
+    pivot_longer(cols = -c(variable, subsample), names_to = "columns", values_to = "value") %>%
+    mutate(stat = ifelse(grepl("se", columns), "se", "corr"),
+           grp  = case_when(grepl("diff", columns) ~ "diff",
+                            grepl("2", columns)    ~ "g2",
+                            grepl("1", columns)    ~ "g1"),
+           fmt  = ifelse(stat == "corr", sprintf("%.3f", value), sprintf("(%.3f)", value)),
+           variable = factor(variable, levels = y_vars1)) %>%
+    pivot_wider(id_cols = c(grp, stat), names_from = variable, values_from = fmt)
+  groups <- c("g1", "g2", "diff")
+  do.call(rbind, lapply(seq_along(groups), function(i) {
+    cr <- tt %>% filter(grp == groups[i], stat == "corr") %>% select(all_of(y_vars1))
+    se <- tt %>% filter(grp == groups[i], stat == "se")   %>% select(all_of(y_vars1))
+    rbind(cbind(data.frame(` ` = labels[i], check.names = FALSE), cr),
+          cbind(data.frame(` ` = "",        check.names = FALSE), se))
+  }))
+}
+
+oa9 <- rbind(
+  mk_tercile(allCorrFdAgEx1qBstrapMV3, defCorrEqFdAgEx1qBstrapMV3,
+             c("(a) Large industries", "(b) Small industries", "(a)-(b) Large minus Small")),
+  mk_tercile(allCorrFdAgEx1qBstrapBOOKLEV3, defCorrEqFdAgEx1qBstrapBOOKLEV3,
+             c("(c) High-leverage industries", "(d) Low-leverage industries", "(c)-(d) High minus Low")))
+rownames(oa9) <- NULL
+
+build_oa9 <- function(fmt) {
+  labs <- if (fmt == "latex") col_labs_tex else col_labs
+  k <- kbl(oa9, format = fmt, row.names = FALSE, col.names = c(" ", labs),
+           align = c("l", rep("c", 6)), booktabs = (fmt == "latex"), escape = FALSE,
+           caption = if (fmt == "latex")
+             "Excess correlations comparison across size and book leverage terciles"
+           else
+             "Table OA.9. Excess correlations comparison across size and book leverage terciles")
+  if (fmt != "latex")
+    k <- kable_styling(k, full_width = FALSE, position = "left",
+                       bootstrap_options = c("striped", "condensed"))
+  k <- add_header_above(k, c(" " = 1, "Default risk" = 4, "Equity moments" = 2))
+  k <- pack_rows(k, "Panel A: Excess Correlation by Industry Size", 1, 6)
+  k <- pack_rows(k, "Panel B: Excess Correlation by Book Leverage", 7, 12)
+  k
+}
+
+build_oa9("html")
+writeLines(as.character(build_oa9("latex")),
+           paste0(table_dir, "TableOA9_Excess_Corr_Size_BookLev_Terciles.tex"))
+```
+
+# 3. Figures
+
+```{r prob-fit-data}
+## Aggregate model-implied default probability (value-weighted) and the concurrent
+## distress measures used to fit it: Baa-Treasury spread, Corporate Bond Market
+## Distress Index (CMDI), Moody's observed default frequency.
+PROB_Agg <- read_csv(paste0(data_dir, "PROB_agg.csv"))
+
+CMDI_monthly <- read_xlsx(paste0(data_dir, "Market_CMDI.xlsx")) %>%
+  mutate(month = floor_date(eow_friday, "month")) %>%
+  group_by(month) %>% slice_max(eow_friday, n = 1, with_ties = FALSE) %>% ungroup() %>%
+  mutate(date = ceiling_date(month, "month") - days(1)) %>%
+  select(date, everything(), -month) %>%
+  rename(CMDI = Market, CMDIIG = IG, CMDIHY = HY)
+
+Moodys <- read_xlsx(paste0(data_dir, "Moodys_NB_QTRLy_US_Defaults_US_21072020.xlsx")) %>%
+  select("Étiquettes de lignes", "ALL") %>%
+  mutate(qtr_std = str_replace(`Étiquettes de lignes`, "^\\s*(\\d{4})/QTR-(\\d)\\s*$", "\\1 Q\\2"),
+         qtr_end = as.Date(as.yearqtr(qtr_std, format = "%Y Q%q"), frac = 1)) %>%
+  filter(!is.na(qtr_end)) %>%
+  select(date = qtr_end, everything(), -qtr_std, -`Étiquettes de lignes`)
+
+BAML <- read_csv(paste0(data_dir, "BAMLC0A0CM.csv")); colnames(BAML) <- c("date", "OAS")
+
+BAA <- read_csv(paste0(data_dir, "BAA10Y.csv")); colnames(BAA) <- c("date", "BAA")
+BAA <- BAA %>% mutate(month = floor_date(date, "month")) %>%
+  group_by(month) %>% slice_max(date, n = 1, with_ties = FALSE) %>% ungroup() %>%
+  select(-month) %>% mutate(BAA = BAA / 100, date = ceiling_date(date, "month") - days(1))
+
+prob_merged <- PROB_Agg %>% mutate(date = as.Date(date)) %>%
+  left_join(CMDI_monthly %>% mutate(date = as.Date(date)), by = "date") %>%
+  left_join(Moodys %>% mutate(date = as.Date(date)), by = "date") %>%
+  left_join(BAML %>% mutate(date = as.Date(date)), by = "date") %>%
+  left_join(BAA %>% mutate(date = as.Date(date)), by = "date") %>%
+  arrange(date) %>%
+  mutate(Moodys = ALL / n_firms, quarter = year(date) * 100 + quarter(date)) %>%
+  arrange(quarter, date) %>% group_by(quarter) %>% fill(Moodys, .direction = "up") %>%
+  ungroup() %>% select(-quarter)
+```
+
+## Figure OA.4. Campbell et al. (2008)'s default probability vs. fitted value
+
+```{r figure-oa4, fig.width=8, fig.height=6}
+## Quarterly value-weighted aggregate PROB vs. its fitted value from a concurrent
+## regression on the distress measures, estimated SEPARATELY before/after 2008Q4.
+predictor_vars <- c("BAA", "Moodys", "CMDI")
+fml       <- as.formula(paste("PROB_vw ~", paste(predictor_vars, collapse = " + ")))
+gfc_start <- as.Date("2007-09-30"); gfc_end <- as.Date("2008-12-31")
+
+## rows: a logical vector (aligned to prob_merged) selecting the estimation period.
+## Standardize predictors, fit on complete cases, then predict over the FULL period
+## with missing predictors set to their (standardized) mean = 0 -- so the fitted
+## series extends back before CMDI starts (2005). The replace_na MUST happen before
+## predict, hence the explicit `newdata = zdf_pred`.
+fit_period <- function(rows) {
+  sub <- prob_merged[rows, ]
+  est <- sub %>% select(PROB_vw, all_of(predictor_vars)) %>% drop_na()
+  mu   <<- sapply(est[predictor_vars], mean, na.rm = TRUE)
+  sdev <<- sapply(est[predictor_vars], sd,   na.rm = TRUE)
+  zdf      <- sub %>% mutate(across(all_of(predictor_vars), ~ z(., cur_column())))
+  mdl      <- feols(fml, data = zdf)
+  zdf_pred <- zdf %>% mutate(across(all_of(predictor_vars), ~ replace_na(., 0)))
+  zdf_pred %>%
+    mutate(Fitted = predict(mdl, newdata = zdf_pred)) %>%
+    rename(Logit = PROB_vw) %>% select(date, Logit, Fitted) %>%
+    pivot_longer(c(Logit, Fitted), names_to = "series", values_to = "value") %>%
+    filter(date <= end_date)
+}
+
+is_qtr  <- month(prob_merged$date) %in% c(3, 6, 9, 12)
+plot_df <- bind_rows(
+  fit_period(prob_merged$date <= gfc_end & is_qtr),
+  fit_period(prob_merged$date >  gfc_end & is_qtr)
+)
+
+p_oa4 <- ggplot(plot_df, aes(x = date, y = value, color = series, linetype = series)) +
+  annotate("rect", xmin = gfc_start, xmax = gfc_end, ymin = -Inf, ymax = Inf,
+           fill = "grey50", alpha = 0.12) +
+  geom_line() +
+  geom_vline(xintercept = gfc_start, linetype = "dashed") +
+  geom_vline(xintercept = gfc_end,   linetype = "dashed") +
+  labs(x = "Date", y = "Default Probability", title = "") +
+  scale_color_manual(values = c(red, blue), name = "Series",
+                     labels = c("Campbell et al. (2008)", "Fitted")) +
+  scale_linetype_manual(values = c("solid", "dashed"), name = "Series",
+                        labels = c("Campbell et al. (2008)", "Fitted")) +
+  mytheme_white + theme(legend.position = "bottom") + ylim(0, 0.002)
+
+print(p_oa4)
+ggsave(paste0(fig_dir, "FigureOA4_PROB_fit.png"), p_oa4, width = 8, height = 6, dpi = 300)
+
+## Correlation between Campbell et al. (2008) PROB and its fitted value, by subsample
+## (as in PROB_Goodness_of_Fit_V2.1.Rmd's fit_corr_split).
+fit_corr_split <- plot_df %>%
+  pivot_wider(names_from = series, values_from = value) %>%
+  mutate(subsample = ifelse(date <= as.Date("2008-12-31"), "Pre-2009", "Post-2008")) %>%
+  group_by(subsample) %>%
+  summarize(corr = cor(Logit, Fitted, use = "complete.obs"))
+
+fit_corr_split %>%
+  kbl(digits = 3,
+      caption = "Correlation between Campbell et al. (2008) PROB and fitted value, by subsample") %>%
+  kable_styling(full_width = FALSE, position = "left")
+```
