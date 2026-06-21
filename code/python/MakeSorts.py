@@ -72,9 +72,7 @@ CS_Qtr=CS.groupby('permno').resample('QE').last().drop(columns='permno')
 
 horizons = {
     '1q': 1,
-    '1y': 4,
-    '2y': 8,
-    '5y': 20
+    '1y': 4
 }
 
 Vars=['CS5y', 'CS10y']
@@ -113,25 +111,25 @@ W = 'EQUITY_lag' # use lagged market cap to weight growth
 
 #Add fundamental variables, both difference and level
 #I think for earnings forecast, only the quarterly change is relevant.
-Vars = ['SIGMA', 'SIGMA_diff_1q','SIGMA_diff_1y', 'SIGMA_diff_2y', 'SIGMA_diff_5y' ,
-        'cdr', 'cdr_diff_1q', 'cdr_diff_1y', 'cdr_diff_2y', 'cdr_diff_5y',
-        'market_leverage', 'market_leverage_diff_1q', 'market_leverage_diff_1y', 'market_leverage_diff_2y','market_leverage_diff_5y',
-        'book_leverage', 'book_leverage_diff_1q', 'book_leverage_diff_1y', 'book_leverage_diff_2y','book_leverage_diff_5y',
-        'EBITDA','EBITDA_pct_1q', 'EBITDA_pct_1y', 'EBITDA_pct_2y', 'EBITDA_pct_5y',
-        'NIMTA', 'NIMTA_pct_1q', 'NIMTA_pct_1y', 'NIMTA_pct_2y', 'NIMTA_pct_5y',
-        'CASHMTA', 'CASHMTA_pct_1q', 'CASHMTA_pct_1y', 'CASHMTA_pct_2y', 'CASHMTA_pct_5y',
-        'ASSETS','ASSETS_pct_1q', 'ASSETS_pct_1y', 'ASSETS_pct_2y', 'ASSETS_pct_5y',
-        'sales_at', 'sales_at_pct_1q', 'sales_at_pct_1y', 'sales_at_pct_2y', 'sales_at_pct_5y',
-        'gp_at', 'gp_at_pct_1q', 'gp_at_pct_1y', 'gp_at_pct_2y', 'gp_at_pct_5y',
-        'ebitda_sale','ebitda_sale_pct_1q', 'ebitda_sale_pct_1y', 'ebitda_sale_pct_2y', 'ebitda_sale_pct_5y',
-        'EARN1Q_pct_1q', 'EARN1Q_pct_1y', 'EARN1Q_pct_2y', 'EARN1Q_pct_5y',
-        'EARN1Y_pct_1q', 'EARN1Y_pct_1y', 'EARN1Y_pct_2y', 'EARN1Y_pct_5y',
-        'EARN2Y_pct_1q', 'EARN2Y_pct_1y', 'EARN2Y_pct_2y', 'EARN2Y_pct_5y',
-        'EARNLT_pct_1q', 'EARNLT_pct_1y', 'EARNLT_pct_2y', 'EARNLT_pct_5y',
-        'retq', 'ret_exc_1q','ret_exc_1y', 'ret_exc_2y', 'ret_exc_5y',
+Vars = ['SIGMA', 'SIGMA_diff_1q','SIGMA_diff_1y',
+        'cdr', 'cdr_diff_1q', 'cdr_diff_1y',
+        'market_leverage', 'market_leverage_diff_1q', 'market_leverage_diff_1y',
+        'book_leverage', 'book_leverage_diff_1q', 'book_leverage_diff_1y',
+        'EBITDA','EBITDA_pct_1q', 'EBITDA_pct_1y',
+        'NIMTA', 'NIMTA_pct_1q', 'NIMTA_pct_1y',
+        'CASHMTA', 'CASHMTA_pct_1q', 'CASHMTA_pct_1y',
+        'ASSETS','ASSETS_pct_1q', 'ASSETS_pct_1y',
+        'sales_at', 'sales_at_pct_1q', 'sales_at_pct_1y',
+        'gp_at', 'gp_at_pct_1q', 'gp_at_pct_1y',
+        'ebitda_sale','ebitda_sale_pct_1q', 'ebitda_sale_pct_1y',
+        'EARN1Q_pct_1q', 'EARN1Q_pct_1y',
+        'EARN1Y_pct_1q', 'EARN1Y_pct_1y',
+        'EARN2Y_pct_1q', 'EARN2Y_pct_1y',
+        'EARNLT_pct_1q', 'EARNLT_pct_1y',
+        'retq', 'ret_exc_1q','ret_exc_1y',
         'debt3Y', 'debt5Y', 'debtST',
-        'CS5y', 'CS5y_diff_1q', 'CS5y_diff_1y', 'CS5y_diff_2y', 'CS5y_diff_5y',
-        'CS10y', 'CS10y_diff_1q', 'CS10y_diff_1y', 'CS10y_diff_2y', 'CS10y_diff_5y',
+        'CS5y', 'CS5y_diff_1q', 'CS5y_diff_1y',
+        'CS10y', 'CS10y_diff_1q', 'CS10y_diff_1y',
         'avgmat'
         ]
 

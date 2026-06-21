@@ -41,7 +41,7 @@ pulls are not shipped (Path B rebuilds them from WRDS).
 |---|---|---|
 | `raw_data.hdf` | Merged CRSP–Compustat firm panel | Built by `MakeMainDataFile_V1.py` from WRDS |
 | `comp_quarter.hdf`, `comp_annual.h5` | Compustat fundamentals | WRDS Compustat |
-| `trace_29_04_2025.parquet` | Corporate bond transactions | FINRA TRACE / Dickerson–Robotti–Rossetti WRDS dataset |
+| `trace_29_04_2025.parquet` | Corporate bond transactions | FINRA TRACE / Dickerson–Robotti–Rossetti WRDS dataset. This snapshot was shared directly by Alex Dickerson (author of the Open Source Bond Asset Pricing data) ahead of its public release; confirm redistribution rights before posting publicly. |
 | `WRDS_MMN_Corrected_Data_2024_July.csv` | MMN-corrected bond data | WRDS |
 | `FF48_Stocks.h5` | Firm-level FF48 industry tags | Shared by A. Dickerson |
 | `monthly_vol.csv.gzip`, `monthly_mom.csv.gzip` | Monthly volatility / momentum factor data | Shared by A. Dickerson (WRDS-derived) |

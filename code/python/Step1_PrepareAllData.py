@@ -45,9 +45,9 @@ from config import path
 os.chdir(path)   # no-op when already at the package root
 
 # Scripts live in code/python/. Order matters: iclink builds the CRSP-IBES link first;
-# CreditSpread must precede Portfolios (which reads CS.h5 / firm_mat.h5 from CreditSpread).
+# CreditSpread must precede Sorts (which reads CS.h5 / firm_mat.h5 from CreditSpread).
 scripts = ['iclink.py', 'MakeMainDataFile_V1.py', 'MakeSIGMA.py', 'MakePROB.py',
-           'MakeCreditSpread.py', 'MakePortfolios_v2.py', 'MakeSorts.py', 'MakeAggShocks.py']
+           'MakeCreditSpread.py', 'MakePortfolios_v2.py', 'MakeSorts.py', 'MakeAggShocks_v1.py']
 
 
 for script in scripts:
