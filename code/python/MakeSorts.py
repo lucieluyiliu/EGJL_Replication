@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb  6 15:58:08 2024
+Created:       2024-02-06
+Last modified: 2026-06-21
+Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
-@author: Lucie Lu
+Builds the industry-level panel Data/industry_sorts.csv: for each Fama-French 48
+industry and quarter, the lagged-market-cap value-weighted average of every firm
+characteristic (levels and 1-quarter / 1-year changes), plus industry market-cap,
+EBITDA, and assets shares. Inputs: _main_data_2.h5, _ret_quarterly_2.h5 (firm panel),
+CS.h5 (credit spreads), firm_mat.h5 (average debt maturity).
 """
 
 #* ************************************** */
@@ -26,7 +32,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from config import path
 
-start_date='6/30/1986'###############################
+start_date='6/30/1986'
 
 end_date='12/31/2024'
 
@@ -35,27 +41,6 @@ os.chdir(path)
 df   = pd.read_hdf(path+'Data/'+r'_main_data_2.h5')
 
 df.rename(columns={'jdate': 'date'}, inplace=True)
-
-
-#check availability of forecasted earnings
-
-#df['forearn'].isnull().sum() #There are a lot of missing values, but not too many.
-#13601 out of 19758 in IBES, given restriction on horizon, quite reasonable.
-df.loc[df['EARN1Q'].notnull()]['permno'].nunique()
-#14051
-df.loc[df['EARN1Y'].notnull()]['permno'].nunique()
-#12345
-df.loc[df['EARN2Y'].notnull()]['permno'].nunique()
-#11975
-df.loc[df['EARNLT'].notnull()]['permno'].nunique()
-
-
-
-#check how many stocks per industry per year
-
-df['year']=df['date'].dt.year
-
-nfirms_ffi48 = df.groupby(['ffi48', 'year'])['permno'].nunique().reset_index(name='nfirms')
 
 dfret= pd.read_hdf(path+'Data/'+r'_ret_quarterly_2.h5').reset_index()
 
@@ -68,8 +53,7 @@ CS.set_index(['date'], inplace=True)
 
 CS_Qtr=CS.groupby('permno').resample('QE').last().drop(columns='permno')
 
-# Take differnce in CS at various horizons
-
+# First differences of credit spreads at the 1-quarter and 1-year horizons
 horizons = {
     '1q': 1,
     '1y': 4
@@ -102,15 +86,11 @@ df = df.merge(firm_mat_Qtr, how = "left", left_on = ['date','permno'],
 df   = df[df['date'] <= end_date]
 df   = df[df['date'] >= start_date]
 
-##### Form EQUITY_lag (lagged market cap) weighted portfolios of
+# Lagged market cap, used as the value-weighting variable W
 df['EQUITY_lag'] = df.groupby("permno")['EQUITY'].shift(1)
-W = 'EQUITY_lag' # use lagged market cap to weight growth
+W = 'EQUITY_lag'
 
-# Output is going to be a stacked panel
-# Output = pd.DataFrame()
-
-#Add fundamental variables, both difference and level
-#I think for earnings forecast, only the quarterly change is relevant.
+# Firm characteristics to value-weight by industry: levels plus 1q/1y changes
 Vars = ['SIGMA', 'SIGMA_diff_1q','SIGMA_diff_1y',
         'cdr', 'cdr_diff_1q', 'cdr_diff_1y',
         'market_leverage', 'market_leverage_diff_1q', 'market_leverage_diff_1y',
@@ -133,19 +113,8 @@ Vars = ['SIGMA', 'SIGMA_diff_1q','SIGMA_diff_1y',
         'avgmat'
         ]
 
-#Value-weighted characteristics within each industry
-#Weights need to be recalculated taking into account data availability.
-
-dfindustry_start_dic = {}
-
-for column in df.columns:
-    first_non_null_date = df.reset_index().dropna(subset=[column]).date.min()
-    dfindustry_start_dic[column] = first_non_null_date
-
-dfindustry_start0 = pd.DataFrame(list(dfindustry_start_dic.items()), columns=['variables', 'start'])
-# I will start sample in 1987Q2 because this seems to be the starting date when most variables are available
-
-
+# Value-weighted characteristics within each industry. Weights are recomputed per
+# variable so each weight set respects that variable's data availability.
 for d in Vars:
     print(d)
     dfST = df[~df[d].isnull()]
@@ -157,7 +126,6 @@ for d in Vars:
             to_frame()
     sorts.columns = [d]
     if d == Vars[0]:
-        #Output = pd.concat([Output, sorts], axis = 1)
         Output=sorts
     else:
         Output = Output.merge(sorts, how = "left", left_index = True,
@@ -195,47 +163,14 @@ ffi48_share['assets_share']=ffi48_share['ffi48_assets']/ffi48_share['total_asset
 
 ffi48_share.set_index(['date','ffi48'], inplace=True)
 
-Output=Output.merge(ffi48_share, how='left', left_index=True, right_index=True)  #Add industry relative share in MV and EBITDA and ASSETS
+Output=Output.merge(ffi48_share, how='left', left_index=True, right_index=True)  # industry shares of market cap, EBITDA, assets
 
-# =============================================================================
-# zz = 'dd5'
-# zz='debt3Y'
-# 
-# zz='gp_at_pct'
-# 
-# dfx = Output.pivot_table(index = ['date'],
-#                          columns = 'ffi48',
-#                          values = zz)
-# 
-# dfx.plot()
-# 
-# Output.isnull().sum()
-# =============================================================================
-
-# Cleaning #
+# Clean infinities, then keep the sample from 1987Q2 (when most variables become available)
 Output = Output.replace([np.inf, -np.inf], np.nan)
 
-dfindustry_start_dic={}
-
-for column in Output.columns:
-    first_non_null_date=Output.reset_index().dropna(subset=[column]).date.min()
-    dfindustry_start_dic[column]=first_non_null_date
-    
-
-dfindustry_start=pd.DataFrame(list(dfindustry_start_dic.items()), columns=['variables','start'])      
-# I will start sample in 1987Q2 because this seems to be the starting date when most variables are available
-
-
-#Check variable first start date at the industry level
-
-#Output.to_hdf(r'~\Dropbox\Alex_and_Lucie\_industry_sorts_2.h5',key='daily')
-
-#Sample starts in 1987Q2
 Output = Output.reset_index()
 
 Output=Output[Output['date']>=dt.datetime(1987, 6, 30)]
-
-Output.to_hdf(path+'Data/'+r'_industry_sorts_2.h5',key='daily')
 
 Output.to_csv(path+'Data/'+'industry_sorts.csv', index=False)
 

@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat May 18 19:27:24 2024
+Created:       2024-05-18
+Last modified: 2026-06-21
+Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
-@author: Lucie Lu
+Builds the quarterly panel of aggregate shocks, Data/AggShocks/Agg_shocks.csv:
+one column per macro/financial series, each with its 1-quarter and 1-year change.
 
-Generates quarterly series of aggregate shocks.
-
-Based on Bao Hou Zhang + Liquidity + HKM Intermediary capital ratio
-
+Aggregate variables and sources:
+  IP                 Industrial production, level and growth   (FRED INDPRO)
+  DeltaLiq           Aggregate liquidity innovations           (Pastor-Stambaugh)
+  CFNAI              National activity index                   (Chicago Fed)
+  EPU                Economic Policy Uncertainty (pct change)  (Baker-Bloom-Davis)
+  UNRATE             Civilian unemployment rate                (FRED UNRATE)
+  FinU/MacroU/RealU  Financial/Macro/Real uncertainty, h=3     (Jurado-Ludvigson-Ng)
+  NGDP               Nominal GDP growth forecast               (Philadelphia Fed SPF)
+  FEDFUNDS           Effective federal funds rate              (FRED FEDFUNDS)
+  DeltaICR           Intermediary capital risk factor          (He-Kelly-Manela)
 """
 
 import os
@@ -30,7 +39,7 @@ os.chdir(path)   # no-op when already at the package root
 
 data_dir='Data/AggShocks/'
 
-start_date='1/1/1986'###############################
+start_date='1/1/1986'
 
 end_date='12/31/2024'
 
@@ -118,9 +127,7 @@ df_CFNAI_qtr['CFNAI_diff_1y']=df_CFNAI_qtr['CFNAI'].diff(4)
 
 
 
-#EPU
-
-# This version change EPU from diff to pct.
+# EPU (enters as percent change; other series use first differences)
 
 df_EPU=pd.read_excel(path+'Data/AggShocks/'+'US_Policy_Uncertainty_Data.xlsx')
 
