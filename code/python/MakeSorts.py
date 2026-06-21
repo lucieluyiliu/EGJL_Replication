@@ -8,7 +8,7 @@ Builds the industry-level panel Data/industry_sorts.csv: for each Fama-French 48
 industry and quarter, the lagged-market-cap value-weighted average of every firm
 characteristic (levels and 1-quarter / 1-year changes), plus industry market-cap,
 EBITDA, and assets shares. Inputs: _main_data_2.h5, _ret_quarterly_2.h5 (firm panel),
-CS.h5 (credit spreads), firm_mat.h5 (average debt maturity).
+CS.h5 (credit spreads).
 """
 
 #* ************************************** */
@@ -67,21 +67,11 @@ for col in Vars:
         CS_Qtr[newcol] = CS_Qtr.groupby('permno',group_keys=False)[col].transform(lambda x: x.diff(periods=lag))
 
 
-#Add average maturity from TRACE
-firm_mat=pd.read_hdf(path+'Data/firm_mat.h5')
-
-firm_mat.set_index(['date'], inplace=True)
-
-firm_mat_Qtr=firm_mat.groupby('permno').resample('QE').last().drop(columns='permno')
-
 df = df.merge(dfret, how = "inner", left_on = ['date','permno'],
               right_on = ['date','permno'])
 
 df = df.merge(CS_Qtr, how = "left", left_on = ['date','permno'],
               right_on = ['date','permno'])  #Left join CS, which starts in 2002
-
-df = df.merge(firm_mat_Qtr, how = "left", left_on = ['date','permno'],
-              right_on = ['date','permno'])  #Left join firm-level average maturity, which starts in 2002
 
 df   = df[df['date'] <= end_date]
 df   = df[df['date'] >= start_date]
@@ -109,8 +99,7 @@ Vars = ['SIGMA', 'SIGMA_diff_1q','SIGMA_diff_1y',
         'retq', 'ret_exc_1q','ret_exc_1y',
         'debt3Y', 'debt5Y', 'debtST',
         'CS5y', 'CS5y_diff_1q', 'CS5y_diff_1y',
-        'CS10y', 'CS10y_diff_1q', 'CS10y_diff_1y',
-        'avgmat'
+        'CS10y', 'CS10y_diff_1q', 'CS10y_diff_1y'
         ]
 
 # Value-weighted characteristics within each industry. Weights are recomputed per

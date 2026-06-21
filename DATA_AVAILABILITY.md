@@ -14,11 +14,11 @@ pulls are not shipped (Path B rebuilds them from WRDS).
 ### Derived data (constructed by the code in this package)
 | File | Description | Underlying source |
 |---|---|---|
-| `industry_sorts.csv`, `_industry_sorts_2.h5` | Value-weighted FF48 industry panels (the Step 2 input) | CRSP + Compustat |
+| `industry_sorts.csv` | Value-weighted FF48 industry panel (the Step 2 input) | CRSP + Compustat |
 | `_main_data_2.h5`, `_ret_quarterly_2.h5` | Firm-quarter panel and quarterly returns | CRSP + Compustat |
 | `PROB.h5`, `PROB_agg.csv` | Default probability (computed in-house by `MakePROB.py`) | CRSP/Compustat + published coefficients |
 | `sigma.h5` | Equity return volatility | CRSP daily |
-| `CS.h5`, `firm_mat.h5` | Industry credit spreads / firm debt maturity | FINRA TRACE |
+| `CS.h5` | Firm-level 5Y/10Y credit spreads | FINRA TRACE |
 | `iclink.pkl` | CRSP–IBES link table | CRSP + IBES |
 | `Estimates/`, `Estimates/length4/` | Correlation + block-bootstrap outputs feeding the tables | (this package's R code) |
 | `AggShocks/Agg_shocks.csv` | Quarterly aggregate macro/financial shocks | public macro sources (below) |
