@@ -6,25 +6,43 @@ industry-pair **total** and **excess** correlations of default risk and equity m
 goodness-of-fit figure (Figure OA.4).
 
 ## 1. Requirements
-- **Python 3** with: pandas, numpy, scipy, pyreadstat, duckdb, wrds, pandas-datareader, tqdm.
-  (Only needed for the full build from WRDS — Step 1.)
-- **R** with: tidyverse, fixest, kableExtra, psych, broom, modelsummary, rhdf5, zoo, ggrepel,
-  ggforce, cowplot, viridis, knitr, pander, gt. (Run `Rscript install_R_packages.R` to install.)
-- **Pandoc ≥ 1.12.3** (we used 3.10) — a system tool required by `rmarkdown` to knit the
-  exhibits (`main_empirics.Rmd` → tables/figures). RStudio bundles its own pandoc, but command-line `Rscript`
-  does not, so install it system-wide:
-  - macOS: `brew install pandoc`   ·   conda: `conda install -c conda-forge pandoc`
-  - Linux: `apt-get install pandoc` (or your distro's package)   ·   or download from pandoc.org
-  - Verify with `pandoc --version`. If R was already running when you installed it, restart R,
-    or point R at it via `Sys.setenv(RSTUDIO_PANDOC = dirname(Sys.which("pandoc")))`.
+- **R 4.5.1** with the packages pinned in `renv.lock` (tidyverse, fixest, kableExtra, rhdf5, zoo,
+  psych, broom, modelsummary, viridis, ggforce, ggrepel, cowplot, knitr, pander, gt). Installed via
+  `renv` in §2.
+- **Python 3.11** with pandas, numpy, scipy, pyreadstat, duckdb, wrds, pandas-datareader, tqdm —
+  pinned in `pyproject.toml` / `uv.lock`. Only needed for the full WRDS rebuild (Path B).
+- **Pandoc ≥ 1.12.3** (we used 3.10) — a system tool `rmarkdown` needs to knit the exhibits.
 - A **WRDS account** with CRSP, Compustat, IBES, and TRACE access — only for the full rebuild.
 
-## 2. Set the package root
+## 2. Environment setup — do this first
+A fresh clone ships the **lockfiles, not the packages**, so build the environment before running anything.
+
+**R packages** (exact versions from `renv.lock`), from the package root:
+
+    Rscript -e 'if (!requireNamespace("renv", quietly=TRUE)) install.packages("renv"); renv::restore()'
+
+`renv::restore()` installs every package at its locked version into a project-local library, and warns
+if your R version differs from the lock. (Quick alternative, *not* version-pinned: `Rscript install_R_packages.R`.)
+
+**Pandoc** (required to knit the exhibits — command-line `Rscript` has no bundled pandoc):
+
+    brew install pandoc          # macOS   (Linux: sudo apt-get install pandoc;  conda: conda install -c conda-forge pandoc)
+
+Verify with `pandoc --version`. If R is already open, restart it (or
+`Sys.setenv(RSTUDIO_PANDOC = dirname(Sys.which("pandoc")))`).
+
+**Python** (only for Path B — the full WRDS rebuild):
+
+    uv sync                                  # from pyproject.toml + uv.lock (exact versions)
+    # or:  pip install -r requirements.txt
+    # or:  conda env create -f environment.yml && conda activate egjl-replication
+
+## 3. Set the package root
 Paths are centralized in `config.py` and `config.R`, which auto-detect the package root.
 No editing is needed if you keep `config.py` / `config.R` at the package root. If R
 auto-detection fails, set `ROOT` on the marked line in `config.R`.
 
-## 3. Two ways to reproduce
+## 4. Two ways to reproduce
 
 ### Path A — From the shipped derived data (no WRDS needed) — recommended for referees
 The package ships the derived inputs, so you can regenerate **every exhibit** without WRDS:
@@ -44,7 +62,7 @@ set `RUN_STEP2 <- TRUE` near the top of `master.R`.
    (builds the firm/industry panels; hours).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
 
-## 4. Exhibit → producing script
+## 5. Exhibit → producing script
 All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `master.R`).
 
 | Paper exhibit | Output file |
@@ -58,10 +76,10 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
 | Table OA.9 — size & book-leverage terciles | `output/tables/TableOA9_Excess_Corr_Size_BookLev_Terciles.tex` |
 | Figure OA.4 — PROB vs. fitted value | `output/figures/FigureOA4_PROB_fit.png` |
 
-## 5. Sample & key settings
+## 6. Sample & key settings
 Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
 
-## 6. Notes
+## 7. Notes
 - The pre-shipped `output/tables` and `output/figures` are the paper's exact exhibits; reproduction
   should overwrite them with identical content.
 - See `DATA_AVAILABILITY.md` for data sources and the files that must be obtained from WRDS.
