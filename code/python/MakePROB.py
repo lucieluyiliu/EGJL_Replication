@@ -1,26 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan 29 08:06:27 2025
+Created:       2025-01-29
+Last modified: 2026-06-22
+Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
-@author: yiliul2
+Computes the firm-level default probability (cdr/PROB). Builds the Campbell-style
+predictors from raw_data.hdf + sigma.h5 (winsorized 5%/95%), applies the published
+logit coefficients in drcoefficients2021.xlsx, and aggregates equal- and value-
+weighted PROB. The S&P 500 series (for rsize/exret) is pulled live from WRDS CRSP.
+Inputs:  raw_data.hdf, sigma.h5, drcoefficients2021.xlsx, WRDS (crsp.msp500_v2)
+Outputs: PROB.h5, PROB_agg.csv
+Validation: campbelldefrisk_2021.sas7bdat holds Kevin Aretz's precomputed CDR; the
+"Compare with Kevin Aretz" block cross-checks this script's output against it and is
+not an input to the results.
 """
 
 #* ************************************** */
 #* Libraries                              */
-#* ************************************** */ 
+#* ************************************** */
 
 import pandas as pd
 import numpy as np
-
 import os
-
-from datetime import datetime, timedelta
 from tqdm import tqdm
-import pandas_datareader as pdr
-from dateutil.relativedelta import *
-from pandas.tseries.offsets import *
-import datetime as dt
 from pandas.tseries.offsets import *
 import pyreadstat
 import wrds
@@ -93,7 +96,6 @@ dfe = dfe.set_index(['jdate'])
 #NIMTA (0.77)
 
 #Do not recompute NIMTA, use the one from the raw data
-#dfe['nimta']=dfe['niq']*1000/(dfe['me']+dfe['ltq']*1000)
 
 w='nimta'
 
@@ -104,7 +106,6 @@ dfe.loc[dfe[w] < np.nanpercentile(dfe[w],5),w] = np.nanpercentile(dfe[w],5)
 #TLMTA
 
 #Do not recompute TLMTA, use the one from the raw data
-#dfe['tlmta']= dfe['ltq']*1000 / (dfe['me']+ dfe['ltq']*1000 )
 
 w='tlmta'
 
@@ -115,7 +116,6 @@ dfe.loc[dfe[w] < np.nanpercentile(dfe[w],5),w] = np.nanpercentile(dfe[w],5)
 #CASHMTA
 
 #Do not recompute CASHMTA, use the one from the raw data
-#dfe['cashmta']=dfe['cheq']*1000/(dfe['me']+dfe['ltq']*1000)
 
 w='cashmta'
 
@@ -123,9 +123,7 @@ dfe.loc[dfe[w] > np.nanpercentile(dfe[w],95),w] = np.nanpercentile(dfe[w],95)
 
 dfe.loc[dfe[w] < np.nanpercentile(dfe[w],5),w] = np.nanpercentile(dfe[w],5)
 
-#MB 
-
-#dfe['MB']=dfe['me']/dfe['adjusted_beq']
+#MB
 
 dfe['me_be']=dfe['me']/dfe['beq0']/1000
 
@@ -171,23 +169,10 @@ dfe['logprice'] = np.log(np.minimum(dfe['prc'], 15))
 w='logprice'
 
 dfe.loc[dfe[w] > np.nanpercentile(dfe[w],95),w] = np.nanpercentile(dfe[w],95)
-#
-dfe.loc[dfe[w] < np.nanpercentile(dfe[w],5),w] = np.nanpercentile(dfe[w],5)
-#
 
-# =============================================================================
-# 
-# from scipy.stats.mstats import winsorize
-# 
-# WinzVars=['nimta','tlmta','cashmta']
-# 
-# for w in WinzVars:
-#     print(w)
-#     dfe.loc[dfe[w] > np.nanpercentile(dfe[w],95),w] = np.nanpercentile(dfe[w],95)
-#     dfe.loc[dfe[w] < np.nanpercentile(dfe[w],5),w] = np.nanpercentile(dfe[w],5)
-# 
-# =============================================================================
-# Check correlation (winsorization increases corr with the Aretz numbers)
+dfe.loc[dfe[w] < np.nanpercentile(dfe[w],5),w] = np.nanpercentile(dfe[w],5)
+
+# Winsorization increases the correlation with Kevin Aretz's predictors.
 
 
 # Compute CDR default probability
@@ -208,8 +193,6 @@ coefs = ['CONSTANT', 'BETA_NIMTA', 'BETA_TLMTA', 'BETA_RET','BETA_RSIZ',
 
 CDR_merged[coefs] = CDR_merged[coefs].ffill()
 
-#CDR_merged = CDR_merged.set_index('jdate')
-
 fitted_values=CDR_merged['CONSTANT'] + \
     CDR_merged['nimta']*CDR_merged['BETA_NIMTA'] + \
     CDR_merged['tlmta']*CDR_merged['BETA_TLMTA'] + \
@@ -228,13 +211,11 @@ CDR_merged['cdr']=logit_values
 PROB=CDR_merged[['permno','jdate','year','me','rsize','exret','nimta','tlmta','cashmta',
                  'me_be','logprice','sigma','cdr']]
 
-PROB.isnull().sum()
-
 PROB.to_hdf(path+data_dir+r'PROB.h5',
           key = 'daily')
 
 
-# Compare with Kevin
+# Compare with Kevin Aretz
 
 dfp, meta = pyreadstat\
     .read_sas7bdat\
@@ -275,8 +256,6 @@ CDR_compare['LOGPRICE'].corr(CDR_compare['logprice'])
 
 #97.31%, almost perfectly replicate Kevin's CDR calculation.
 CDR_compare['CDR'].corr(CDR_compare['cdr'])
-
-
 
 
 # 2025-09-30: Add aggregate default probability.

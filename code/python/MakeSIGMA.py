@@ -1,30 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Dec 27 12:07:06 2024
+Created:       2024-12-27
+Last modified: 2026-06-22
+Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
-@author: yiliul2
+Computes firm-level equity return volatility (sigma): the annualized standard
+deviation of daily CRSP returns over a trailing 3-month window, anchored to each
+month-end, with a degrees-of-freedom adjustment. Missing values are filled with the
+cross-sectional monthly mean. The rolling-volatility routine was reworked by
+Alex Dickerson.
+Inputs:  WRDS (crsp.dsf_v2 daily returns)
+Outputs: sigma.h5
 """
 
-
-##########################################
-# Equity Volatility and default PROB     #
-# Re-worked by Alex Dickerson using code #
-# Lucie Lu                               #
-#                                        #
-##########################################
+#* ************************************** */
+#* Libraries                              */
+#* ************************************** */
 
 import os
 import pandas as pd
 import numpy as np
-import datetime as dt
 import wrds
-import matplotlib.pyplot as plt
-from dateutil.relativedelta import *
 from pandas.tseries.offsets import *
-from scipy import stats
-from tqdm import tqdm
-tqdm.pandas()
 
 # Path config (MNSC item 13: relative paths; run from the package root).
 import sys
@@ -32,6 +30,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 from config import path
 
 data_dir='Data/'
+
+start_date='1/1/1986'
+
+end_date='12/31/2024'
 
 os.chdir(path)
 
