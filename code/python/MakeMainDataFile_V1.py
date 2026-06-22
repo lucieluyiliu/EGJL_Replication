@@ -1,33 +1,29 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Mar  5 10:31:10 2024
+Created:       2024-03-05
+Last modified: 2026-06-22
+Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
-@author: Lucie Lu based on Alex Dickerson's code
-
+Builds the merged CRSP-Compustat-IBES firm-month panel raw_data.hdf, the headwaters
+of the pipeline. Pulls Compustat quarterly (fundq) and annual (funda) fundamentals,
+CRSP monthly stock data (msf_v2) with risk-free rates, the CCM link table, and IBES
+EPS forecasts; links CRSP to IBES via iclink.pkl; and derives the firm characteristics
+used downstream (leverage, profitability, forecast earnings, default predictors).
+The CRSP-Compustat merge was reworked by Alex Dickerson from Qingyi (Freda) Song
+Drechsler's code.
+Inputs:  WRDS (comp.fundq, comp.funda, crsp.msf_v2, crsp.mcti, ff.factors_monthly,
+         crsp.ccmxpf_linktable, comp.security, ibes.statsum_epsus, ibes.actpsum_epsus),
+         Data/iclink.pkl
+Outputs: Data/comp_quarter.hdf, Data/comp_annual.h5, Data/raw_data.hdf
 """
-
-##########################################
-# CRSP-COMPUSTAT Merge                   #
-# Re-worked by Alex Dickerson using code #
-# from:                                  #
-# Qingyi (Freda) Song Drechsler          #
-# Date:    January 2023                  #
-# Updated: April   2023                  #
-###########
 import os
 import pandas as pd
 import numpy as np
-import datetime as dt
 import wrds
-import matplotlib.pyplot as plt
-from dateutil.relativedelta import *
 from pandas.tseries.offsets import *
 import pickle as pkl
-from scipy import stats
 from tqdm import tqdm
 tqdm.pandas()
-
-import matplotlib.pyplot as plt
 
 # Path config (MNSC item 13: relative paths; run from the package root).
 import sys
@@ -36,15 +32,9 @@ from config import path, wrds_username
 
 conn=wrds.Connection(wrds_username=wrds_username)   # WRDS username from config.py
 
-# path0=r'/Users/yiliul2/Dropbox/TwoTrees_EGJL/Data_empirics/Empirics/Data_MS_R1/'
-#
-# dfstock=\
-# pd.read_hdf(path0+'raw_data.hdf',
-#              key = "daily").reset_index()
-
 os.chdir(path)
 
-start_date='1/1/1986'###############################
+start_date='1/1/1986'
 
 end_date='12/31/2024'
 
@@ -233,9 +223,6 @@ compQ['ebitda_sum']   = compQ.groupby("gvkey",group_keys=False)['ebitda'].progre
 compQ['gp_sum']       = compQ.groupby("gvkey",group_keys=False)['gp'].progress_apply(\
                               lambda x: x.rolling(window = 4,min_periods=4).sum())
 
-#All dates are month ends already
-#unique_dates = compQ['datadate'].drop_duplicates().sort_values()
-
 # Cleaning #
 compQ = compQ.replace([np.inf, -np.inf], np.nan)
 
@@ -360,8 +347,6 @@ crsp_m['jdate']=crsp_m['mthcaldt']+MonthEnd(0)
 # calculate market equity
 crsp = crsp_m.copy()
 
-# crsp['mthret']=crsp['mthret'].fillna(0)
-# crsp['mthretx']=crsp['mthretx'].fillna(0)
 crsp['me']=crsp['mthprc']*crsp['shrout']  #CRSP share numbers in thousands
 crsp=crsp.sort_values(by=['jdate','permco','me'])
 
@@ -376,7 +361,6 @@ crsp_maxme = crsp.groupby(['jdate','permco'])['me'].max().reset_index()
 crsp1=pd.merge(crsp, crsp_maxme, how='inner', on=['jdate','permco','me'])  #max permno me as me_unadjusted
 
 # drop me column and replace with the sum me, company me
-# crsp1=crsp1.drop(['me'], axis=1)
 crsp1.rename(columns={'me':'me_unadjusted'}, inplace=True)
 
 # join with sum of me to get the correct market cap info, me is the sum of me under a permnoco
@@ -416,14 +400,9 @@ _sec = conn.raw_sql(""" select distinct ibtic, gvkey, iid from comp.security """
 #This step does not increase duplicates.
 ccm0 = pd.merge(ccm0, _sec.loc[_sec.ibtic.notna()], how='left', on=['gvkey', 'iid'])
 
-# Duplicate here?
 # Check ccm duplicates: for given linkdt-linkenddt, one permno can map to multiple gvkeys, but not the other way around.
 # Each gvkey corresponds to one permno becauses of the primary link marker filter
 # Inevitably, when permno corresponds to multiple gvkeys or gvkey iid, there will be duplicates.
-
-#dup_mask=ccm0.groupby(['permno','linkdt','linkenddt']).size().reset_index(name='count')
-#duplicates0=pd.merge(ccm0, dup_mask[dup_mask['count']>1], how='inner', on=['permno','linkdt','linkenddt']).sort_values(by=['count','permno','iid'], ascending=False)
-
 
 # Read in ICLINK output #
 # iclink.pkl is the output from the python program iclink
@@ -452,12 +431,6 @@ ccm = pd.merge(ccm0, iclink_hq, how='left', on=['permno'])
 # fill missing ticker with ibtic
 ccm.ticker = np.where(ccm.ticker.notnull(),ccm.ticker, ccm.ibtic)
 
-#dup_mask=ccm.groupby('permno')['ticker'].nunique().reset_index(name='count')
-
-#dup_mask=ccm.groupby(['permno','linkdt','linkenddt']).size().reset_index(name='count')
-
-#duplicates=pd.merge(ccm, dup_mask[dup_mask['count']>1], how='inner', on=['permno','linkdt','linkenddt']).sort_values(by=['count','permno'], ascending=False)
-
 # Keep relevant columns and drop duplicates if there is any (Any duplicates here is due to duplicates in ccm0)
 ccm = ccm[['gvkey', 'permco', 'permno', 'linkdt', 'linkenddt','ticker']]
 
@@ -474,17 +447,7 @@ ccm1['jdate']   = ccm1['datadate']+MonthEnd(0) #Month End, not necessary, but fo
 ccm2 = ccm1[(ccm1['datadate']>=ccm1['linkdt'])&(ccm1['datadate']<=ccm1['linkenddt'])].copy()
 ccm2 ['permno'] = ccm2 ['permno'].astype(int)
 
-# check whether obs is not unique by permno and datadate
-# countobs=ccm2.groupby(['permno','datadate']).size().reset_index(name='count').sort_values(by='count', ascending=False)
-#
-# countobs[countobs['count']>1]['permno'].nunique()
-# Some duplicates generateed by the 27 duplicates in ccm0.
-# duplicates=pd.merge(ccm2[['permno','datadate','gvkey','ticker']], countobs[countobs['count']>1], how='inner', on=['permno','datadate']).sort_values(by=['count','permno','datadate'], ascending=False)
-
-#################################
-# Could try merge_asof here #
-
-df = pd.merge(crsp2, 
+df = pd.merge(crsp2,
               ccm2, 
               how='left',
               on = ['permco', 
@@ -507,91 +470,12 @@ df['ticker']=df.groupby('permno')['ticker'].bfill() #monthly data before the fir
 df['gvkey']=df.groupby('permno')['gvkey'].ffill()
 df['gvkey']=df.groupby('permno')['gvkey'].bfill() #monthly data before the first quarterly data also has gvkey
 
-#df_test=df[df.permno==14471][['permno','jdate','ticker','atq']].sort_values(by='jdate')
-
-# check whether obs is unique by permno and jdate
-# countobs=df.groupby(['permno','jdate']).size().reset_index(name='count').sort_values(by='count', ascending=False)
-#
-# test=df[df.permno==23536].sort_values(by='jdate')
-#
-# test1=ccm[ccm['permno']==23536]
-
-#updated 2025-05-05, resample to month-end for each permno to remove duplicates?
-#df1 = df.groupby("permno")[df.columns[1:]].\
-#    progress_apply(lambda x: x.resample("ME").last())  #For each permno resample ME so that if there are multiple observations only the last one will be kept
-
 # Why df has duplicates? because in ccm one permno could correspond to 2 gvkey-iids. No duplicate here
 
 ##########################
 # IBES Block             #
 #
 ##########################
-
-#check ibes horizon
-# ibes_horizon=conn.raw_sql("""
-# select ticker, fpi, fpedats, statpers
-# from ibes.statsum_epsus
-# where fpi in ('6','7','1','2','3','4','5')
-# and statpers<ANNDATS_ACT /*only keep summarized forecasts prior to earnings annoucement*/
-# and measure='EPS'
-# and medest is not null and fpedats is not null
-# and (fpedats-statpers)>=0
-# """, date_cols=['statpers', 'fpedats'])
-#
-# ibes_horizon['jdate'] = ibes_horizon['statpers'] + MonthEnd(0)  #Align with month-end
-#
-# ibes_horizon['horizon']= (ibes_horizon['fpedats'] - ibes_horizon['jdate']).dt.days #Still we would like to restrict the forecast to within 2-4 months before merging.
-
-# fpis=['6','7','1','2','3','4','5']
-#
-# n_panels=len(fpis)
-#
-# ncols = min(3, n_panels)
-# nrows = int(np.ceil(n_panels / ncols))
-#
-# fig, axes = plt.subplots(nrows, ncols, figsize=(5 * ncols, 4 * nrows), squeeze=False)
-#
-# for ax, f in zip(axes.flatten(), fpis):
-#     data = ibes_horizon.loc[ibes_horizon['fpi'] == f, 'horizon'].dropna().values
-#     if len(data) == 0:
-#         ax.set_visible(False)
-#         continue
-#
-#     # Histogram (density=True scales to a PDF)
-#     ax.hist(data, bins=30, density=True, alpha=0.7, edgecolor='black')
-#     ax.set_ylabel('Density')
-#     ax.set_xlabel('horizon')
-#     ax.set_title(f"fpi = {f!r}")
-#
-#     ax.set_title(f"fpi = {f!r}")
-#     ax.set_xlabel('horizon')
-#
-# # turn off any unused axes
-# for ax in axes.flatten()[n_panels:]:
-#     ax.set_visible(False)
-#
-# plt.tight_layout()
-# plt.show()
-
-#check fpi distribution
-# ax = ibes_horizon['fpi'].dropna().hist(bins=20, edgecolor='black', alpha=0.7, figsize=(8,5))
-#
-# ax.set_xlabel('fpi')
-# ax.set_ylabel('Frequency')
-# ax.set_title('Histogram of fpi')
-#
-# plt.tight_layout()
-# plt.show()
-#
-# ax = ibes_horizon['horizon'].dropna().hist(bins=20, edgecolor='black', alpha=0.7, figsize=(8,5))
-#
-# ax.set_xlabel('fpi')
-# ax.set_ylabel('Frequency')
-# ax.set_title('Histogram of fpi')
-#
-# plt.tight_layout()
-# plt.show()
-
 
 #include all possible horizons till FY5
 
@@ -710,15 +594,7 @@ df = pd.merge(df,
 
 df=df.rename(columns={'forearn':'EARNLT'})
 
-#sanity check
-#ibes_test=ibes[ibes.ticker=='0000'][['ticker','fpedats', 'jdate','forearn']].sort_values(['jdate','fpedats'])
-#df_test=df[df1.permno==14471][['permno','jdate','ticker','atq','fpedats','horizon','forearn']].sort_values(by=['jdate','fpedats'])
-
-
 #check availability of forecasted earnings
-
-#df['forearn'].isnull().sum() #There are a lot of missing values, but not too many.
-#13601 out of 19758 in IBES, given restriction on horizon, quite reasonable.
 df.loc[df['EARN1Q'].notnull()]['permno'].nunique()
 #14051
 df.loc[df['EARN1Y'].notnull()]['permno'].nunique()
@@ -943,7 +819,6 @@ comp = comp.set_index(['gvkey',
                                                           'datadate'])
 
 ## Data is sampled continuously each and every fiscal year   ##
-comp.columns
 
 comp = comp[['oper_lvg','debt_ebitda',
              'ebitda','gp','sale',
@@ -974,10 +849,6 @@ df = pd.merge(df.reset_index(),
               on = ['gvkey',                   
                     'jdate'])
 
-
-# test=df[df['permno']==14593][['jdate','gvkey','dd1','dd2', 'dd3','dd4' ,'dd5',
-#              'totaldebtA', 'book_leverage_2A', 'book_leverage_ltA',
-#              'debt3Y','debt5Y','debtST']].sort_values(['jdate'])
 
 df = df.set_index(['permno','jdate'])
 
@@ -1025,8 +896,6 @@ df['earn2y_at']=df['EARN2Y']/df['atq'] #Forecasted earnings to total asset ratio
 
 df['earnlt_at']=df['EARNLT']/df['atq'] #Forecasted earnings to total asset ratio
 
-
-#df['forearnmta']=df['forearn']*1000/(df['me']+df['ltq']*1000) #Forecasted earnings to total asset ratio?
 
 print(df.earn1q_at.describe())
 
