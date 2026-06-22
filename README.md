@@ -44,7 +44,7 @@ auto-detection fails, set `ROOT` on the marked line in `config.R`.
 
 ## 4. Two ways to reproduce
 
-### Path A — From the shipped derived data (no WRDS needed) — recommended for referees
+### Path A — From the shipped derived data (no WRDS needed)
 The package ships the derived inputs, so you can regenerate **every exhibit** without WRDS:
 
     Rscript master.R
@@ -52,14 +52,14 @@ The package ships the derived inputs, so you can regenerate **every exhibit** wi
 This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, Figure OA.4 to
 `output/figures/`, and an HTML report to `output/main_empirics.html`. It reads the shipped
 `Data/Estimates/` directly. To recompute those bootstrap estimates first (from
-`Data/industry_sorts.csv` + `Data/AggShocks/Agg_shocks.csv`; stationary block bootstrap, ~hours),
-set `RUN_STEP2 <- TRUE` near the top of `master.R`.
+`Data/industry_sorts.csv` + `Data/AggShocks/Agg_shocks.csv`; stationary block bootstrap,
+~55 min, see §6), set `RUN_STEP2 <- TRUE` near the top of `master.R`.
 
 ### Path B — Full rebuild from WRDS
 1. Ensure WRDS credentials are configured; obtain the third-party files listed in
    `DATA_AVAILABILITY.md` and place them in `Data/`.
 2. `python code/python/iclink.py` then `python code/python/Step1_PrepareAllData.py`
-   (builds the firm/industry panels; hours).
+   (builds the firm/industry panels; ~1 h 25 min, see §6).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
 
 ## 5. Exhibit → producing script
@@ -76,8 +76,20 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
 | Table OA.9 — size & book-leverage terciles | `output/tables/TableOA9_Excess_Corr_Size_BookLev_Terciles.tex` |
 | Figure OA.4 — PROB vs. fitted value | `output/figures/FigureOA4_PROB_fit.png` |
 
-## 6. Sample & key settings
+## 6. Sample, key settings, and runtime
 Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
+
+**Approximate runtime** (development machine: macOS, 16 logical cores; the bootstrap uses 15):
+
+| Stage | Script | Runtime |
+|---|---|---|
+| Path B — full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
+| Step 2 — block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min |
+| Path A — knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |
+
+Path A alone (the default, reading the shipped `Data/Estimates/`) completes in seconds. Step 2 and
+the full Python rebuild are only needed to regenerate the estimates or the firm/industry panels from
+scratch; both are WRDS- and CPU-bound, so wall-clock time scales with core count and WRDS load.
 
 ## 7. Notes
 - The pre-shipped `output/tables` and `output/figures` are the paper's exact exhibits; reproduction

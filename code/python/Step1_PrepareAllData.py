@@ -1,40 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Nov 30 05:34:47 2024
+Created:       2024-11-30
+Last modified: 2026-06-22
+Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
-@author: Lucie Lu
+Master driver for the data-build stage: runs the Make* scripts in order, each as a
+subprocess, stopping if any one fails. Produces all derived inputs to the R analysis
+(raw_data.hdf, sigma.h5, PROB.h5 / PROB_agg.csv, CS.h5, industry_sorts.csv, Agg_shocks.csv).
 """
 
-
-##########################################
-# Two Trees Data Preparation             #
-# Date:    November 2024                 #
-# Updated: November   2024               #
-# Kelly et al. 2023 Equity Chars         #
-##########################################
-
-
-# 
 import subprocess
 import os
-import pandas as pd
-import numpy as np
-import datetime as dt
-from datetime import datetime, timedelta
-import wrds
-import matplotlib.pyplot as plt
-from dateutil.relativedelta import *
-from pandas.tseries.offsets import *
-from scipy import stats
-from tqdm import tqdm
-tqdm.pandas()
-import pandas_datareader as pdr
-from pandas.tseries.offsets import *
-import pyreadstat
-import matplotlib.pyplot as plt
-
-tqdm.pandas()
 
 # Path config (MNSC item 13: relative paths; run from the package root).
 import sys
@@ -43,7 +20,7 @@ from config import path
 os.chdir(path)   # no-op when already at the package root
 
 # Scripts live in code/python/. Order matters: iclink builds the CRSP-IBES link first;
-# CreditSpread must precede Sorts (which reads CS.h5 / firm_mat.h5 from CreditSpread).
+# CreditSpread must precede Sorts (which reads CS.h5 from CreditSpread).
 scripts = ['iclink.py', 'MakeMainDataFile_V1.py', 'MakeSIGMA.py', 'MakePROB.py',
            'MakeCreditSpread.py', 'MakePortfolios_v2.py', 'MakeSorts.py', 'MakeAggShocks_v1.py']
 
