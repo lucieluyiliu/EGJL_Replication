@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Central relative paths for the EGJL "Excess Default Correlations" replication package.
+Central paths for the EGJL "Excess Default Correlations" replication package.
 
-MNSC item 13: all paths are RELATIVE and point to files within the package. Run every
-script from the package ROOT directory (the master script does this for you); the paths
-below are then resolved against the package root.
+MNSC item 13: paths are PORTABLE. The package root is derived from this file's own
+location, so every script resolves files against the package root regardless of the
+current working directory (e.g. when run from an IDE such as PyCharm, not just from
+the master script run at the package root).
 """
-path = "./"                  # package root == current working directory
+import os
+
+# Package root = the directory that contains this config.py.
+path = os.path.dirname(os.path.abspath(__file__)) + os.sep
 data_dir = "Data/"           # all build inputs/outputs live under Data/
 table_dir = "output/tables/" # R exhibit scripts write tables here
 fig_dir = "output/figures/"  # R exhibit scripts write figures here
