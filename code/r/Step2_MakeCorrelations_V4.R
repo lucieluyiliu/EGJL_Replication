@@ -226,10 +226,10 @@ all_variables <- c(y_vars,funda_vars, for_vars)
 
 #Compute industry-level avarage for industry sorts
 ind_vars <- ind_sorts %>%
-  select(ffi48, Name, date, DEBTST=debtST, MSHARE=mktcap_share,ESHARE=ebitda_share,ASHARE=assets_share, BOOKLEV=book_leverage)%>%
+  select(ffi48, Name, date, MSHARE=mktcap_share,ESHARE=ebitda_share,ASHARE=assets_share, BOOKLEV=book_leverage)%>%
   group_by(ffi48, Name) %>%
   summarise(across(
-    c(DEBTST , MSHARE, ESHARE, ASHARE, BOOKLEV),
+    c(MSHARE, ESHARE, ASHARE, BOOKLEV),
     function(x) mean(x, na.rm = TRUE)
   ))%>%
   ungroup()

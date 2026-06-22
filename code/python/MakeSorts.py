@@ -93,7 +93,6 @@ Vars = ['SIGMA', 'SIGMA_diff_1q','SIGMA_diff_1y',
         'gp_at', 'gp_at_pct_1q', 'gp_at_pct_1y',
         'EARN1Q_pct_1q', 'EARN1Q_pct_1y',
         'ret_exc_1q','ret_exc_1y',
-        'debtST',
         'CS5y', 'CS5y_diff_1q', 'CS5y_diff_1y',
         'CS10y', 'CS10y_diff_1q', 'CS10y_diff_1y'
         ]

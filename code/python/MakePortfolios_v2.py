@@ -60,7 +60,6 @@ dfstock = dfstock[['permno','jdate',
                    't90ret',  # 90-day T-bill
                    'book_leverage_ltq',
                    'market_leverage',
-                   'debtST',
                    'earn1q_at'
                    ]]
 
@@ -142,7 +141,7 @@ df = df[['year',
          'NIMTA','CASHMTA','SIGMA', 'cdr', 'atq', 'ebitda',
          'sales_at', 'gp_at', 'me',
          'book_leverage_ltq',
-         'market_leverage','debtST','earn1q_at']]
+         'market_leverage','earn1q_at']]
 
 df.columns = [
          'year',
@@ -150,7 +149,7 @@ df.columns = [
          'sales_at','gp_at', 'EQUITY',
          'book_leverage',
          'market_leverage',
-         'debtST','EARN1Q'
+         'EARN1Q'
          ]
 
 df_summary=df.isnull().sum()
@@ -210,7 +209,6 @@ WinzVars = ['EBITDA_pct_1q','EBITDA_pct_1y',
             # levels, PROB predictors NIMTA and CASHMTA are pre-winsorized #
 'sales_at','gp_at',
 'book_leverage', 'market_leverage',
-'debtST'
 ]
 
 # Updated 2025-06-28: 5% and 95% winsorization instead of 1% and 99%, to be consistent with default probability calculation winsorization

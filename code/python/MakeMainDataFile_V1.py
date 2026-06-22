@@ -532,76 +532,11 @@ df=df.drop_duplicates(['permno','jdate'], keep='first')  #Keep the longest horiz
 
 print(df.horizon1Q.describe()) #average prediction horizion is 90 days, perfect.
 
-#Add one-year ahead forecast to the dataset (180-540 days ahead)
-df = pd.merge(df,
-              ibes[ ibes['horizon'].between(170, 550) & ibes['fpi'].isin(['1', '2'])][['ticker','jdate','forearn','horizon']],
-              how='left',
-              on = ['ticker',
-                    'jdate'])
-
-df=df.rename(columns={'forearn':'EARN1Y','horizon':'horizon1Y'})
-
-#Keep the longest horizon for each month, which could be 6-18 months ahead.
-df=df.sort_values(['permno','jdate','horizon1Y'], ascending=[True, True, False])
-
-df=df.drop_duplicates(['permno','jdate'], keep='first')  #Keep the longest horizon for each month, this step keeps duplicates from the ccm merge.
-
-print(df.horizon1Y.describe()) #average and median prediction horizion around 365 days, perfect.
-
-#Maybe 2-Y?
-df = pd.merge(df,
-              ibes[ ibes['horizon'].between(530, 1000) & ibes['fpi'].isin(['2', '3'])][['ticker','jdate','forearn','horizon']],
-              how='left',
-              on = ['ticker',
-                    'jdate'])
-
-df=df.rename(columns={'forearn':'EARN2Y','horizon':'horizon2Y'})
-
-#Keep the longest horizon for each month, which could be 6-18 months ahead.
-df=df.sort_values(['permno','jdate','horizon2Y'], ascending=[True, True, False])
-
-df=df.drop_duplicates(['permno','jdate'], keep='first')  #Keep the longest horizon for each month, this step keeps duplicates from the ccm merge.
-
-print(df.horizon2Y.describe()) #average and median prediction horizion around 730 days, perfect.
-
-df=df.drop(['horizon1Q', 'horizon1Y', 'horizon2Y'], axis=1)  #drop horizon columns, not needed anymore)
-
-#IBES LTG
-
-ibes_ltg = conn.raw_sql(f"""
-select a.ticker, a.cusip, a.statpers, numest, medest, stdev, fpi, b.shout
-from ibes.statsum_epsus a, ibes.actpsum_epsus b
-where fpi ='0'  /*1 is for annual forecasts, 6 is for quarterly*/
-and a.measure='EPS' 
-and medest is not null 
-and a.statpers>='{start_date}'
-and a.statpers<='{end_date}'
-and a.statpers=b.statpers
-and a.ticker=b.ticker
-""", date_cols=['statpers'])
-
-ibes_ltg['forearn']=ibes_ltg['medest']*ibes_ltg['shout']  #Forecast earnings in million dollars
-
-ibes_ltg['jdate'] = ibes_ltg['statpers'] + MonthEnd(0)  #Align with month-end
-
-
-df = pd.merge(df,
-              ibes_ltg[['ticker','jdate','forearn']],
-              how='left',
-              on = ['ticker',
-                    'jdate'])
-
-
-df=df.rename(columns={'forearn':'EARNLT'})
+df=df.drop(['horizon1Q'], axis=1)  #drop horizon column, not needed anymore
 
 #check availability of forecasted earnings
 df.loc[df['EARN1Q'].notnull()]['permno'].nunique()
 #14051
-df.loc[df['EARN1Y'].notnull()]['permno'].nunique()
-#12345
-df.loc[df['EARN2Y'].notnull()]['permno'].nunique()
-#11975
-df.loc[df['EARNLT'].notnull()]['permno'].nunique()
 
 df = df.set_index(['permno','jdate'])
 
@@ -614,7 +549,7 @@ comp = conn.raw_sql(f"""
                     select gvkey, datadate, fyr, fyear,
                     at, pstkl, txditc,
                     pstkrv, seq,ceq, pstk, lt, dltt, dlc, sich,
-                    ebitda, gp, revt, cogs, mibt, sale,ni, dd1,dd2,dd3,dd4,dd5 
+                    ebitda, gp, revt, cogs, mibt, sale,ni
                     from comp.funda
                     where indfmt='INDL' 
                     and datafmt='STD'
@@ -701,8 +636,7 @@ comp=comp.sort_values(by=['gvkey','datadate'])
 comp['count']=comp.groupby(['gvkey']).cumcount()
 
 comp=comp[['gvkey','datadate','year','be','at','lt','dltt', 'dlc','sich',
-           'ebitda','gp','sale','revt','cogs','mibt','ps','count', 'fyr','ni',
-           'dd1','dd2', 'dd3','dd4', 'dd5'
+           'ebitda','gp','sale','revt','cogs','mibt','ps','count', 'fyr','ni'
            ]]
 
 comp['fiscal_year'] = comp['datadate']+ MonthEnd(0)
@@ -801,18 +735,6 @@ comp['book_leverage_lt']  = comp['lt']/comp['at']
 
 comp['book_leverage_2']   = comp[ 'totaldebt']/comp['at']
 
-#Add debt maturity
-mask_3Y = comp[['dltt', 'dd2', 'dd3']].notna().any(axis=1)
-numerator_3Y = comp['dltt'].fillna(0) - comp[['dd2', 'dd3']].fillna(0).sum(axis=1)
-comp['debt3Y'] = (numerator_3Y / comp['totaldebt']).where(mask_3Y, np.nan)
-
-mask_5Y = comp[['dltt', 'dd2', 'dd3', 'dd4', 'dd5']].notna().any(axis=1)
-numerator_5Y = comp['dltt'].fillna(0) - comp[['dd2', 'dd3', 'dd4', 'dd5']].fillna(0).sum(axis=1)
-comp['debt5Y'] = (numerator_5Y / comp['totaldebt']).where(mask_5Y, np.nan)
-
-
-comp['debtST'] = comp['dlc']/comp['totaldebt']
-
 # Set and sort firms by gvkey and date #
 comp = comp.set_index(['gvkey',
                          'datadate']).sort_index(level = ['gvkey',
@@ -823,18 +745,14 @@ comp = comp.set_index(['gvkey',
 comp = comp[['oper_lvg','debt_ebitda',
              'ebitda','gp','sale',
              'be', 'at', 'lt', 'dltt', 'dlc',
-             'dd1','dd2', 'dd3','dd4' , 'dd5',
-             'totaldebt', 'book_leverage_2', 'book_leverage_lt',
-             'debt3Y','debt5Y','debtST'                          
+             'totaldebt', 'book_leverage_2', 'book_leverage_lt'
              ]]
 
 # Rename columns to add A for annual
 comp.columns = ['oper_lvgA','debt_ebitdaA',
              'ebitdaA', 'gpA','saleA',
              'be', 'at', 'lt', 'dltt', 'dlc',
-             'dd1','dd2', 'dd3','dd4' ,'dd5',
-             'totaldebtA', 'book_leverage_2A', 'book_leverage_ltA',
-             'debt3Y','debt5Y','debtST']
+             'totaldebtA', 'book_leverage_2A', 'book_leverage_ltA']
 
 ###############################################################################
 
@@ -860,9 +778,8 @@ cols_ffill = ['atq',
 'sh', 'sh_ps', 'ebitda_sum', 'saleq_sum', 'ebitda_sale', 'totaldebt',
 'oper_lvg', 'debt_ebitda', 'niq_sum', 'at_be', 'sales_at',
 'book_leverage_ltq', 'book_leverage_2', 'oper_lvgA', 'debt_ebitdaA',
-'ebitdaA', 'saleA', 'be', 'at', 'lt', 'dltt', 'dlc', 'dd1', 'dd2','dd3', 'dd4',
-'dd5', 'totaldebtA', 'book_leverage_2A', 'book_leverage_ltA',
-'debt3Y','debt5Y','debtST']
+'ebitdaA', 'saleA', 'be', 'at', 'lt', 'dltt', 'dlc',
+'totaldebtA', 'book_leverage_2A', 'book_leverage_ltA']
 
 df[cols_ffill] = df.groupby("permno")\
     [cols_ffill].ffill()
@@ -890,16 +807,8 @@ df['ni_me']   =     df['niq_sum']*1000/df['me']
 
 df['earn1q_at']=df['EARN1Q']/df['atq'] #Forecasted earnings to total asset ratio
 
-df['earn1y_at']=df['EARN1Y']/df['atq'] #Forecasted earnings to total asset ratio
-
-df['earn2y_at']=df['EARN2Y']/df['atq'] #Forecasted earnings to total asset ratio
-
-df['earnlt_at']=df['EARNLT']/df['atq'] #Forecasted earnings to total asset ratio
-
 
 print(df.earn1q_at.describe())
-
-print(df.earn1y_at.describe())
 
 print(df.sales_at.describe())
 
