@@ -27,7 +27,7 @@ from pandas.tseries.offsets import *
 # Path config (MNSC item 13: relative paths; run from the package root).
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from config import path
+from config import path, wrds_username
 
 data_dir='Data/'
 
@@ -38,7 +38,7 @@ end_date='12/31/2024'
 os.chdir(path)
 
 
-conn=wrds.Connection()   # uses your own configured WRDS credentials
+conn=wrds.Connection(wrds_username=wrds_username)   # WRDS username from config.py
 
 crsp_d = conn.raw_sql(f"""
                       select permno, permco, dlycaldt, dlyret, dlyretx 

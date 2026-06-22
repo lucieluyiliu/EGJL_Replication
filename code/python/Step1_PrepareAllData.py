@@ -35,8 +35,6 @@ import pyreadstat
 import matplotlib.pyplot as plt
 
 tqdm.pandas()
-conn=wrds.Connection()   # uses your own configured WRDS credentials
-
 
 # Path config (MNSC item 13: relative paths; run from the package root).
 import sys

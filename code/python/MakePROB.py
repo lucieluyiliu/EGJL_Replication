@@ -32,7 +32,7 @@ tqdm.pandas()
 # Path config (MNSC item 13: relative paths; run from the package root).
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from config import path
+from config import path, wrds_username
 
 data_dir='Data/'
 
@@ -51,7 +51,7 @@ dfstock.reset_index(inplace=True)
 
 #Get S&P 500 monthly
 
-conn=wrds.Connection()   # uses your own configured WRDS credentials
+conn=wrds.Connection(wrds_username=wrds_username)   # WRDS username from config.py
 
 # Get S&P 500 constituents
 sp500 = conn.raw_sql(f"""

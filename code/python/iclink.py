@@ -20,15 +20,21 @@
 # - 5: tickers and company names match but 6-digit cusips do not match
 # - 6: tickers match but company names and 6-digit cusips do not match
 
+import os
+import sys
 import wrds
 import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz
 
+# WRDS username from config.py (MNSC item 13: run from the package root).
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from config import wrds_username
+
 ###################
 # Connect to WRDS #
 ###################
-conn=wrds.Connection()   # uses your own configured WRDS credentials
+conn=wrds.Connection(wrds_username=wrds_username)   # WRDS username from config.py
 
 #########################
 # Step 1: Link by CUSIP #
