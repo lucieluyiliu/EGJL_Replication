@@ -1,11 +1,20 @@
-# Replication Package — EGJL "Excess Default Correlations" (Empirical Component)
+# Replication Package — EGJL "Excess Co-movement in Default Risk"
 
-This package reproduces all empirical exhibits in the paper (Management Science, R2):
-industry-pair **total** and **excess** correlations of default risk and equity moments
-(Table 3 and Online Appendix Tables OA.4–OA.9) and the default-probability (PROB)
-goodness-of-fit figure (Figure OA.4).
+Replication package for the paper (Management Science, R2) by Ericsson, Glover, Jeanneret, and Lu.
+It has two self-contained components:
+
+- **Theory (MATLAB)**: the calibrated two-tree model. Produces Tables 1–2, OA.1–OA.2, and OA.10, and
+  Figures 2–6 and OA.1–OA.3. Code in `code/matlab/` (see §4).
+- **Empirics (Python + R)**: industry-pair **total** and **excess** correlations of default risk and
+  equity moments. Produces Table 3, Online Appendix Tables OA.4–OA.9, and the default-probability
+  (PROB) goodness-of-fit Figure OA.4. Code in `code/python/` and `code/r/`.
+
+Following the order of the paper, §4 covers the MATLAB theory code and §5–§8 cover the empirical
+reproduction.
 
 ## 1. Requirements
+- **MATLAB** for the theory exhibits (§4). The source package does not pin a MATLAB version or list
+  required toolboxes.
 - **R 4.5.1** with the packages pinned in `renv.lock` (tidyverse, fixest, kableExtra, rhdf5, zoo,
   psych, broom, modelsummary, viridis, ggforce, ggrepel, cowplot, knitr, pander, gt). Installed via
   `renv` in §2.
@@ -42,10 +51,35 @@ Paths are centralized in `config.py` and `config.R`, which auto-detect the packa
 No editing is needed if you keep `config.py` / `config.R` at the package root. If R
 auto-detection fails, set `ROOT` on the marked line in `config.R`.
 
-## 4. Two ways to reproduce
+## 4. Theory component (MATLAB)
+The model exhibits are produced by the MATLAB code in `code/matlab/` (author: Kristoffer Glover).
+Per-function documentation is in `code/matlab/readme.txt`.
+
+**Run:** open MATLAB, set the working directory to `code/matlab/`, and run
+
+    main
+
+`main.m` performs all numerical computations for the calibrated model (calibration parameters are
+described in Sections 2.1 and 3.3 for the asset-price calculations, and Section 2.6 for the simulated
+economies). With the helper functions in the same folder it generates the data for Tables 1–2,
+OA.1–OA.2, and OA.10, produces `.pdf`/`.eps` files for Figures 2–6 and OA.1–OA.3, and prints the
+asset-pricing moment values reported in Sections 2.1 and 3.3 for the baseline calibrations.
+
+| Paper exhibit | Produced by |
+|---|---|
+| Tables 1–2, OA.1–OA.2, OA.10 | `code/matlab/main.m` |
+| Figures 2–6, OA.1–OA.3 | `code/matlab/main.m` |
+
+Key functions (full list in `code/matlab/readme.txt`): `TWOTREEY.m` (debt and equity value with the
+optimal default boundary, via the PSOR finite-difference method), `CorrEst.m` (distance-to-default
+correlation, Equation 11), `Simulation.m` and `DefaultTimes.m` (simulated economies and default
+rates), `PROBDEF.m` (default probabilities under P and Q), and `CSpread.m` / `CPE1D.m` (equilibrium
+credit spreads, Table OA.10).
+
+## 5. Empirics: two ways to reproduce
 
 ### Path A — From the shipped derived data (no WRDS needed)
-The package ships the derived inputs, so you can regenerate **every exhibit** without WRDS:
+The package ships the derived inputs, so you can regenerate **every empirical exhibit** without WRDS:
 
     Rscript master.R
 
@@ -53,16 +87,16 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
 `output/figures/`, and an HTML report to `output/main_empirics.html`. It reads the shipped
 `Data/Estimates/` directly. To recompute those bootstrap estimates first (from
 `Data/industry_sorts.csv` + `Data/AggShocks/Agg_shocks.csv`; stationary block bootstrap,
-~55 min, see §6), set `RUN_STEP2 <- TRUE` near the top of `master.R`.
+~55 min, see §7), set `RUN_STEP2 <- TRUE` near the top of `master.R`.
 
 ### Path B — Full rebuild from WRDS
 1. Ensure WRDS credentials are configured; obtain the third-party files listed in
    `DATA_AVAILABILITY.md` and place them in `Data/`.
 2. `python code/python/iclink.py` then `python code/python/Step1_PrepareAllData.py`
-   (builds the firm/industry panels; ~1 h 25 min, see §6).
+   (builds the firm/industry panels; ~1 h 25 min, see §7).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
 
-## 5. Exhibit → producing script
+## 6. Empirics: exhibit → producing script
 All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `master.R`).
 
 | Paper exhibit | Output file |
@@ -76,7 +110,7 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
 | Table OA.9 — size & book-leverage terciles | `output/tables/TableOA9_Excess_Corr_Size_BookLev_Terciles.tex` |
 | Figure OA.4 — PROB vs. fitted value | `output/figures/FigureOA4_PROB_fit.png` |
 
-## 6. Sample, key settings, and runtime
+## 7. Sample, key settings, and runtime
 Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
 
 **Approximate runtime** (development machine: macOS, 16 logical cores; the bootstrap uses 15):
@@ -91,8 +125,8 @@ Path A alone (the default, reading the shipped `Data/Estimates/`) completes in s
 the full Python rebuild are only needed to regenerate the estimates or the firm/industry panels from
 scratch; both are WRDS- and CPU-bound, so wall-clock time scales with core count and WRDS load.
 
-## 7. Notes
+## 8. Notes
 - The pre-shipped `output/tables` and `output/figures` are the paper's exact exhibits; reproduction
   should overwrite them with identical content.
 - See `DATA_AVAILABILITY.md` for data sources and the files that must be obtained from WRDS.
-- Contact: Lucie Lu (lucie.lu@unimelb.edu.au).
+- Contact: Kristoffer Glover (Kristoffer.Glover@uts.edu.au), Lucie Lu (lucie.lu@unimelb.edu.au).
