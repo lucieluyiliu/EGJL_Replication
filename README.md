@@ -13,8 +13,9 @@ Following the order of the paper, §4 covers the MATLAB theory code and §5–§
 reproduction.
 
 ## 1. Requirements
-- **MATLAB** for the theory exhibits (§4). The source package does not pin a MATLAB version or list
-  required toolboxes.
+- **MATLAB R2026a** for the theory exhibits (§4), with the **Statistics and Machine Learning Toolbox**
+  (`normrnd`, `unifrnd`, `prctile`) and the **Parallel Computing Toolbox** (`parfor`; the code still
+  runs without it, just serially).
 - **R 4.5.1** with the packages pinned in `renv.lock` (tidyverse, fixest, kableExtra, rhdf5, zoo,
   psych, broom, modelsummary, viridis, ggforce, ggrepel, cowplot, knitr, pander, gt). Installed via
   `renv` in §2.
