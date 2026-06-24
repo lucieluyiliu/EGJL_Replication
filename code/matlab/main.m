@@ -5,9 +5,16 @@
 % accepted at Management Science on XXX 2026                              % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Run from this file's own folder, so the helper functions resolve and the
-% relative output paths below work regardless of where MATLAB was launched.
-cd(fileparts(mfilename('fullpath')));
+% Resolve this file's folder so the helper functions and the relative output
+% paths below work regardless of where MATLAB was launched. mfilename is empty
+% when code is pasted/evaluated interactively (no current file); in that case we
+% fall back to the current folder, so for interactive use first cd into code/matlab.
+if isempty(mfilename)
+    thisdir = pwd;
+else
+    thisdir = fileparts(mfilename('fullpath'));
+end
+cd(thisdir);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % RUN OPTIONS AND OUTPUT PATHS                           %
@@ -23,19 +30,26 @@ RECOMPUTE = false;
 % Folders resolved relative to this file, so they work regardless of the working
 % directory. Figures are written to the package output/figures; the precomputed
 % solutions live in the package Data folder, alongside the empirical inputs.
-figdir   = fullfile(fileparts(mfilename('fullpath')), '..', '..', 'output', 'figures');
-datadir  = fullfile(fileparts(mfilename('fullpath')), '..', '..', 'Data');
+figdir   = fullfile(thisdir, '..', '..', 'output', 'figures');
+tabledir = fullfile(thisdir, '..', '..', 'output', 'tables');
+datadir  = fullfile(thisdir, '..', '..', 'Data');
 datafile = fullfile(datadir, 'DataFile.mat');
-if ~exist(figdir,'dir');   mkdir(figdir);   end
-if ~exist(datadir,'dir');  mkdir(datadir);  end
+if ~exist(figdir,'dir');    mkdir(figdir);    end
+if ~exist(tabledir,'dir');  mkdir(tabledir);  end
+if ~exist(datadir,'dir');   mkdir(datadir);   end
 
 % Log the console output (including the printed tables and timing) to
 % output/log/matlab_run.log, fresh each run.
-logdir = fullfile(fileparts(mfilename('fullpath')), '..', '..', 'output', 'log');
+logdir = fullfile(thisdir, '..', '..', 'output', 'log');
 if ~exist(logdir,'dir'); mkdir(logdir); end
 logfile = fullfile(logdir, 'matlab_run.log');
 if exist(logfile,'file'); delete(logfile); end
 diary(logfile);
+
+% Each figure is forced to the light theme just before export (see the theme(...)
+% calls in the plotting section), so the transparent-background figures have dark
+% axes and text regardless of the MATLAB UI theme. A groot default cannot be used:
+% the Figure Theme property rejects default values.
 
 % Fix the random number generator so the simulation block (Simulation.m, the only
 % source of randomness) is reproducible across runs and machines. Seed 0 with the
@@ -318,6 +332,64 @@ order = 6;
 %5-years
 [Corrcor0Pq(jhalf),Corrcor0Pq(j04),Corrcor0Pq(j03),Corrcor0Pq(j02)]
 
+%--- Export Table 1 to output/tables/Table1_corr_by_maturity.tex (caption + numbers) ---
+% Columns are |1-2s| = 0, 0.2, 0.4, 0.6 (s = 0.5, 0.4, 0.3, 0.2); values in percent.
+t1lab  = {'Perpetual','30 year','10 year','5 year'};
+t1base = 100*[Corrcor00(jhalf) Corrcor00(j04) Corrcor00(j03) Corrcor00(j02);
+              Corrcor0M(jhalf) Corrcor0M(j04) Corrcor0M(j03) Corrcor0M(j02);
+              Corrcor0(jhalf)  Corrcor0(j04)  Corrcor0(j03)  Corrcor0(j02);
+              Corrcor0P(jhalf) Corrcor0P(j04) Corrcor0P(j03) Corrcor0P(j02)];
+t1ren  = 100*[Corrcor00q(jhalf) Corrcor00q(j04) Corrcor00q(j03) Corrcor00q(j02);
+              Corrcor0Mq(jhalf) Corrcor0Mq(j04) Corrcor0Mq(j03) Corrcor0Mq(j02);
+              Corrcor0q(jhalf)  Corrcor0q(j04)  Corrcor0q(j03)  Corrcor0q(j02);
+              Corrcor0Pq(jhalf) Corrcor0Pq(j04) Corrcor0Pq(j03) Corrcor0Pq(j02)];
+
+fid = fopen(fullfile(tabledir,'Table1_corr_by_maturity.tex'),'w');
+hdr = [ ...
+"\begin{table}[h]"
+"\small"
+"\centering"
+"\caption{Default risk correlation and rollover risk}"
+"\label{tab:table_corr_by_maturity}"
+"\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}"
+"\toprule"
+" & \multicolumn{4}{c}{\textbf{Output share distribution} ($|1-2s_t|$)} \\"
+"\cmidrule{2-5}"
+"  & 0 & 0.2 & 0.4 & 0.6  \\"
+"  & Identical & &  & Very different \\"
+"    & trees & &  & trees \\"
+"    \addlinespace"
+" & (1) & (2) & (3) & (4)"
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel A: Baseline model}} \\"
+"\midrule"
+"\textbf{Debt maturity} ($1/m_i$) & & & & \\"
+];
+fprintf(fid,'%s\n',hdr);
+for i=1:4
+    fprintf(fid,'%s\n',sprintf('\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\', ...
+        t1lab{i}, t1base(i,1), t1base(i,2), t1base(i,3), t1base(i,4)));
+end
+mid = [ ...
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel B: With renegotiation in default}} \\"
+"\midrule"
+"\textbf{Debt maturity} ($1/m_i$) & & & & \\"
+];
+fprintf(fid,'%s\n',mid);
+for i=1:4
+    fprintf(fid,'%s\n',sprintf('\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\', ...
+        t1lab{i}, t1ren(i,1), t1ren(i,2), t1ren(i,3), t1ren(i,4)));
+end
+ftr = [ ...
+"\bottomrule"
+"\end{tabular*}"
+"\end{table}"
+];
+fprintf(fid,'%s\n',ftr);
+fclose(fid);
+fprintf('Wrote %s\n', fullfile(tabledir,'Table1_corr_by_maturity.tex'));
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -422,6 +494,64 @@ ERPInterp = griddedInterpolant(Y,S,ERP,'makima','none');
 [mean(CorEvol),prctile(CorEvol,50),prctile(CorEvol,5),prctile(CorEvol,95)] %Equity return volatility
 [mean(CorERP),prctile(CorERP,50),prctile(CorERP,5),prctile(CorERP,95)]     %Equity risk premium
 
+%--- Export Table 2 to output/tables/Table2_histograms.tex (caption + numbers) ---
+% Panel A in percent (baseline computed, empirical from S&P 2021); Panel B raw
+% decimals; Panels C/D correlations in percent. Mean / Median / 5th / 95th.
+fid = fopen(fullfile(tabledir,'Table2_histograms.tex'),'w');
+fprintf(fid,'%s\n',[ ...
+"\begin{table}[h]"
+"\small"
+"\centering"
+"\caption{Co-movement in default risk and equity moments from simulated economies}"
+"\label{tab:table_simulation}"
+"\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}"
+"\toprule"
+"& \multicolumn{2}{c}{\textbf{Baseline model}} & \multicolumn{2}{c}{\textbf{Empirical data}} \\"
+"\cmidrule{2-5}"
+"& \multicolumn{2}{c}{(1)} & \multicolumn{2}{c}{(2)} \\"
+"\multicolumn{5}{l}{\textbf{Panel A: Default probabilities}} \\"
+"\midrule"
+]);
+fprintf(fid,'\\multicolumn{1}{l}{1-year default rate} & \\multicolumn{2}{c}{%.2f\\%%} & \\multicolumn{2}{c}{1.86\\%%} \\\\\n', 100*DefRateA(1));
+fprintf(fid,'\\multicolumn{1}{l}{5-year default rate} & \\multicolumn{2}{c}{%.2f\\%%} & \\multicolumn{2}{c}{7.72\\%%} \\\\\n', 100*DefRateA(5));
+fprintf(fid,'\\multicolumn{1}{l}{10-year default rate} & \\multicolumn{2}{c}{%.2f\\%%} & \\multicolumn{2}{c}{11.37\\%%} \\\\\n', 100*DefRateA(10));
+fprintf(fid,'%s\n',[ ...
+"\\"
+"\midrule"
+"& \textbf{Mean} & \textbf{Median} & \textbf{5th} & \textbf{95th} \\"
+"\cmidrule{2-5}"
+"& (1) & (2) & (3) & (4) \\"
+"\multicolumn{5}{l}{\textbf{Panel B: State variables }} \\"
+"\midrule"
+]);
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.4f & %.4f & %.4f & %.4f \\\\\n', "Tree A's output level ($X^A_t)$", mean(mean_xa),mean(median_xa),mean(fifth_xa),mean(nintyfifth_xa));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.4f & %.4f & %.4f & %.4f \\\\\n', "Tree B's output level ($X^B_t)$", mean(mean_xb),mean(median_xb),mean(fifth_xb),mean(nintyfifth_xb));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.4f & %.4f & %.4f & %.4f \\\\\n', "Output share ($s_t$)", mean(mean_s),mean(median_s),mean(fifth_s),mean(nintyfifth_s));
+fprintf(fid,'%s\n',[ ...
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel C: Correlations in default risk across trees }} \\"
+"\midrule"
+]);
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "Distance-to-default", 100*mean(CorDD),100*prctile(CorDD,50),100*prctile(CorDD,5),100*prctile(CorDD,95));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "10-year default probability", 100*mean(CorDP10),100*prctile(CorDP10,50),100*prctile(CorDP10,5),100*prctile(CorDP10,95));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "Leverage", 100*mean(CorLev),100*prctile(CorLev,50),100*prctile(CorLev,5),100*prctile(CorLev,95));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "Credit spread", 100*mean(CorCS),100*prctile(CorCS,50),100*prctile(CorCS,5),100*prctile(CorCS,95));
+fprintf(fid,'%s\n',[ ...
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel D: Correlations in equity moments across trees  }} \\"
+"\midrule"
+]);
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "Equity excess return", 100*mean(CorEER),100*prctile(CorEER,50),100*prctile(CorEER,5),100*prctile(CorEER,95));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "Equity return volatility", 100*mean(CorEvol),100*prctile(CorEvol,50),100*prctile(CorEvol,5),100*prctile(CorEvol,95));
+fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', "Equity risk premium", 100*mean(CorERP),100*prctile(CorERP,50),100*prctile(CorERP,5),100*prctile(CorERP,95));
+fprintf(fid,'%s\n',[ ...
+"\bottomrule"
+"\end{tabular*}"
+"\end{table}"
+]);
+fclose(fid);
+fprintf('Wrote %s\n', fullfile(tabledir,'Table2_histograms.tex'));
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -493,6 +623,7 @@ title('(F) Leverage ratio of tree A')
 
 set(Fig2,'Units','inches')
 set(Fig2,'Position',[25 1 8 9.66])
+theme(Fig2,'light')
 exportgraphics(Fig2,fullfile(figdir,'Fig2.eps'),'BackgroundColor','none')
 
 
@@ -558,6 +689,7 @@ title('(C) Effect of maturity')
 
 set(Fig3,'Units','inches')
 set(Fig3,'Position',[25 2 8 6.33])
+theme(Fig3,'light')
 exportgraphics(Fig3,fullfile(figdir,'Fig3.eps'),'BackgroundColor','none')
 
 
@@ -624,6 +756,7 @@ txt1 = {'\rho < 0:','Case of imperfectly','substitutable goods'};
 txt2 = {'\rho > 0:','Case of predatory','competition'};
 text(-0.45,0.02,txt1,'HorizontalAlignment','center')
 text(0.33,0.02,txt2,'HorizontalAlignment','center')
+theme(Fig4,'light')
 exportgraphics(Fig4,fullfile(figdir,'Fig4.pdf'),'BackgroundColor','none')
 
 
@@ -670,7 +803,8 @@ subplot(2,2,2)
 plot(s,QB,'-b','LineWidth',2)
 hold on
 plot(s,PB,':r','LineWidth',2)
-patch([s fliplr(s)],[QB fliplr(PB)],'k','EdgeColor','none','FaceAlpha',0.1) %This may not work since NaNs may appear in PB and QB. If so, replace with 0 or 1 as appropriate.
+vB = ~isnan(QB) & ~isnan(PB);   % drop NaNs (PB/QB undefined where log((1-s)/s) leaves the grid) so the fill renders
+patch([s(vB) fliplr(s(vB))],[QB(vB) fliplr(PB(vB))],'k','EdgeColor','none','FaceAlpha',0.1)
 xlim([0.2 0.8])
 ylim([0 0.9])
 title('(B) Default probabilities for tree B')
@@ -707,6 +841,7 @@ title('(D) CS of tree B (by maturity)')
 
 set(Fig5,'Units','inches')
 set(Fig5,'Position',[25 2 8 6.33])
+theme(Fig5,'light')
 exportgraphics(Fig5,fullfile(figdir,'Fig5.pdf'),'BackgroundColor','none')
 
 
@@ -793,6 +928,7 @@ title('(D) Levered ERP of tree B')
 
 set(Fig6,'Units','inches')
 set(Fig6,'Position',[25 2 8 6.33])
+theme(Fig6,'light')
 exportgraphics(Fig6,fullfile(figdir,'Fig6.pdf'),'BackgroundColor','none') %We need a pdf since the shading works best with this (rather than .eps)
 
 
@@ -826,6 +962,40 @@ jmax = round(0.8/ds)+1;
 [CorrmuMM(jhalf) CorrmuM0(jhalf) CorrmuMP(jhalf);
  Corrmu0M(jhalf) Corrmu00(jhalf) Corrmu0P(jhalf);
  CorrmuPM(jhalf) CorrmuP0(jhalf) CorrmuPP(jhalf)]
+
+%--- Export Table OA.1 to output/tables/TableOA1_by_characteristics.tex (caption + numbers) ---
+% Rows = output volatility sigma_A (15/20/25%), cols = expected growth mu_A (1.5/2.0/2.5%); percent.
+oa1 = 100*[CorrmuMM(jhalf) CorrmuM0(jhalf) CorrmuMP(jhalf);
+           Corrmu0M(jhalf) Corrmu00(jhalf) Corrmu0P(jhalf);
+           CorrmuPM(jhalf) CorrmuP0(jhalf) CorrmuPP(jhalf)];
+oa1lab = {'15\%','20\%','25\%'};
+fid = fopen(fullfile(tabledir,'TableOA1_by_characteristics.tex'),'w');
+fprintf(fid,'%s\n',[ ...
+"\begin{table}[h]"
+"\small"
+"\centering"
+"\caption{Default risk correlation by borrower characteristics}"
+"\label{tab:table_corr_by_characteristics}"
+"\begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}lccc}"
+"\toprule"
+" & \multicolumn{3}{c}{\textbf{Expected output growth} ($\mu_A$)} \\"
+"\cmidrule{2-4}"
+" & 1.5\% & 2.0\% & 2.5\% \\"
+" \addlinespace"
+" & (1) & (2) & (3) \\"
+"\midrule"
+"\textbf{Output volatility} ($\sigma_A$) & & & \\"
+]);
+for i=1:3
+    fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', oa1lab{i}, oa1(i,1), oa1(i,2), oa1(i,3));
+end
+fprintf(fid,'%s\n',[ ...
+"\bottomrule"
+"\end{tabular*}"
+"\end{table}"
+]);
+fclose(fid);
+fprintf('Wrote %s\n', fullfile(tabledir,'TableOA1_by_characteristics.tex'));
 
 
 
@@ -911,6 +1081,56 @@ ERPInterp = griddedInterpolant(Y,S,ERP,'makima','none');
 [mean(CorEER_nodef),prctile(CorEER_nodef,50),prctile(CorEER_nodef,5),prctile(CorEER_nodef,95)]     %Equity excess return
 [mean(CorEvol_nodef),prctile(CorEvol_nodef,50),prctile(CorEvol_nodef,5),prctile(CorEvol_nodef,95)] %Equity return volatility
 [mean(CorERP_nodef),prctile(CorERP_nodef,50),prctile(CorERP_nodef,5),prctile(CorERP_nodef,95)]     %Equity risk premium
+
+%--- Export Table OA.2 to output/tables/TableOA2_histograms_nodefault.tex (caption + numbers) ---
+% Panels A/B: correlations including defaults; Panels C/D: excluding defaults. All percent; Mean/Median/5th/95th.
+prow = @(fid,label,x) fprintf(fid,'\\multicolumn{1}{l}{%s} & %.2f\\%% & %.2f\\%% & %.2f\\%% & %.2f\\%% \\\\\n', ...
+    label, 100*mean(x), 100*prctile(x,50), 100*prctile(x,5), 100*prctile(x,95));
+fid = fopen(fullfile(tabledir,'TableOA2_histograms_nodefault.tex'),'w');
+fprintf(fid,'%s\n',[ ...
+"\begin{table}[h]"
+"\small"
+"\centering"
+"\caption{Co-movement in default risk and equity moments from simulated economies -- excluding defaults}"
+"\label{tab:table_simulation_no_default}"
+"\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}"
+"\toprule"
+"& \textbf{Mean} & \textbf{Median} & \textbf{5th} & \textbf{95th} \\"
+"\addlinespace"
+"& (1) & (2) & (3) & (4) \\"
+"\cmidrule{2-5}"
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel A: Correlations in default risk across trees (including default)}} \\"
+"\midrule"
+]);
+prow(fid,"Distance-to-default",CorDD); prow(fid,"10-year default probability",CorDP10);
+prow(fid,"Leverage",CorLev); prow(fid,"Credit spread",CorCS);
+fprintf(fid,'%s\n',[ ...
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel B: Correlations in equity moments across trees (including default)}} \\"
+"\midrule"
+]);
+prow(fid,"Equity excess return",CorEER); prow(fid,"Equity return volatility",CorEvol); prow(fid,"Equity risk premium",CorERP);
+fprintf(fid,'%s\n',[ ...
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel C: Correlations in default risk across trees (excluding default)}} \\"
+"\midrule"
+]);
+prow(fid,"Distance-to-default",CorDD_nodef); prow(fid,"10-year default probability",CorDP10_nodef);
+prow(fid,"Leverage",CorLev_nodef); prow(fid,"Credit spread",CorCS_nodef);
+fprintf(fid,'%s\n',[ ...
+"\\"
+"\multicolumn{5}{l}{\textbf{Panel D: Correlations in equity moments across trees (excluding default)}} \\"
+"\midrule"
+]);
+prow(fid,"Equity excess return",CorEER_nodef); prow(fid,"Equity return volatility",CorEvol_nodef); prow(fid,"Equity risk premium",CorERP_nodef);
+fprintf(fid,'%s\n',[ ...
+"\bottomrule"
+"\end{tabular*}"
+"\end{table}"
+]);
+fclose(fid);
+fprintf('Wrote %s\n', fullfile(tabledir,'TableOA2_histograms_nodefault.tex'));
  
 
 
@@ -942,6 +1162,46 @@ j07 = round(0.7/ds)+1; %Calculates the node corresponding to s=0.7
 [CPECS7x(j07),CPECS7x(j06),CPECS7x(jhalf)]       %7-years (higher X)
 [CPECS7mu(j07),CPECS7mu(j06),CPECS7mu(jhalf)]    %7-years (higher mu)
 [CPECS7sig(j07),CPECS7sig(j06),CPECS7sig(jhalf)] %7-years (higher sig)
+
+%--- Export Table OA.10 to output/tables/TableOA10_CPE_spillover.tex (caption + numbers) ---
+% Panel A: data constants (Gabaix-Koijen). Panel B: model, rows = Italy relative size
+% Low/Baseline/High = s nodes j07/j06/jhalf; cols = baseline + 4 counterfactuals; raw decimals.
+fid = fopen(fullfile(tabledir,'TableOA10_CPE_spillover.tex'),'w');
+fprintf(fid,'%s\n',[ ...
+"\begin{table}[h]"
+"\small"
+"\centering"
+"\caption{Sovereign debt spillover -- case study}"
+"\label{tab:table_CPE_spillover}"
+"\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccccc}"
+"\toprule"
+" & & \multicolumn{1}{c}{\textbf{Baseline}} & \multicolumn{4}{c}{\textbf{Counterfactual}} \\"
+"\cmidrule(lr){3-3} \cmidrule(lr){4-7}"
+" & & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Longer maturity} & \multicolumn{1}{c}{Lower default risk} & \multicolumn{1}{c}{Higher growth} & \multicolumn{1}{c}{Higher volatility} \\"
+" & & \multicolumn{1}{c}{} & \multicolumn{1}{c}{15y} & \multicolumn{1}{c}{$X^i_t = 1.2$} & \multicolumn{1}{c}{$\mu_i = 2.5\%$} & \multicolumn{1}{c}{$\sigma_i = 24\%$} \\"
+"\\"
+"& &  (1) & (2) & (3) & (4) &(5) \\"
+"\multicolumn{7}{l}{\textbf{Panel A: Data}} \\"
+"\midrule \\"
+"Italy's relative size: & & & & & & \\"
+"\,\, Low & 0.3 & 0.1500 & & & & \\"
+"\,\, Baseline & 0.4 & 0.2000 & & & & \\"
+"\,\, High & 0.5 & 0.2500 & & & & \\"
+"\\"
+"\multicolumn{7}{l}{\textbf{Panel B: Model}} \\"
+"\midrule \\"
+"Italy's relative size: & & & & & & \\"
+]);
+fprintf(fid,'%s & 0.3 & %.4f & %.4f & %.4f & %.4f & %.4f \\\\\n', "\,\, Low",      CPECS7(j07),  CPECS15(j07),  CPECS7x(j07),  CPECS7mu(j07),  CPECS7sig(j07));
+fprintf(fid,'%s & 0.4 & %.4f & %.4f & %.4f & %.4f & %.4f \\\\\n', "\,\, Baseline", CPECS7(j06),  CPECS15(j06),  CPECS7x(j06),  CPECS7mu(j06),  CPECS7sig(j06));
+fprintf(fid,'%s & 0.5 & %.4f & %.4f & %.4f & %.4f & %.4f \\\\\n', "\,\, High",     CPECS7(jhalf),CPECS15(jhalf),CPECS7x(jhalf),CPECS7mu(jhalf),CPECS7sig(jhalf));
+fprintf(fid,'%s\n',[ ...
+"\bottomrule"
+"\end{tabular*}"
+"\end{table}"
+]);
+fclose(fid);
+fprintf('Wrote %s\n', fullfile(tabledir,'TableOA10_CPE_spillover.tex'));
 
 
 
@@ -1017,6 +1277,7 @@ title('(D) Equity Risk Premium')
 
 set(FigOA1,'Units','inches')
 set(FigOA1,'Position',[25 2 8 6.33])
+theme(FigOA1,'light')
 exportgraphics(FigOA1,fullfile(figdir,'FigOA1.pdf'),'BackgroundColor','none')
 
 
@@ -1077,11 +1338,11 @@ FigOA2=figure;
 subplot(2,2,1)
 histogram(CorDD,'BinWidth',0.0075)
 hold on
+histogram(CorDDstat,'BinWidth',0.0075,'FaceAlpha',0.2)
 xlim([-0.1,0.25])
 ylim([0 3100])
 line([mean(CorDD),mean(CorDD)],ylim,'Color','b','LineWidth',1);
 line([mean(CorDDstat),mean(CorDDstat)],ylim,'Color','r','LineWidth',1);
-histogram(CorDDstat,'BinWidth',0.0075,'FaceAlpha',0.2)
 ylabel('Frequency')
 title('(A) Distance-to-default')
 
@@ -1089,22 +1350,22 @@ title('(A) Distance-to-default')
 subplot(2,2,2)
 histogram(CorDP10,'BinWidth',0.0075)
 hold on
+histogram(CorDP10stat,'BinWidth',0.0075,'FaceAlpha',0.2)
 xlim([-0.1,0.25])
 ylim([0 3100])
 line([mean(CorDP10),mean(CorDP10)],ylim,'Color','b','LineWidth',1);
 line([mean(CorDP10stat),mean(CorDP10stat)],ylim,'Color','r','LineWidth',1);
-histogram(CorDP10stat,'BinWidth',0.0075,'FaceAlpha',0.2)
 title('(B) 10-year default probability')
 
 %FIG-c:
 subplot(2,2,3)
 histogram(CorLev,'BinWidth',0.0075)
 hold on
+histogram(CorLevstat,'BinWidth',0.0075,'FaceAlpha',0.2)
 xlim([-0.1,0.25])
 ylim([0 3100])
 line([mean(CorLev),mean(CorLev)],ylim,'Color','b','LineWidth',1);
 line([mean(CorLevstat),mean(CorLevstat)],ylim,'Color','r','LineWidth',1);
-histogram(CorLevstat,'BinWidth',0.0075,'FaceAlpha',0.2)
 ylabel('Frequency')
 xlabel('Correlation')
 title('(C) Leverage')
@@ -1124,6 +1385,7 @@ legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 
 set(FigOA2,'Units','inches')
 set(FigOA2,'Position',[25 2 8 6.33])
+theme(FigOA2,'light')
 exportgraphics(FigOA2,fullfile(figdir,'FigOA2.pdf'),'BackgroundColor','none')
 
 
@@ -1241,6 +1503,7 @@ legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 
 set(FigOA3,'Units','inches')
 set(FigOA3,'Position',[25 2 8 6.33])
+theme(FigOA3,'light')
 exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'),'BackgroundColor','none')
 
 diary off;
