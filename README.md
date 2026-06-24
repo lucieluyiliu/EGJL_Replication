@@ -56,15 +56,21 @@ auto-detection fails, set `ROOT` on the marked line in `config.R`.
 The model exhibits are produced by the MATLAB code in `code/matlab/` (author: Kristoffer Glover).
 Per-function documentation is in `code/matlab/readme.txt`.
 
-**Run:** open MATLAB, set the working directory to `code/matlab/`, and run
+**Run:** open `code/matlab/main.m` in MATLAB and run it (it sets its own working directory, so the
+helper functions resolve from any starting folder). It generates the data for Tables 1–2, OA.1–OA.2,
+and OA.10, writes the figures for Figures 2–6 and OA.1–OA.3 (`.pdf`/`.eps`) to `output/figures/`, and
+prints the asset-pricing moment values reported in Sections 2.1 and 3.3. Calibration parameters are
+those in Sections 2.1, 3.3, and 2.6.
 
-    main
+Two ways to run, set by the `RECOMPUTE` flag at the top of `main.m`:
 
-`main.m` performs all numerical computations for the calibrated model (calibration parameters are
-described in Sections 2.1 and 3.3 for the asset-price calculations, and Section 2.6 for the simulated
-economies). With the helper functions in the same folder it generates the data for Tables 1–2,
-OA.1–OA.2, and OA.10, produces `.pdf`/`.eps` files for Figures 2–6 and OA.1–OA.3, and prints the
-asset-pricing moment values reported in Sections 2.1 and 3.3 for the baseline calibrations.
+- **Path A — read the precomputed solutions (fast, the default).** With `RECOMPUTE = false` (the
+  default), `main.m` loads the model solutions from `Data/DataFile.mat` and produces all theory
+  exhibits without re-solving (minutes instead of ~15 h). Requires `Data/DataFile.mat` (~2 GB),
+  shipped with the package.
+- **Path B — recompute from scratch (slow).** Set `RECOMPUTE = true`: `main.m` re-solves the model
+  and re-runs the simulation (~15 h, see §7), saves a fresh `Data/DataFile.mat`, then produces the
+  exhibits.
 
 | Paper exhibit | Produced by |
 |---|---|
@@ -114,13 +120,17 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
 ## 7. Sample, key settings, and runtime
 Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
 
-**Approximate runtime** (development machine: macOS, 16 logical cores; the bootstrap uses 15):
+**Approximate runtime** (MacBook Pro, Apple M5 Pro, 18 cores, 64 GB):
 
 | Stage | Script | Runtime |
 |---|---|---|
-| Path B — full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
-| Step 2 — block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min |
-| Path A — knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |
+| Theory — full solve + simulation (`RECOMPUTE=true`) | `code/matlab/main.m` | ~15 h (14 h 55 min); 18 cores for the PDE solves, the simulation phase is single-threaded |
+| Empirics Path B — full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
+| Empirics Step 2 — block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min (capped at 15 cores, hardcoded for reproducibility) |
+| Empirics Path A — knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |
+
+The theory `RECOMPUTE=false` path loads `Data/DataFile.mat` instead of re-solving, skipping the
+multi-hour solve and simulation (only the table and figure post-processing re-runs).
 
 Path A alone (the default, reading the shipped `Data/Estimates/`) completes in seconds. Step 2 and
 the full Python rebuild are only needed to regenerate the estimates or the firm/industry panels from

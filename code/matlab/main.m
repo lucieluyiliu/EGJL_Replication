@@ -18,7 +18,7 @@ cd(fileparts(mfilename('fullpath')));
 % RECOMPUTE = false : skip that block and load the precomputed results from
 %                     Data/DataFile.mat instead.
 % Either way, the tables and figures below are produced from those results.
-RECOMPUTE = true;
+RECOMPUTE = false;
 
 % Folders resolved relative to this file, so they work regardless of the working
 % directory. Figures are written to the package output/figures; the precomputed
@@ -485,7 +485,7 @@ title('(F) Leverage ratio of tree A')
 
 set(Fig2,'Units','inches')
 set(Fig2,'Position',[25 1 8 9.66])
-exportgraphics(Fig2,fullfile(figdir,'Fig2.eps'))
+exportgraphics(Fig2,fullfile(figdir,'Fig2.eps'),'BackgroundColor','none')
 
 
 
@@ -550,7 +550,7 @@ title('(C) Effect of maturity')
 
 set(Fig3,'Units','inches')
 set(Fig3,'Position',[25 2 8 6.33])
-exportgraphics(Fig3,fullfile(figdir,'Fig3.eps'))
+exportgraphics(Fig3,fullfile(figdir,'Fig3.eps'),'BackgroundColor','none')
 
 
 
@@ -616,7 +616,7 @@ txt1 = {'\rho < 0:','Case of imperfectly','substitutable goods'};
 txt2 = {'\rho > 0:','Case of predatory','competition'};
 text(-0.45,0.02,txt1,'HorizontalAlignment','center')
 text(0.33,0.02,txt2,'HorizontalAlignment','center')
-exportgraphics(Fig4,fullfile(figdir,'Fig4.pdf'))
+exportgraphics(Fig4,fullfile(figdir,'Fig4.pdf'),'BackgroundColor','none')
 
 
 
@@ -699,7 +699,7 @@ title('(D) CS of tree B (by maturity)')
 
 set(Fig5,'Units','inches')
 set(Fig5,'Position',[25 2 8 6.33])
-exportgraphics(Fig5,fullfile(figdir,'Fig5.pdf'))
+exportgraphics(Fig5,fullfile(figdir,'Fig5.pdf'),'BackgroundColor','none')
 
 
 
@@ -785,7 +785,7 @@ title('(D) Levered ERP of tree B')
 
 set(Fig6,'Units','inches')
 set(Fig6,'Position',[25 2 8 6.33])
-exportgraphics(Fig6,fullfile(figdir,'Fig6.pdf')) %We need a pdf since the shading works best with this (rather than .eps)
+exportgraphics(Fig6,fullfile(figdir,'Fig6.pdf'),'BackgroundColor','none') %We need a pdf since the shading works best with this (rather than .eps)
 
 
 
@@ -1009,7 +1009,7 @@ title('(D) Equity Risk Premium')
 
 set(FigOA1,'Units','inches')
 set(FigOA1,'Position',[25 2 8 6.33])
-exportgraphics(FigOA1,fullfile(figdir,'FigOA1.pdf'))
+exportgraphics(FigOA1,fullfile(figdir,'FigOA1.pdf'),'BackgroundColor','none')
 
 
 
@@ -1116,7 +1116,7 @@ legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 
 set(FigOA2,'Units','inches')
 set(FigOA2,'Position',[25 2 8 6.33])
-exportgraphics(FigOA2,fullfile(figdir,'FigOA2.pdf'))
+exportgraphics(FigOA2,fullfile(figdir,'FigOA2.pdf'),'BackgroundColor','none')
 
 
 
@@ -1233,4 +1233,4 @@ legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 
 set(FigOA3,'Units','inches')
 set(FigOA3,'Position',[25 2 8 6.33])
-exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'))
+exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'),'BackgroundColor','none')
