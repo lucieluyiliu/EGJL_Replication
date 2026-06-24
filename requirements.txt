@@ -1,8 +1,7 @@
 # Python dependencies for the EGJL "Excess Default Correlations" replication package.
 #
 # Versions are pinned to the conda env that produced the published results
-# (Python 3.11; see environment.yml). The complete pip freeze of that env is in
-# wrds-packages.txt — this file is the curated subset the code actually uses.
+# (Python 3.11; see environment.yml).
 #
 # Install into a dedicated environment (do NOT use the system/homebrew Python):
 #   conda env create -f environment.yml          # creates Python 3.11 + these
