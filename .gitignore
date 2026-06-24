@@ -57,3 +57,7 @@ env/
 *.log
 *.tmp
 *.bak
+
+# ── Exception: ship the pipeline run logs under output/log (MNSC items 10/12) ─
+!output/log/
+!output/log/*.log

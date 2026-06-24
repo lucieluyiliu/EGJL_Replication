@@ -17,6 +17,13 @@ if (!file.exists("config.R"))
 
 root <- normalizePath(".")
 
+## --- Logging: console output + messages to output/log/master_R.log -----------
+log_dir <- file.path("output", "log")
+dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
+.logcon <- file(file.path(log_dir, "master_R.log"), open = "wt")
+sink(.logcon, split = TRUE)        # stdout -> console and log file
+sink(.logcon, type = "message")    # messages / warnings / errors -> log file
+
 ## --- Optional: regenerate the bootstrap estimates in Data/Estimates/ ---------
 ## The package ships these (read directly by the exhibits). Set TRUE to recompute
 ## them from Data/industry_sorts.csv (stationary block bootstrap; ~hours).
@@ -32,3 +39,6 @@ rmarkdown::render("code/r/main_empirics.Rmd",
                   knit_root_dir = root, output_dir = "output")
 
 message("Done. Tables -> output/tables/ , figures -> output/figures/ , report -> output/main_empirics.html")
+
+## --- Close the log sinks -----------------------------------------------------
+sink(type = "message"); sink(); close(.logcon)

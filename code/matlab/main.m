@@ -29,6 +29,14 @@ datafile = fullfile(datadir, 'DataFile.mat');
 if ~exist(figdir,'dir');   mkdir(figdir);   end
 if ~exist(datadir,'dir');  mkdir(datadir);  end
 
+% Log the console output (including the printed tables and timing) to
+% output/log/matlab_run.log, fresh each run.
+logdir = fullfile(fileparts(mfilename('fullpath')), '..', '..', 'output', 'log');
+if ~exist(logdir,'dir'); mkdir(logdir); end
+logfile = fullfile(logdir, 'matlab_run.log');
+if exist(logfile,'file'); delete(logfile); end
+diary(logfile);
+
 % Fix the random number generator so the simulation block (Simulation.m, the only
 % source of randomness) is reproducible across runs and machines. Seed 0 with the
 % Mersenne Twister is MATLAB's default startup state, set here explicitly.
@@ -1234,3 +1242,5 @@ legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 set(FigOA3,'Units','inches')
 set(FigOA3,'Position',[25 2 8 6.33])
 exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'),'BackgroundColor','none')
+
+diary off;
