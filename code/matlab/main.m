@@ -5,6 +5,8 @@
 % accepted at Management Science on XXX 2026                              % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+clear; close all; clc;
+
 % Resolve this file's folder so the helper functions and the relative output
 % paths below work regardless of where MATLAB was launched. mfilename is empty
 % when code is pasted/evaluated interactively (no current file); in that case we
@@ -45,6 +47,7 @@ if ~exist(logdir,'dir'); mkdir(logdir); end
 logfile = fullfile(logdir, 'matlab_run.log');
 if exist(logfile,'file'); delete(logfile); end
 diary(logfile);
+tStart = tic;   % overall runtime, reported at the end (recorded in the diary)
 
 % Each figure is forced to the light theme just before export (see the theme(...)
 % calls in the plotting section), so the transparent-background figures have dark
@@ -132,7 +135,7 @@ BP0=B{3};
 %Note there is some numerical instability for rho = -0.5 and 0.5 so we compute for a slightly different number
 %Also note that the omega is the relaxation parameter for each run and it generally needs to be lower for more extreme correlations
 %A lower omega value slows down convergence but increases the likelihood of convergence
-numlist = {-0.9,-0.8,-0.7,-0.6,-0.5001,-0.4,-0.3,-0.2,-0.1,0.1,0.2,0.3,0.4,0.5001,0.6,0.7,0.8,0.9};
+numlist = {-0.9,-0.8,-0.7,-0.6,-0.4999,-0.4,-0.3,-0.2,-0.1,0.1,0.2,0.3,0.4,0.5001,0.6,0.7,0.8,0.9};
 omegalist = {1.6,1.6,1.6,1.6,1.6,1.6,1.7,1.7,1.8,1.7,1.7,1.6,1.6,1.6,1.6,1.6,1.6,1.6};
 parfor k=1:length(numlist)
    [~,~,B{k}] = TWOTREEY(Ny,Ns,ymin,ymax,sig,sigB,numlist{k},del,mu,muB,phi,cost,0.4,0,0,omegalist{k},q); 
@@ -1506,4 +1509,5 @@ set(FigOA3,'Position',[25 2 8 6.33])
 theme(FigOA3,'light')
 exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'),'BackgroundColor','none')
 
+fprintf('Total runtime: %.2f hours (%.0f seconds)\n', toc(tStart)/3600, toc(tStart));
 diary off;

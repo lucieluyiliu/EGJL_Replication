@@ -1,0 +1,118 @@
+>> Step 2: correlations + block bootstrap ...
+── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.1     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.2
+✔ purrr     1.2.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+Attaching package: ‘kableExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    group_rows
+
+Loading required package: viridisLite
+
+Attaching package: ‘psych’
+
+The following objects are masked from ‘package:ggplot2’:
+
+    %+%, alpha
+
+
+Attaching package: ‘cowplot’
+
+The following object is masked from ‘package:lubridate’:
+
+    stamp
+
+
+Attaching package: ‘gt’
+
+The following object is masked from ‘package:cowplot’:
+
+    as_gtable
+
+
+Attaching package: ‘modelsummary’
+
+The following object is masked from ‘package:psych’:
+
+    SD
+
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Folder already exists: Data/Estimates//length4 
+Rows: 48 Columns: 2
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): Name
+dbl (1): Code
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 7248 Columns: 51
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (50): ffi48, SIGMA, SIGMA_diff_1q, SIGMA_diff_1y, cdr, cdr_diff_1q, cdr...
+date  (1): date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+`summarise()` has grouped output by 'ffi48'. You can override using the
+`.groups` argument.
+Rows: 424 Columns: 32
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (31): IP, IP_pct_1q, IP_pct_1y, DeltaLiq_1q, DeltaLiq_1y, CFNAI, CFNAI_...
+date  (1): date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+>> Step 2 done in 213.7 min: bootstrap B=1000, block_length=4, seed=123, num_cores=15; 12 estimate files in Data/Estimates/length4/
+>> Building empirical exhibits (main_empirics.Rmd) ...
+
+
+processing file: main_empirics.Rmd
+1/26                            
+2/26 [setup]                    
+3/26                            
+4/26 [load-bootstrap-estimates] 
+5/26                            
+6/26 [build-correlation-objects]
+7/26                            
+8/26 [table3]                   
+9/26                            
+10/26 [per-pair-unrelated]       
+11/26                            
+12/26 [table-oa4]                
+13/26                            
+14/26 [table-oa5]                
+15/26                            
+16/26 [table-oa6]                
+17/26                            
+18/26 [table-oa7]                
+19/26                            
+20/26 [table-oa8]                
+21/26                            
+22/26 [table-oa9]                
+23/26                            
+24/26 [prob-fit-data]            
+25/26                            
+26/26 [figure-oa4]               
+output file: main_empirics.knit.md
+
+/opt/homebrew/bin/pandoc +RTS -K512m -RTS main_empirics.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/lucielu/Library/CloudStorage/Dropbox/TwoTrees_EGJL/EGJL_Replication/output/main_empirics.html --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/latex-div.lua --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/table-classes.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=cosmo --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/9w/2hpdhc01181bwrbszl79pl240000gn/T//RtmpJfDKUf/rmarkdown-strd13838289fb5.html 
+
+Output created: output/main_empirics.html
+Done. Tables -> output/tables/ , figures -> output/figures/ , report -> output/main_empirics.html

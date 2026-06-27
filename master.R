@@ -17,7 +17,9 @@ if (!file.exists("config.R"))
 
 root <- normalizePath(".")
 
-## --- Logging: console output + messages to output/log/master_R.log -----------
+## --- Logging: console + messages to output/log/master_R.log (self-contained) -
+## If a run ever comes out truncated, rerun with redirection instead:
+##     Rscript master.R 2>&1 | tee output/log/master_R.log
 log_dir <- file.path("output", "log")
 dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
 .logcon <- file(file.path(log_dir, "master_R.log"), open = "wt")
@@ -27,10 +29,16 @@ sink(.logcon, type = "message")    # messages / warnings / errors -> log file
 ## --- Optional: regenerate the bootstrap estimates in Data/Estimates/ ---------
 ## The package ships these (read directly by the exhibits). Set TRUE to recompute
 ## them from Data/industry_sorts.csv (stationary block bootstrap; ~hours).
-RUN_STEP2 <- FALSE
+RUN_STEP2 <- TRUE
 if (RUN_STEP2) {
   message(">> Step 2: correlations + block bootstrap ...")
+  .t0 <- Sys.time()
   source("code/r/Step2_MakeCorrelations_V4.R", chdir = FALSE)
+  .nfiles <- length(list.files(file.path("Data", "Estimates", "length4"),
+                               pattern = "\\.(rds|RData)$"))
+  message(sprintf(">> Step 2 done in %.1f min: bootstrap B=%d, block_length=%d, seed=%d, num_cores=%d; %d estimate files in Data/Estimates/length4/",
+                  as.numeric(difftime(Sys.time(), .t0, units = "mins")),
+                  B, block_length, seed, num_cores, .nfiles))
 }
 
 ## --- Empirical exhibits: Table 3, Tables OA.4-OA.9, Figure OA.4 --------------
