@@ -29,7 +29,7 @@ pulls are not shipped (Path B rebuilds them from WRDS).
 | `BAA.csv`, `BAA10Y.csv`, `BAMLC0A0CM.csv`, `USREC.csv`, `USRECP.csv` | FRED (Federal Reserve) |
 | `drcoefficients2021.xlsx` | Published default-risk (CDR) logit coefficients |
 | `Market_CMDI.xlsx`, `Moodys_NB_QTRLy_US_Defaults_US_21072020.xlsx` | Published aggregate default / credit series |
-| `AggShocks/` source files (CFNAI, EPU, INDPRO, UNRATE, FEDFUNDS, HKM factors, Pastor–Stambaugh and other liquidity, Jurado et al. uncertainty, SPF mean growth, VXOCLS, …) | FRED and the respective authors' websites |
+| `AggShocks/` source files (INDPRO, UNRATE, FEDFUNDS from FRED; CFNAI real-time from the Chicago Fed; US Economic Policy Uncertainty; HKM intermediary factors; the liquidity series `liq_data_1962_2024.csv`; Jurado–Ludvigson–Ng macro/financial/real uncertainty; SPF mean GDP growth) | FRED and the respective authors' websites |
 
 ### Comparison-only file
 | File | Note |
