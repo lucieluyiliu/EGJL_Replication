@@ -7,7 +7,7 @@
 ##     Rscript master.R
 ##
 ## Produces in output/:  Table 3, Tables OA.4-OA.9 (output/tables/),
-##                       Figure OA.4 (output/figures/), and main_empirics.html.
+##                       Figure OA.5 (output/figures/), and main_empirics.html.
 ## (Full rebuild from WRDS is Path B — see README.md / code/python/Step1_PrepareAllData.py.)
 ## ============================================================================
 
@@ -41,7 +41,7 @@ if (RUN_STEP2) {
                   B, block_length, seed, num_cores, .nfiles))
 }
 
-## --- Empirical exhibits: Table 3, Tables OA.4-OA.9, Figure OA.4 --------------
+## --- Empirical exhibits: Table 3, Tables OA.4-OA.9, Figure OA.5 --------------
 message(">> Building empirical exhibits (main_empirics.Rmd) ...")
 rmarkdown::render("code/r/main_empirics.Rmd",
                   knit_root_dir = root, output_dir = "output")

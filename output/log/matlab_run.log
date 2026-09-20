@@ -1,38 +1,39 @@
 Starting parallel pool (parpool) using the 'Processes' profile ...
 Connected to parallel pool with 18 workers.
+Parallel pool started with 18 workers (IdleTimeout = Inf)
  : Error is 8.207498e+05 with 1 iterations
  : Error is 1.436681e+07 with 2 iterations
- : Error is 8.203173e+05 with 1 iterations
- : Error is 1.436945e+07 with 2 iterations
+ : Error is 3.624666e+06 with 4 iterations
  : Error is 8.205202e+05 with 1 iterations
  : Error is 1.436812e+07 with 2 iterations
- : Error is 3.624666e+06 with 4 iterations
- : Error is 1.837288e+06 with 5 iterations
- : Error is 3.626421e+06 with 4 iterations
- : Error is 1.840146e+06 with 5 iterations
  : Error is 3.625530e+06 with 4 iterations
+ : Error is 8.203173e+05 with 1 iterations
+ : Error is 1.436945e+07 with 2 iterations
+ : Error is 3.626421e+06 with 4 iterations
+ : Error is 1.837288e+06 with 5 iterations
  : Error is 1.838702e+06 with 5 iterations
+ : Error is 1.840146e+06 with 5 iterations
  : Error is 2.783394e+05 with 8 iterations
  : Error is 1.030826e+05 with 10 iterations
- : Error is 2.805186e+05 with 8 iterations
- : Error is 1.050785e+05 with 10 iterations
  : Error is 2.794108e+05 with 8 iterations
  : Error is 1.040619e+05 with 10 iterations
+ : Error is 2.805186e+05 with 8 iterations
+ : Error is 1.050785e+05 with 10 iterations
  : Error is 4.536030e+04 with 16 iterations
- : Error is 4.731571e+04 with 16 iterations
  : Error is 4.631286e+04 with 16 iterations
+ : Error is 4.731571e+04 with 16 iterations
  : Error is 4.056834e+04 with 20 iterations
- : Error is 4.241274e+04 with 20 iterations
  : Error is 4.146224e+04 with 20 iterations
+ : Error is 4.241274e+04 with 20 iterations
  : Error is 3.652737e+04 with 25 iterations
  : Error is 3.736138e+04 with 25 iterations
  : Error is 3.825274e+04 with 25 iterations
  : Error is 3.271395e+04 with 32 iterations
- : Error is 3.431673e+04 with 32 iterations
- : Error is 3.348648e+04 with 32 iterations
  : Error is 2.967998e+04 with 40 iterations
- : Error is 3.118084e+04 with 40 iterations
+ : Error is 3.348648e+04 with 32 iterations
+ : Error is 3.431673e+04 with 32 iterations
  : Error is 3.040125e+04 with 40 iterations
+ : Error is 3.118084e+04 with 40 iterations
  : Error is 2.693583e+04 with 50 iterations
  : Error is 2.834287e+04 with 50 iterations
  : Error is 2.761047e+04 with 50 iterations
@@ -52,644 +53,644 @@ Connected to parallel pool with 18 workers.
  : Error is 1.569226e+04 with 200 iterations
  : Error is 1.517584e+04 with 200 iterations
  : Error is 1.331488e+04 with 250 iterations
- : Error is 1.374931e+04 with 250 iterations
  : Error is 1.423947e+04 with 250 iterations
+ : Error is 1.374931e+04 with 250 iterations
  : Error is 1.070123e+04 with 400 iterations
- : Error is 1.108549e+04 with 400 iterations
  : Error is 1.152329e+04 with 400 iterations
- : Error is 9.952698e+03 with 500 iterations
+ : Error is 1.108549e+04 with 400 iterations
  : Error is 9.592006e+03 with 500 iterations
  : Error is 1.036667e+04 with 500 iterations
- : Error is 2.179657e+04 with 625 iterations
+ : Error is 9.952698e+03 with 500 iterations
  : Error is 2.088706e+04 with 625 iterations
  : Error is 2.285786e+04 with 625 iterations
- : Error is 1.630805e+04 with 800 iterations
+ : Error is 2.179657e+04 with 625 iterations
  : Error is 1.554255e+04 with 800 iterations
  : Error is 1.720373e+04 with 800 iterations
- : Error is 1.248434e+04 with 1000 iterations
+ : Error is 1.630805e+04 with 800 iterations
  : Error is 1.184011e+04 with 1000 iterations
  : Error is 1.324346e+04 with 1000 iterations
- : Error is 9.351586e+03 with 1250 iterations
+ : Error is 1.248434e+04 with 1000 iterations
  : Error is 8.823774e+03 with 1250 iterations
  : Error is 9.982044e+03 with 1250 iterations
- : Error is 4.492367e+03 with 2000 iterations
+ : Error is 9.351586e+03 with 1250 iterations
  : Error is 4.183120e+03 with 2000 iterations
  : Error is 4.867217e+03 with 2000 iterations
- : Error is 2.909587e+03 with 2500 iterations
+ : Error is 4.492367e+03 with 2000 iterations
  : Error is 2.684678e+03 with 2500 iterations
  : Error is 3.179117e+03 with 2500 iterations
- : Error is 1.744425e+03 with 3125 iterations
+ : Error is 2.909587e+03 with 2500 iterations
  : Error is 1.599042e+03 with 3125 iterations
  : Error is 1.926267e+03 with 3125 iterations
- : Error is 8.843265e+02 with 4000 iterations
+ : Error is 1.744425e+03 with 3125 iterations
  : Error is 7.999038e+02 with 4000 iterations
  : Error is 9.892641e+02 with 4000 iterations
- : Error is 4.193692e+02 with 5000 iterations
+ : Error is 8.843265e+02 with 4000 iterations
  : Error is 3.743052e+02 with 5000 iterations
  : Error is 4.760197e+02 with 5000 iterations
- : Error is 1.696613e+02 with 6250 iterations
+ : Error is 4.193692e+02 with 5000 iterations
  : Error is 1.485134e+02 with 6250 iterations
  : Error is 1.959707e+02 with 6250 iterations
- : Error is 1.196930e+01 with 10000 iterations
+ : Error is 1.696613e+02 with 6250 iterations
  : Error is 9.980222e+00 with 10000 iterations
  : Error is 1.471577e+01 with 10000 iterations
- : Error is 2.083855e+00 with 12500 iterations
+ : Error is 1.196930e+01 with 10000 iterations
  : Error is 1.723316e+00 with 12500 iterations
  : Error is 2.691965e+00 with 12500 iterations
- : Error is 1.202399e-02 with 20000 iterations
+ : Error is 2.083855e+00 with 12500 iterations
  : Error is 9.314732e-03 with 20000 iterations
  : Error is 1.687404e-02 with 20000 iterations
- : Error is 4.121661e-04 with 25000 iterations
+ : Error is 1.202399e-02 with 20000 iterations
  : Error is 2.978952e-04 with 25000 iterations
  : Error is 5.909861e-04 with 25000 iterations
+ : Error is 4.121661e-04 with 25000 iterations
  : Converged with error equal to 9.994519e-07 in 33227 iterations
- : Converged with error equal to 9.996295e-07 in 33948 iterations
  : Converged with error equal to 9.996093e-07 in 34591 iterations
-6.000000e-01: Error is 7.866755e+05 with 1 iterations
+ : Converged with error equal to 9.996295e-07 in 33948 iterations
 7.000000e-01: Error is 7.807895e+05 with 1 iterations
-7.000000e-01: Error is 1.346180e+07 with 2 iterations
-9.000000e-01: Error is 7.688233e+05 with 1 iterations
-6.000000e-01: Error is 1.359190e+07 with 2 iterations
-9.000000e-01: Error is 1.316526e+07 with 2 iterations
-9.000000e-01: Error is 3.285017e+06 with 4 iterations
-6.000000e-01: Error is 3.430060e+06 with 4 iterations
-6.000000e-01: Error is 1.748560e+06 with 5 iterations
-6.000000e-01: Error is 2.639245e+05 with 8 iterations
-7.000000e-01: Error is 3.398057e+06 with 4 iterations
-9.000000e-01: Error is 1.664852e+06 with 5 iterations
-7.000000e-01: Error is 1.730258e+06 with 5 iterations
-6.000000e-01: Error is 9.446028e+04 with 10 iterations
--4.000000e-01: Error is 8.416833e+05 with 1 iterations
--4.999000e-01: Error is 8.466281e+05 with 1 iterations
--4.999000e-01: Error is 1.492573e+07 with 2 iterations
 1.000000e-01: Error is 8.150577e+05 with 1 iterations
 1.000000e-01: Error is 1.419906e+07 with 2 iterations
-9.000000e-01: Error is 2.408047e+05 with 8 iterations
--4.000000e-01: Error is 1.481829e+07 with 2 iterations
-7.000000e-01: Error is 2.605933e+05 with 8 iterations
--4.999000e-01: Error is 3.740944e+06 with 4 iterations
--4.999000e-01: Error is 1.898372e+06 with 5 iterations
-2.000000e-01: Error is 8.095239e+05 with 1 iterations
-2.000000e-01: Error is 1.408196e+07 with 2 iterations
-7.000000e-01: Error is 1.058576e+05 with 10 iterations
--4.999000e-01: Error is 2.695839e+05 with 8 iterations
-3.000000e-01: Error is 8.039184e+05 with 1 iterations
-3.000000e-01: Error is 1.396359e+07 with 2 iterations
-9.000000e-01: Error is 9.493816e+04 with 10 iterations
--2.000000e-01: Error is 8.312399e+05 with 1 iterations
--4.999000e-01: Error is 1.041166e+05 with 10 iterations
-2.000000e-01: Error is 3.555852e+06 with 4 iterations
--2.000000e-01: Error is 1.459714e+07 with 2 iterations
-1.000000e-01: Error is 3.584220e+06 with 4 iterations
-6.000000e-01: Error is 4.861302e+04 with 16 iterations
--4.000000e-01: Error is 3.734443e+06 with 4 iterations
--1.000000e-01: Error is 8.259150e+05 with 1 iterations
--1.000000e-01: Error is 1.448365e+07 with 2 iterations
-4.000000e-01: Error is 7.982413e+05 with 1 iterations
-4.000000e-01: Error is 1.384261e+07 with 2 iterations
-1.000000e-01: Error is 1.819007e+06 with 5 iterations
--4.000000e-01: Error is 1.895062e+06 with 5 iterations
--3.000000e-01: Error is 8.364957e+05 with 1 iterations
--3.000000e-01: Error is 1.470866e+07 with 2 iterations
-7.000000e-01: Error is 4.923059e+04 with 16 iterations
--2.000000e-01: Error is 3.680951e+06 with 4 iterations
-8.000000e-01: Error is 7.748379e+05 with 1 iterations
-8.000000e-01: Error is 1.330249e+07 with 2 iterations
 5.001000e-01: Error is 7.924876e+05 with 1 iterations
 5.001000e-01: Error is 1.371865e+07 with 2 iterations
-2.000000e-01: Error is 1.805954e+06 with 5 iterations
--3.000000e-01: Error is 3.707926e+06 with 4 iterations
--1.000000e-01: Error is 3.653494e+06 with 4 iterations
--2.000000e-01: Error is 1.868103e+06 with 5 iterations
--8.000000e-01: Error is 8.618306e+05 with 1 iterations
+7.000000e-01: Error is 1.346180e+07 with 2 iterations
+7.000000e-01: Error is 3.398057e+06 with 4 iterations
+1.000000e-01: Error is 3.584220e+06 with 4 iterations
 5.001000e-01: Error is 3.461104e+06 with 4 iterations
--6.000000e-01: Error is 8.519896e+05 with 1 iterations
-3.000000e-01: Error is 3.527125e+06 with 4 iterations
--4.000000e-01: Error is 2.524961e+05 with 8 iterations
--1.000000e-01: Error is 1.851763e+06 with 5 iterations
-7.000000e-01: Error is 4.419713e+04 with 20 iterations
-8.000000e-01: Error is 3.351274e+06 with 4 iterations
-4.000000e-01: Error is 3.491349e+06 with 4 iterations
+7.000000e-01: Error is 1.730258e+06 with 5 iterations
+1.000000e-01: Error is 1.819007e+06 with 5 iterations
 5.001000e-01: Error is 1.765720e+06 with 5 iterations
-1.000000e-01: Error is 3.042154e+05 with 8 iterations
-3.000000e-01: Error is 1.792818e+06 with 5 iterations
-9.000000e-01: Error is 5.088344e+04 with 16 iterations
-6.000000e-01: Error is 4.359813e+04 with 20 iterations
--3.000000e-01: Error is 1.881597e+06 with 5 iterations
--2.000000e-01: Error is 2.926061e+05 with 8 iterations
-8.000000e-01: Error is 1.705652e+06 with 5 iterations
-4.000000e-01: Error is 1.779410e+06 with 5 iterations
--4.999000e-01: Error is 4.510090e+04 with 16 iterations
+7.000000e-01: Error is 2.605933e+05 with 8 iterations
 5.001000e-01: Error is 2.671883e+05 with 8 iterations
-1.000000e-01: Error is 9.880565e+04 with 10 iterations
-2.000000e-01: Error is 2.474226e+05 with 8 iterations
--4.000000e-01: Error is 1.092550e+05 with 10 iterations
--3.000000e-01: Error is 2.861337e+05 with 8 iterations
--9.000000e-01: Error is 8.666841e+05 with 1 iterations
-2.000000e-01: Error is 1.138660e+05 with 10 iterations
-4.000000e-01: Error is 2.695186e+05 with 8 iterations
--4.999000e-01: Error is 4.035099e+04 with 20 iterations
--7.000000e-01: Error is 8.569235e+05 with 1 iterations
-3.000000e-01: Error is 2.227184e+05 with 8 iterations
-9.000000e-01: Error is 4.582173e+04 with 20 iterations
-6.000000e-01: Error is 3.936350e+04 with 25 iterations
--3.000000e-01: Error is 1.120958e+05 with 10 iterations
--1.000000e-01: Error is 2.784921e+05 with 8 iterations
-7.000000e-01: Error is 3.993633e+04 with 25 iterations
--2.000000e-01: Error is 1.153624e+05 with 10 iterations
-8.000000e-01: Error is 2.545313e+05 with 8 iterations
-4.000000e-01: Error is 1.099498e+05 with 10 iterations
+3.000000e-01: Error is 8.039184e+05 with 1 iterations
+6.000000e-01: Error is 7.866755e+05 with 1 iterations
+1.000000e-01: Error is 3.042154e+05 with 8 iterations
 5.001000e-01: Error is 8.665405e+04 with 10 iterations
-3.000000e-01: Error is 1.196205e+05 with 10 iterations
--1.000000e-01: Error is 1.174630e+05 with 10 iterations
-8.000000e-01: Error is 1.033820e+05 with 10 iterations
--4.999000e-01: Error is 3.635112e+04 with 25 iterations
-9.000000e-01: Error is 4.141488e+04 with 25 iterations
--2.000000e-01: Error is 4.583933e+04 with 16 iterations
-2.000000e-01: Error is 4.686005e+04 with 16 iterations
-6.000000e-01: Error is 3.530887e+04 with 32 iterations
-8.000000e-01: Error is 4.996338e+04 with 16 iterations
--8.000000e-01: Error is 1.513199e+07 with 2 iterations
--4.999000e-01: Error is 3.254189e+04 with 32 iterations
+8.000000e-01: Error is 7.748379e+05 with 1 iterations
+8.000000e-01: Error is 1.330249e+07 with 2 iterations
+-3.000000e-01: Error is 8.364957e+05 with 1 iterations
+-3.000000e-01: Error is 1.470866e+07 with 2 iterations
+-4.999000e-01: Error is 8.466281e+05 with 1 iterations
+-4.999000e-01: Error is 1.492573e+07 with 2 iterations
+2.000000e-01: Error is 8.095239e+05 with 1 iterations
+2.000000e-01: Error is 1.408196e+07 with 2 iterations
+3.000000e-01: Error is 1.396359e+07 with 2 iterations
+9.000000e-01: Error is 7.688233e+05 with 1 iterations
+7.000000e-01: Error is 1.058576e+05 with 10 iterations
+4.000000e-01: Error is 7.982413e+05 with 1 iterations
+-2.000000e-01: Error is 8.312399e+05 with 1 iterations
+-4.000000e-01: Error is 8.416833e+05 with 1 iterations
+-4.000000e-01: Error is 1.481829e+07 with 2 iterations
+6.000000e-01: Error is 1.359190e+07 with 2 iterations
+1.000000e-01: Error is 9.880565e+04 with 10 iterations
+-1.000000e-01: Error is 8.259150e+05 with 1 iterations
+-1.000000e-01: Error is 1.448365e+07 with 2 iterations
+8.000000e-01: Error is 3.351274e+06 with 4 iterations
+3.000000e-01: Error is 3.527125e+06 with 4 iterations
+9.000000e-01: Error is 1.316526e+07 with 2 iterations
+4.000000e-01: Error is 1.384261e+07 with 2 iterations
+-2.000000e-01: Error is 1.459714e+07 with 2 iterations
+6.000000e-01: Error is 3.430060e+06 with 4 iterations
+8.000000e-01: Error is 1.705652e+06 with 5 iterations
+-3.000000e-01: Error is 3.707926e+06 with 4 iterations
+-4.999000e-01: Error is 3.740944e+06 with 4 iterations
+-4.999000e-01: Error is 1.898372e+06 with 5 iterations
+2.000000e-01: Error is 3.555852e+06 with 4 iterations
+2.000000e-01: Error is 1.805954e+06 with 5 iterations
+3.000000e-01: Error is 1.792818e+06 with 5 iterations
+9.000000e-01: Error is 3.285017e+06 with 4 iterations
+4.000000e-01: Error is 3.491349e+06 with 4 iterations
+-2.000000e-01: Error is 3.680951e+06 with 4 iterations
+-2.000000e-01: Error is 1.868103e+06 with 5 iterations
+-4.000000e-01: Error is 3.734443e+06 with 4 iterations
+-4.000000e-01: Error is 1.895062e+06 with 5 iterations
+6.000000e-01: Error is 1.748560e+06 with 5 iterations
+-1.000000e-01: Error is 3.653494e+06 with 4 iterations
+-1.000000e-01: Error is 1.851763e+06 with 5 iterations
+8.000000e-01: Error is 2.545313e+05 with 8 iterations
+-3.000000e-01: Error is 1.881597e+06 with 5 iterations
+-4.999000e-01: Error is 2.695839e+05 with 8 iterations
+2.000000e-01: Error is 2.474226e+05 with 8 iterations
+3.000000e-01: Error is 2.227184e+05 with 8 iterations
+9.000000e-01: Error is 1.664852e+06 with 5 iterations
+7.000000e-01: Error is 4.923059e+04 with 16 iterations
+4.000000e-01: Error is 1.779410e+06 with 5 iterations
+6.000000e-01: Error is 2.639245e+05 with 8 iterations
 1.000000e-01: Error is 4.661167e+04 with 16 iterations
-3.000000e-01: Error is 4.725311e+04 with 16 iterations
--4.000000e-01: Error is 4.550750e+04 with 16 iterations
--2.000000e-01: Error is 4.104873e+04 with 20 iterations
-4.000000e-01: Error is 4.765004e+04 with 16 iterations
 5.001000e-01: Error is 4.812287e+04 with 16 iterations
--6.000000e-01: Error is 1.493833e+07 with 2 iterations
-3.000000e-01: Error is 4.231972e+04 with 20 iterations
-2.000000e-01: Error is 4.198519e+04 with 20 iterations
-6.000000e-01: Error is 3.203126e+04 with 40 iterations
--4.000000e-01: Error is 4.073552e+04 with 20 iterations
--3.000000e-01: Error is 4.560422e+04 with 16 iterations
--1.000000e-01: Error is 4.606681e+04 with 16 iterations
-7.000000e-01: Error is 3.582546e+04 with 32 iterations
--2.000000e-01: Error is 3.698010e+04 with 25 iterations
-8.000000e-01: Error is 4.486133e+04 with 20 iterations
--3.000000e-01: Error is 4.087655e+04 with 20 iterations
-4.000000e-01: Error is 4.268498e+04 with 20 iterations
--4.999000e-01: Error is 2.954442e+04 with 40 iterations
+8.000000e-01: Error is 1.033820e+05 with 10 iterations
+-3.000000e-01: Error is 2.861337e+05 with 8 iterations
+-4.999000e-01: Error is 1.041166e+05 with 10 iterations
+2.000000e-01: Error is 1.138660e+05 with 10 iterations
+3.000000e-01: Error is 1.196205e+05 with 10 iterations
+9.000000e-01: Error is 2.408047e+05 with 8 iterations
+-9.000000e-01: Error is 8.666841e+05 with 1 iterations
+4.000000e-01: Error is 2.695186e+05 with 8 iterations
+-2.000000e-01: Error is 2.926061e+05 with 8 iterations
+-4.000000e-01: Error is 2.524961e+05 with 8 iterations
+-4.000000e-01: Error is 1.092550e+05 with 10 iterations
+6.000000e-01: Error is 9.446028e+04 with 10 iterations
+-7.000000e-01: Error is 8.569235e+05 with 1 iterations
+-6.000000e-01: Error is 8.519896e+05 with 1 iterations
+-8.000000e-01: Error is 8.618306e+05 with 1 iterations
+-1.000000e-01: Error is 2.784921e+05 with 8 iterations
+-3.000000e-01: Error is 1.120958e+05 with 10 iterations
+9.000000e-01: Error is 9.493816e+04 with 10 iterations
+7.000000e-01: Error is 4.419713e+04 with 20 iterations
+4.000000e-01: Error is 1.099498e+05 with 10 iterations
+-2.000000e-01: Error is 1.153624e+05 with 10 iterations
 1.000000e-01: Error is 4.172133e+04 with 20 iterations
-3.000000e-01: Error is 3.815885e+04 with 25 iterations
-9.000000e-01: Error is 3.712425e+04 with 32 iterations
--4.000000e-01: Error is 3.668766e+04 with 25 iterations
--1.000000e-01: Error is 4.125625e+04 with 20 iterations
--2.000000e-01: Error is 3.312738e+04 with 32 iterations
-8.000000e-01: Error is 4.054191e+04 with 25 iterations
--9.000000e-01: Error is 1.522625e+07 with 2 iterations
 5.001000e-01: Error is 4.311887e+04 with 20 iterations
-3.000000e-01: Error is 3.421575e+04 with 32 iterations
-6.000000e-01: Error is 2.906690e+04 with 50 iterations
--3.000000e-01: Error is 3.682262e+04 with 25 iterations
-2.000000e-01: Error is 3.785074e+04 with 25 iterations
--4.000000e-01: Error is 3.284580e+04 with 32 iterations
-4.000000e-01: Error is 3.850945e+04 with 25 iterations
--7.000000e-01: Error is 1.503601e+07 with 2 iterations
+-1.000000e-01: Error is 1.174630e+05 with 10 iterations
+8.000000e-01: Error is 4.996338e+04 with 16 iterations
+-3.000000e-01: Error is 4.560422e+04 with 16 iterations
+-4.999000e-01: Error is 4.510090e+04 with 16 iterations
+2.000000e-01: Error is 4.686005e+04 with 16 iterations
+3.000000e-01: Error is 4.725311e+04 with 16 iterations
+9.000000e-01: Error is 5.088344e+04 with 16 iterations
+7.000000e-01: Error is 3.993633e+04 with 25 iterations
+-2.000000e-01: Error is 4.583933e+04 with 16 iterations
+-4.000000e-01: Error is 4.550750e+04 with 16 iterations
+6.000000e-01: Error is 4.861302e+04 with 16 iterations
 1.000000e-01: Error is 3.759225e+04 with 25 iterations
-9.000000e-01: Error is 3.364775e+04 with 40 iterations
--1.000000e-01: Error is 3.716577e+04 with 25 iterations
-7.000000e-01: Error is 3.249430e+04 with 40 iterations
--2.000000e-01: Error is 3.007565e+04 with 40 iterations
 5.001000e-01: Error is 3.890928e+04 with 25 iterations
-3.000000e-01: Error is 3.105619e+04 with 40 iterations
-2.000000e-01: Error is 3.393882e+04 with 32 iterations
--4.000000e-01: Error is 2.981669e+04 with 40 iterations
--3.000000e-01: Error is 3.297735e+04 with 32 iterations
-8.000000e-01: Error is 3.636018e+04 with 32 iterations
-4.000000e-01: Error is 3.453493e+04 with 32 iterations
--4.999000e-01: Error is 2.685345e+04 with 50 iterations
+-1.000000e-01: Error is 4.606681e+04 with 16 iterations
+8.000000e-01: Error is 4.486133e+04 with 20 iterations
+-4.999000e-01: Error is 4.035099e+04 with 20 iterations
+2.000000e-01: Error is 4.198519e+04 with 20 iterations
+3.000000e-01: Error is 4.231972e+04 with 20 iterations
+4.000000e-01: Error is 4.765004e+04 with 16 iterations
+-2.000000e-01: Error is 4.104873e+04 with 20 iterations
+-4.000000e-01: Error is 4.073552e+04 with 20 iterations
+6.000000e-01: Error is 4.359813e+04 with 20 iterations
+-3.000000e-01: Error is 4.087655e+04 with 20 iterations
+9.000000e-01: Error is 4.582173e+04 with 20 iterations
+-9.000000e-01: Error is 1.522625e+07 with 2 iterations
+7.000000e-01: Error is 3.582546e+04 with 32 iterations
+4.000000e-01: Error is 4.268498e+04 with 20 iterations
+-7.000000e-01: Error is 1.503601e+07 with 2 iterations
 1.000000e-01: Error is 3.369600e+04 with 32 iterations
-9.000000e-01: Error is 3.051065e+04 with 50 iterations
--1.000000e-01: Error is 3.329996e+04 with 32 iterations
+-6.000000e-01: Error is 1.493833e+07 with 2 iterations
+-8.000000e-01: Error is 1.513199e+07 with 2 iterations
+-1.000000e-01: Error is 4.125625e+04 with 20 iterations
+8.000000e-01: Error is 4.054191e+04 with 25 iterations
+-3.000000e-01: Error is 3.682262e+04 with 25 iterations
+-4.999000e-01: Error is 3.635112e+04 with 25 iterations
+2.000000e-01: Error is 3.785074e+04 with 25 iterations
+3.000000e-01: Error is 3.815885e+04 with 25 iterations
+9.000000e-01: Error is 4.141488e+04 with 25 iterations
+4.000000e-01: Error is 3.850945e+04 with 25 iterations
+-2.000000e-01: Error is 3.698010e+04 with 25 iterations
+-4.000000e-01: Error is 3.668766e+04 with 25 iterations
+6.000000e-01: Error is 3.936350e+04 with 25 iterations
 5.001000e-01: Error is 3.489584e+04 with 32 iterations
--6.000000e-01: Error is 3.762930e+06 with 4 iterations
-3.000000e-01: Error is 2.819469e+04 with 50 iterations
-7.000000e-01: Error is 2.948226e+04 with 50 iterations
-8.000000e-01: Error is 3.296888e+04 with 40 iterations
--2.000000e-01: Error is 2.732212e+04 with 50 iterations
-4.000000e-01: Error is 3.134043e+04 with 40 iterations
-1.000000e-01: Error is 3.058957e+04 with 40 iterations
-2.000000e-01: Error is 3.080888e+04 with 40 iterations
--4.000000e-01: Error is 2.709122e+04 with 50 iterations
--3.000000e-01: Error is 2.993907e+04 with 40 iterations
--1.000000e-01: Error is 3.023161e+04 with 40 iterations
-8.000000e-01: Error is 2.990526e+04 with 50 iterations
--8.000000e-01: Error is 3.810182e+06 with 4 iterations
--6.000000e-01: Error is 1.805436e+06 with 5 iterations
-6.000000e-01: Error is 2.370816e+04 with 80 iterations
--1.000000e-01: Error is 2.745963e+04 with 50 iterations
-4.000000e-01: Error is 2.844882e+04 with 50 iterations
--9.000000e-01: Error is 3.833377e+06 with 4 iterations
+-1.000000e-01: Error is 3.716577e+04 with 25 iterations
+8.000000e-01: Error is 3.636018e+04 with 32 iterations
+-3.000000e-01: Error is 3.297735e+04 with 32 iterations
+-4.999000e-01: Error is 3.254189e+04 with 32 iterations
+2.000000e-01: Error is 3.393882e+04 with 32 iterations
+3.000000e-01: Error is 3.421575e+04 with 32 iterations
+9.000000e-01: Error is 3.712425e+04 with 32 iterations
+7.000000e-01: Error is 3.249430e+04 with 40 iterations
+4.000000e-01: Error is 3.453493e+04 with 32 iterations
+-2.000000e-01: Error is 3.312738e+04 with 32 iterations
+6.000000e-01: Error is 3.530887e+04 with 32 iterations
 5.001000e-01: Error is 3.166248e+04 with 40 iterations
--7.000000e-01: Error is 3.786646e+06 with 4 iterations
-2.000000e-01: Error is 2.797422e+04 with 50 iterations
--3.000000e-01: Error is 2.720095e+04 with 50 iterations
+-4.000000e-01: Error is 3.284580e+04 with 32 iterations
+1.000000e-01: Error is 3.058957e+04 with 40 iterations
+-1.000000e-01: Error is 3.329996e+04 with 32 iterations
+8.000000e-01: Error is 3.296888e+04 with 40 iterations
+-3.000000e-01: Error is 2.993907e+04 with 40 iterations
+-4.999000e-01: Error is 2.954442e+04 with 40 iterations
+2.000000e-01: Error is 3.080888e+04 with 40 iterations
+3.000000e-01: Error is 3.105619e+04 with 40 iterations
+9.000000e-01: Error is 3.364775e+04 with 40 iterations
+4.000000e-01: Error is 3.134043e+04 with 40 iterations
+-2.000000e-01: Error is 3.007565e+04 with 40 iterations
+-4.000000e-01: Error is 2.981669e+04 with 40 iterations
+6.000000e-01: Error is 3.203126e+04 with 40 iterations
+-6.000000e-01: Error is 3.762930e+06 with 4 iterations
+7.000000e-01: Error is 2.948226e+04 with 50 iterations
 1.000000e-01: Error is 2.777870e+04 with 50 iterations
-3.000000e-01: Error is 2.301593e+04 with 80 iterations
--9.000000e-01: Error is 1.930845e+06 with 5 iterations
--8.000000e-01: Error is 1.909449e+06 with 5 iterations
-6.000000e-01: Error is 2.152286e+04 with 100 iterations
 5.001000e-01: Error is 2.873676e+04 with 50 iterations
+-1.000000e-01: Error is 3.023161e+04 with 40 iterations
+-9.000000e-01: Error is 3.833377e+06 with 4 iterations
+-7.000000e-01: Error is 3.786646e+06 with 4 iterations
+-8.000000e-01: Error is 3.810182e+06 with 4 iterations
+8.000000e-01: Error is 2.990526e+04 with 50 iterations
+-3.000000e-01: Error is 2.720095e+04 with 50 iterations
+-4.999000e-01: Error is 2.685345e+04 with 50 iterations
+2.000000e-01: Error is 2.797422e+04 with 50 iterations
+3.000000e-01: Error is 2.819469e+04 with 50 iterations
+9.000000e-01: Error is 3.051065e+04 with 50 iterations
+4.000000e-01: Error is 2.844882e+04 with 50 iterations
+-2.000000e-01: Error is 2.732212e+04 with 50 iterations
+-4.000000e-01: Error is 2.709122e+04 with 50 iterations
+6.000000e-01: Error is 2.906690e+04 with 50 iterations
+-6.000000e-01: Error is 1.805436e+06 with 5 iterations
+-1.000000e-01: Error is 2.745963e+04 with 50 iterations
 -7.000000e-01: Error is 1.874362e+06 with 5 iterations
-9.000000e-01: Error is 2.485090e+04 with 80 iterations
-8.000000e-01: Error is 2.437336e+04 with 80 iterations
--2.000000e-01: Error is 2.232798e+04 with 80 iterations
-4.000000e-01: Error is 2.321710e+04 with 80 iterations
--4.999000e-01: Error is 2.196654e+04 with 80 iterations
--3.000000e-01: Error is 2.223365e+04 with 80 iterations
--1.000000e-01: Error is 2.243508e+04 with 80 iterations
+-8.000000e-01: Error is 1.909449e+06 with 5 iterations
+-9.000000e-01: Error is 1.930845e+06 with 5 iterations
 7.000000e-01: Error is 2.403807e+04 with 80 iterations
--4.000000e-01: Error is 2.214727e+04 with 80 iterations
--6.000000e-01: Error is 2.873009e+05 with 8 iterations
-3.000000e-01: Error is 2.090390e+04 with 100 iterations
-2.000000e-01: Error is 2.284215e+04 with 80 iterations
 1.000000e-01: Error is 2.268763e+04 with 80 iterations
-6.000000e-01: Error is 1.953451e+04 with 125 iterations
--9.000000e-01: Error is 2.920080e+05 with 8 iterations
--8.000000e-01: Error is 3.123000e+05 with 8 iterations
-2.000000e-01: Error is 2.074923e+04 with 100 iterations
--1.000000e-01: Error is 2.038458e+04 with 100 iterations
-9.000000e-01: Error is 2.254524e+04 with 100 iterations
--3.000000e-01: Error is 2.020545e+04 with 100 iterations
--4.999000e-01: Error is 1.996902e+04 with 100 iterations
-1.000000e-01: Error is 2.061078e+04 with 100 iterations
-8.000000e-01: Error is 2.211759e+04 with 100 iterations
--9.000000e-01: Error is 1.167304e+05 with 10 iterations
-4.000000e-01: Error is 2.108398e+04 with 100 iterations
--6.000000e-01: Error is 1.106210e+05 with 10 iterations
--2.000000e-01: Error is 2.028977e+04 with 100 iterations
--8.000000e-01: Error is 1.304258e+05 with 10 iterations
-6.000000e-01: Error is 1.753463e+04 with 160 iterations
-7.000000e-01: Error is 2.181901e+04 with 100 iterations
-3.000000e-01: Error is 1.898178e+04 with 125 iterations
--4.999000e-01: Error is 1.815052e+04 with 125 iterations
 5.001000e-01: Error is 2.344556e+04 with 80 iterations
--4.000000e-01: Error is 2.012668e+04 with 100 iterations
--3.000000e-01: Error is 1.836002e+04 with 125 iterations
--1.000000e-01: Error is 1.851892e+04 with 125 iterations
+8.000000e-01: Error is 2.437336e+04 with 80 iterations
+-4.999000e-01: Error is 2.196654e+04 with 80 iterations
+3.000000e-01: Error is 2.301593e+04 with 80 iterations
+9.000000e-01: Error is 2.485090e+04 with 80 iterations
+-2.000000e-01: Error is 2.232798e+04 with 80 iterations
+-4.000000e-01: Error is 2.214727e+04 with 80 iterations
+6.000000e-01: Error is 2.370816e+04 with 80 iterations
+-6.000000e-01: Error is 2.873009e+05 with 8 iterations
+-3.000000e-01: Error is 2.223365e+04 with 80 iterations
+2.000000e-01: Error is 2.284215e+04 with 80 iterations
+4.000000e-01: Error is 2.321710e+04 with 80 iterations
+-1.000000e-01: Error is 2.243508e+04 with 80 iterations
+7.000000e-01: Error is 2.181901e+04 with 100 iterations
 -7.000000e-01: Error is 2.823874e+05 with 8 iterations
-1.000000e-01: Error is 1.872166e+04 with 125 iterations
-2.000000e-01: Error is 1.884381e+04 with 125 iterations
-7.000000e-01: Error is 1.979873e+04 with 125 iterations
-8.000000e-01: Error is 2.006515e+04 with 125 iterations
-9.000000e-01: Error is 2.044497e+04 with 125 iterations
-3.000000e-01: Error is 1.705084e+04 with 160 iterations
-4.000000e-01: Error is 1.914319e+04 with 125 iterations
+-8.000000e-01: Error is 3.123000e+05 with 8 iterations
+-9.000000e-01: Error is 2.920080e+05 with 8 iterations
+1.000000e-01: Error is 2.061078e+04 with 100 iterations
 5.001000e-01: Error is 2.128874e+04 with 100 iterations
--2.000000e-01: Error is 1.843446e+04 with 125 iterations
--4.999000e-01: Error is 1.632364e+04 with 160 iterations
-6.000000e-01: Error is 1.588520e+04 with 200 iterations
--4.000000e-01: Error is 1.828842e+04 with 125 iterations
--6.000000e-01: Error is 4.556003e+04 with 16 iterations
+-4.999000e-01: Error is 1.996902e+04 with 100 iterations
+9.000000e-01: Error is 2.254524e+04 with 100 iterations
+-2.000000e-01: Error is 2.028977e+04 with 100 iterations
+6.000000e-01: Error is 2.152286e+04 with 100 iterations
+-6.000000e-01: Error is 1.106210e+05 with 10 iterations
+8.000000e-01: Error is 2.211759e+04 with 100 iterations
+-3.000000e-01: Error is 2.020545e+04 with 100 iterations
+2.000000e-01: Error is 2.074923e+04 with 100 iterations
+3.000000e-01: Error is 2.090390e+04 with 100 iterations
+4.000000e-01: Error is 2.108398e+04 with 100 iterations
+-4.000000e-01: Error is 2.012668e+04 with 100 iterations
+-1.000000e-01: Error is 2.038458e+04 with 100 iterations
 -7.000000e-01: Error is 1.094583e+05 with 10 iterations
+-8.000000e-01: Error is 1.304258e+05 with 10 iterations
+-9.000000e-01: Error is 1.167304e+05 with 10 iterations
+7.000000e-01: Error is 1.979873e+04 with 125 iterations
+-4.999000e-01: Error is 1.815052e+04 with 125 iterations
+-2.000000e-01: Error is 1.843446e+04 with 125 iterations
+1.000000e-01: Error is 1.872166e+04 with 125 iterations
+5.001000e-01: Error is 1.932473e+04 with 125 iterations
+8.000000e-01: Error is 2.006515e+04 with 125 iterations
+3.000000e-01: Error is 1.898178e+04 with 125 iterations
+9.000000e-01: Error is 2.044497e+04 with 125 iterations
+-4.000000e-01: Error is 1.828842e+04 with 125 iterations
+6.000000e-01: Error is 1.953451e+04 with 125 iterations
+-1.000000e-01: Error is 1.851892e+04 with 125 iterations
+-3.000000e-01: Error is 1.836002e+04 with 125 iterations
+2.000000e-01: Error is 1.884381e+04 with 125 iterations
+4.000000e-01: Error is 1.914319e+04 with 125 iterations
 7.000000e-01: Error is 1.776673e+04 with 160 iterations
+-2.000000e-01: Error is 1.657180e+04 with 160 iterations
+1.000000e-01: Error is 1.682240e+04 with 160 iterations
+-6.000000e-01: Error is 4.556003e+04 with 16 iterations
+5.001000e-01: Error is 1.735129e+04 with 160 iterations
+-4.999000e-01: Error is 1.632364e+04 with 160 iterations
+6.000000e-01: Error is 1.753463e+04 with 160 iterations
+3.000000e-01: Error is 1.705084e+04 with 160 iterations
+9.000000e-01: Error is 1.833121e+04 with 160 iterations
+-1.000000e-01: Error is 1.664573e+04 with 160 iterations
 8.000000e-01: Error is 1.799897e+04 with 160 iterations
 -3.000000e-01: Error is 1.650629e+04 with 160 iterations
--1.000000e-01: Error is 1.664573e+04 with 160 iterations
-1.000000e-01: Error is 1.682240e+04 with 160 iterations
-9.000000e-01: Error is 1.833121e+04 with 160 iterations
-5.001000e-01: Error is 1.932473e+04 with 125 iterations
 2.000000e-01: Error is 1.693038e+04 with 160 iterations
 4.000000e-01: Error is 1.719172e+04 with 160 iterations
 -4.000000e-01: Error is 1.644261e+04 with 160 iterations
--2.000000e-01: Error is 1.657180e+04 with 160 iterations
--9.000000e-01: Error is 4.519755e+04 with 16 iterations
--4.999000e-01: Error is 1.481925e+04 with 200 iterations
--6.000000e-01: Error is 4.062684e+04 with 20 iterations
-3.000000e-01: Error is 1.546016e+04 with 200 iterations
--8.000000e-01: Error is 4.568360e+04 with 16 iterations
-6.000000e-01: Error is 1.436557e+04 with 250 iterations
--3.000000e-01: Error is 1.498078e+04 with 200 iterations
-7.000000e-01: Error is 1.608974e+04 with 200 iterations
-5.001000e-01: Error is 1.735129e+04 with 160 iterations
-1.000000e-01: Error is 1.525887e+04 with 200 iterations
--1.000000e-01: Error is 1.510307e+04 with 200 iterations
-4.000000e-01: Error is 1.558359e+04 with 200 iterations
-9.000000e-01: Error is 1.658447e+04 with 200 iterations
-8.000000e-01: Error is 1.629289e+04 with 200 iterations
-2.000000e-01: Error is 1.535378e+04 with 200 iterations
--2.000000e-01: Error is 1.503837e+04 with 200 iterations
--8.000000e-01: Error is 4.036135e+04 with 20 iterations
--4.000000e-01: Error is 1.492510e+04 with 200 iterations
--6.000000e-01: Error is 3.660475e+04 with 25 iterations
 -7.000000e-01: Error is 4.560457e+04 with 16 iterations
+-8.000000e-01: Error is 4.568360e+04 with 16 iterations
+-9.000000e-01: Error is 4.519755e+04 with 16 iterations
+7.000000e-01: Error is 1.608974e+04 with 200 iterations
+-6.000000e-01: Error is 4.062684e+04 with 20 iterations
+-4.999000e-01: Error is 1.481925e+04 with 200 iterations
+-2.000000e-01: Error is 1.503837e+04 with 200 iterations
+1.000000e-01: Error is 1.525887e+04 with 200 iterations
 5.001000e-01: Error is 1.572428e+04 with 200 iterations
--3.000000e-01: Error is 1.357942e+04 with 250 iterations
-3.000000e-01: Error is 1.399606e+04 with 250 iterations
-7.000000e-01: Error is 1.454371e+04 with 250 iterations
+3.000000e-01: Error is 1.546016e+04 with 200 iterations
+6.000000e-01: Error is 1.588520e+04 with 200 iterations
+8.000000e-01: Error is 1.629289e+04 with 200 iterations
+9.000000e-01: Error is 1.658447e+04 with 200 iterations
+4.000000e-01: Error is 1.558359e+04 with 200 iterations
+-4.000000e-01: Error is 1.492510e+04 with 200 iterations
+-1.000000e-01: Error is 1.510307e+04 with 200 iterations
+-3.000000e-01: Error is 1.498078e+04 with 200 iterations
+2.000000e-01: Error is 1.535378e+04 with 200 iterations
+-7.000000e-01: Error is 4.045187e+04 with 20 iterations
+-8.000000e-01: Error is 4.036135e+04 with 20 iterations
 -9.000000e-01: Error is 4.025325e+04 with 20 iterations
+-6.000000e-01: Error is 3.660475e+04 with 25 iterations
+7.000000e-01: Error is 1.454371e+04 with 250 iterations
 -4.999000e-01: Error is 1.343772e+04 with 250 iterations
--1.000000e-01: Error is 1.368609e+04 with 250 iterations
+3.000000e-01: Error is 1.399606e+04 with 250 iterations
+-2.000000e-01: Error is 1.363005e+04 with 250 iterations
+9.000000e-01: Error is 1.497236e+04 with 250 iterations
+6.000000e-01: Error is 1.436557e+04 with 250 iterations
 1.000000e-01: Error is 1.382170e+04 with 250 iterations
+5.001000e-01: Error is 1.422565e+04 with 250 iterations
+-1.000000e-01: Error is 1.368609e+04 with 250 iterations
 8.000000e-01: Error is 1.471971e+04 with 250 iterations
 4.000000e-01: Error is 1.410375e+04 with 250 iterations
-9.000000e-01: Error is 1.497236e+04 with 250 iterations
+-3.000000e-01: Error is 1.357942e+04 with 250 iterations
 2.000000e-01: Error is 1.390399e+04 with 250 iterations
--2.000000e-01: Error is 1.363005e+04 with 250 iterations
-5.001000e-01: Error is 1.422565e+04 with 250 iterations
--7.000000e-01: Error is 4.045187e+04 with 20 iterations
--8.000000e-01: Error is 3.636131e+04 with 25 iterations
 -4.000000e-01: Error is 1.353002e+04 with 250 iterations
--6.000000e-01: Error is 3.277640e+04 with 32 iterations
--9.000000e-01: Error is 3.628360e+04 with 25 iterations
 -7.000000e-01: Error is 3.645185e+04 with 25 iterations
--8.000000e-01: Error is 3.254942e+04 with 32 iterations
-6.000000e-01: Error is 1.151352e+04 with 400 iterations
--6.000000e-01: Error is 2.976527e+04 with 40 iterations
--3.000000e-01: Error is 1.096599e+04 with 400 iterations
--1.000000e-01: Error is 1.104104e+04 with 400 iterations
--9.000000e-01: Error is 3.247811e+04 with 32 iterations
--4.999000e-01: Error is 1.086125e+04 with 400 iterations
-3.000000e-01: Error is 1.125638e+04 with 400 iterations
-7.000000e-01: Error is 1.163845e+04 with 400 iterations
+-8.000000e-01: Error is 3.636131e+04 with 25 iterations
+-9.000000e-01: Error is 3.628360e+04 with 25 iterations
+-6.000000e-01: Error is 3.277640e+04 with 32 iterations
 -7.000000e-01: Error is 3.263552e+04 with 32 iterations
-9.000000e-01: Error is 1.193251e+04 with 400 iterations
-2.000000e-01: Error is 1.119287e+04 with 400 iterations
--8.000000e-01: Error is 2.955147e+04 with 40 iterations
-5.001000e-01: Error is 1.141647e+04 with 400 iterations
-8.000000e-01: Error is 1.175736e+04 with 400 iterations
-4.000000e-01: Error is 1.133196e+04 with 400 iterations
-1.000000e-01: Error is 1.113492e+04 with 400 iterations
+-8.000000e-01: Error is 3.254942e+04 with 32 iterations
+-9.000000e-01: Error is 3.247811e+04 with 32 iterations
+-6.000000e-01: Error is 2.976527e+04 with 40 iterations
+-4.999000e-01: Error is 1.086125e+04 with 400 iterations
+7.000000e-01: Error is 1.163845e+04 with 400 iterations
 -2.000000e-01: Error is 1.100216e+04 with 400 iterations
+3.000000e-01: Error is 1.125638e+04 with 400 iterations
+-1.000000e-01: Error is 1.104104e+04 with 400 iterations
+6.000000e-01: Error is 1.151352e+04 with 400 iterations
+1.000000e-01: Error is 1.113492e+04 with 400 iterations
+9.000000e-01: Error is 1.193251e+04 with 400 iterations
+8.000000e-01: Error is 1.175736e+04 with 400 iterations
+2.000000e-01: Error is 1.119287e+04 with 400 iterations
+4.000000e-01: Error is 1.133196e+04 with 400 iterations
 -4.000000e-01: Error is 1.092670e+04 with 400 iterations
--6.000000e-01: Error is 2.706761e+04 with 50 iterations
--9.000000e-01: Error is 2.948474e+04 with 40 iterations
-6.000000e-01: Error is 1.029337e+04 with 500 iterations
--3.000000e-01: Error is 9.856441e+03 with 500 iterations
-7.000000e-01: Error is 1.039359e+04 with 500 iterations
--4.999000e-01: Error is 9.768485e+03 with 500 iterations
--1.000000e-01: Error is 9.917231e+03 with 500 iterations
+5.001000e-01: Error is 1.141647e+04 with 400 iterations
+-3.000000e-01: Error is 1.096599e+04 with 400 iterations
 -7.000000e-01: Error is 2.963378e+04 with 40 iterations
-3.000000e-01: Error is 1.008843e+04 with 500 iterations
-2.000000e-01: Error is 1.003746e+04 with 500 iterations
--8.000000e-01: Error is 2.687437e+04 with 50 iterations
-9.000000e-01: Error is 1.062576e+04 with 500 iterations
-4.000000e-01: Error is 1.014905e+04 with 500 iterations
-5.001000e-01: Error is 1.021607e+04 with 500 iterations
-1.000000e-01: Error is 9.991428e+03 with 500 iterations
+-8.000000e-01: Error is 2.955147e+04 with 40 iterations
+-9.000000e-01: Error is 2.948474e+04 with 40 iterations
+-6.000000e-01: Error is 2.706761e+04 with 50 iterations
+-4.999000e-01: Error is 9.768485e+03 with 500 iterations
+7.000000e-01: Error is 1.039359e+04 with 500 iterations
 -2.000000e-01: Error is 9.885486e+03 with 500 iterations
+3.000000e-01: Error is 1.008843e+04 with 500 iterations
+9.000000e-01: Error is 1.062576e+04 with 500 iterations
+6.000000e-01: Error is 1.029337e+04 with 500 iterations
+-1.000000e-01: Error is 9.917231e+03 with 500 iterations
 8.000000e-01: Error is 1.048642e+04 with 500 iterations
+4.000000e-01: Error is 1.014905e+04 with 500 iterations
+1.000000e-01: Error is 9.991428e+03 with 500 iterations
 -4.000000e-01: Error is 9.822771e+03 with 500 iterations
--9.000000e-01: Error is 2.681611e+04 with 50 iterations
+2.000000e-01: Error is 1.003746e+04 with 500 iterations
+5.001000e-01: Error is 1.021607e+04 with 500 iterations
+-3.000000e-01: Error is 9.856441e+03 with 500 iterations
 -7.000000e-01: Error is 2.694781e+04 with 50 iterations
+-8.000000e-01: Error is 2.687437e+04 with 50 iterations
+-9.000000e-01: Error is 2.681611e+04 with 50 iterations
+-2.000000e-01: Error is 1.516344e+04 with 625 iterations
 -4.999000e-01: Error is 1.122799e+04 with 625 iterations
-6.000000e-01: Error is 1.174878e+04 with 625 iterations
 7.000000e-01: Error is 1.184542e+04 with 625 iterations
 3.000000e-01: Error is 1.155133e+04 with 625 iterations
--3.000000e-01: Error is 1.512004e+04 with 625 iterations
 -1.000000e-01: Error is 2.172534e+04 with 625 iterations
 9.000000e-01: Error is 1.206183e+04 with 625 iterations
-2.000000e-01: Error is 1.536727e+04 with 625 iterations
-4.000000e-01: Error is 1.161026e+04 with 625 iterations
-5.001000e-01: Error is 1.167451e+04 with 625 iterations
+6.000000e-01: Error is 1.174878e+04 with 625 iterations
 8.000000e-01: Error is 1.193040e+04 with 625 iterations
--2.000000e-01: Error is 1.516344e+04 with 625 iterations
+4.000000e-01: Error is 1.161026e+04 with 625 iterations
 1.000000e-01: Error is 1.530543e+04 with 625 iterations
 -4.000000e-01: Error is 1.128577e+04 with 625 iterations
+5.001000e-01: Error is 1.167451e+04 with 625 iterations
+-3.000000e-01: Error is 1.512004e+04 with 625 iterations
+2.000000e-01: Error is 1.536727e+04 with 625 iterations
 -6.000000e-01: Error is 2.216861e+04 with 80 iterations
-7.000000e-01: Error is 9.889425e+03 with 800 iterations
-6.000000e-01: Error is 9.837067e+03 with 800 iterations
 -4.999000e-01: Error is 9.551732e+03 with 800 iterations
--3.000000e-01: Error is 1.227078e+04 with 800 iterations
+-2.000000e-01: Error is 1.228904e+04 with 800 iterations
+7.000000e-01: Error is 9.889425e+03 with 800 iterations
 3.000000e-01: Error is 9.735282e+03 with 800 iterations
 -1.000000e-01: Error is 1.630509e+04 with 800 iterations
-2.000000e-01: Error is 1.235574e+04 with 800 iterations
 9.000000e-01: Error is 9.997748e+03 with 800 iterations
+6.000000e-01: Error is 9.837067e+03 with 800 iterations
+8.000000e-01: Error is 9.926863e+03 with 800 iterations
 4.000000e-01: Error is 9.766497e+03 with 800 iterations
 1.000000e-01: Error is 1.233446e+04 with 800 iterations
-5.001000e-01: Error is 9.799660e+03 with 800 iterations
-8.000000e-01: Error is 9.926863e+03 with 800 iterations
--8.000000e-01: Error is 2.201462e+04 with 80 iterations
--2.000000e-01: Error is 1.228904e+04 with 800 iterations
+2.000000e-01: Error is 1.235574e+04 with 800 iterations
 -4.000000e-01: Error is 9.590365e+03 with 800 iterations
--6.000000e-01: Error is 2.016536e+04 with 100 iterations
+5.001000e-01: Error is 9.799660e+03 with 800 iterations
+-3.000000e-01: Error is 1.227078e+04 with 800 iterations
 -7.000000e-01: Error is 2.207046e+04 with 80 iterations
+-8.000000e-01: Error is 2.201462e+04 with 80 iterations
+-6.000000e-01: Error is 2.016536e+04 with 100 iterations
 -9.000000e-01: Error is 2.197278e+04 with 80 iterations
-7.000000e-01: Error is 8.302317e+03 with 1000 iterations
+-2.000000e-01: Error is 1.011325e+04 with 1000 iterations
 -4.999000e-01: Error is 8.199349e+03 with 1000 iterations
-3.000000e-01: Error is 8.263686e+03 with 1000 iterations
-6.000000e-01: Error is 8.286327e+03 with 1000 iterations
-5.001000e-01: Error is 8.279679e+03 with 1000 iterations
-9.000000e-01: Error is 8.320368e+03 with 1000 iterations
--3.000000e-01: Error is 1.011448e+04 with 1000 iterations
+7.000000e-01: Error is 8.302317e+03 with 1000 iterations
 -1.000000e-01: Error is 1.252818e+04 with 1000 iterations
+3.000000e-01: Error is 8.263686e+03 with 1000 iterations
+9.000000e-01: Error is 8.320368e+03 with 1000 iterations
+6.000000e-01: Error is 8.286327e+03 with 1000 iterations
 8.000000e-01: Error is 8.302303e+03 with 1000 iterations
 4.000000e-01: Error is 8.271846e+03 with 1000 iterations
-2.000000e-01: Error is 1.007460e+04 with 1000 iterations
 1.000000e-01: Error is 1.008183e+04 with 1000 iterations
--8.000000e-01: Error is 2.002601e+04 with 100 iterations
--2.000000e-01: Error is 1.011325e+04 with 1000 iterations
+-3.000000e-01: Error is 1.011448e+04 with 1000 iterations
+2.000000e-01: Error is 1.007460e+04 with 1000 iterations
+5.001000e-01: Error is 8.279679e+03 with 1000 iterations
 -4.000000e-01: Error is 8.222897e+03 with 1000 iterations
 -7.000000e-01: Error is 2.007538e+04 with 100 iterations
--6.000000e-01: Error is 1.834097e+04 with 125 iterations
+-8.000000e-01: Error is 2.002601e+04 with 100 iterations
 -9.000000e-01: Error is 1.999009e+04 with 100 iterations
-7.000000e-01: Error is 6.850169e+03 with 1250 iterations
+-6.000000e-01: Error is 1.834097e+04 with 125 iterations
 -4.999000e-01: Error is 6.962898e+03 with 1250 iterations
-5.001000e-01: Error is 6.886392e+03 with 1250 iterations
+-2.000000e-01: Error is 8.210926e+03 with 1250 iterations
+7.000000e-01: Error is 6.850169e+03 with 1250 iterations
 3.000000e-01: Error is 6.917524e+03 with 1250 iterations
-9.000000e-01: Error is 6.790726e+03 with 1250 iterations
-6.000000e-01: Error is 6.866755e+03 with 1250 iterations
 -1.000000e-01: Error is 9.433518e+03 with 1250 iterations
+6.000000e-01: Error is 6.866755e+03 with 1250 iterations
+9.000000e-01: Error is 6.790726e+03 with 1250 iterations
 8.000000e-01: Error is 6.814909e+03 with 1250 iterations
 4.000000e-01: Error is 6.903680e+03 with 1250 iterations
--3.000000e-01: Error is 8.229897e+03 with 1250 iterations
 1.000000e-01: Error is 8.116595e+03 with 1250 iterations
+-3.000000e-01: Error is 8.229897e+03 with 1250 iterations
 2.000000e-01: Error is 8.080072e+03 with 1250 iterations
--8.000000e-01: Error is 1.821457e+04 with 125 iterations
 -4.000000e-01: Error is 6.972763e+03 with 1250 iterations
--2.000000e-01: Error is 8.210926e+03 with 1250 iterations
+5.001000e-01: Error is 6.886392e+03 with 1250 iterations
 -7.000000e-01: Error is 1.825815e+04 with 125 iterations
+-8.000000e-01: Error is 1.821457e+04 with 125 iterations
 -9.000000e-01: Error is 1.818366e+04 with 125 iterations
 -6.000000e-01: Error is 1.650731e+04 with 160 iterations
 -7.000000e-01: Error is 1.643180e+04 with 160 iterations
 -8.000000e-01: Error is 1.639346e+04 with 160 iterations
 -9.000000e-01: Error is 1.636753e+04 with 160 iterations
 -6.000000e-01: Error is 1.499697e+04 with 200 iterations
-7.000000e-01: Error is 4.195186e+03 with 2000 iterations
-9.000000e-01: Error is 4.018489e+03 with 2000 iterations
 -4.999000e-01: Error is 4.671991e+03 with 2000 iterations
-6.000000e-01: Error is 4.262957e+03 with 2000 iterations
-8.000000e-01: Error is 4.108564e+03 with 2000 iterations
--1.000000e-01: Error is 4.603044e+03 with 2000 iterations
-5.001000e-01: Error is 4.326476e+03 with 2000 iterations
-4.000000e-01: Error is 4.383056e+03 with 2000 iterations
-3.000000e-01: Error is 4.431446e+03 with 2000 iterations
-2.000000e-01: Error is 4.643420e+03 with 2000 iterations
+7.000000e-01: Error is 4.195186e+03 with 2000 iterations
 -2.000000e-01: Error is 4.904897e+03 with 2000 iterations
--4.000000e-01: Error is 4.658433e+03 with 2000 iterations
--3.000000e-01: Error is 4.950787e+03 with 2000 iterations
--7.000000e-01: Error is 1.492775e+04 with 200 iterations
+-1.000000e-01: Error is 4.603044e+03 with 2000 iterations
+3.000000e-01: Error is 4.431446e+03 with 2000 iterations
+6.000000e-01: Error is 4.262957e+03 with 2000 iterations
+9.000000e-01: Error is 4.018489e+03 with 2000 iterations
+8.000000e-01: Error is 4.108564e+03 with 2000 iterations
+4.000000e-01: Error is 4.383056e+03 with 2000 iterations
 1.000000e-01: Error is 4.717021e+03 with 2000 iterations
+2.000000e-01: Error is 4.643420e+03 with 2000 iterations
+-3.000000e-01: Error is 4.950787e+03 with 2000 iterations
+-4.000000e-01: Error is 4.658433e+03 with 2000 iterations
+5.001000e-01: Error is 4.326476e+03 with 2000 iterations
+-7.000000e-01: Error is 1.492775e+04 with 200 iterations
 -8.000000e-01: Error is 1.489367e+04 with 200 iterations
 -9.000000e-01: Error is 1.487169e+04 with 200 iterations
 -6.000000e-01: Error is 1.360867e+04 with 250 iterations
-9.000000e-01: Error is 2.936092e+03 with 2500 iterations
+-4.999000e-01: Error is 3.728073e+03 with 2500 iterations
+-2.000000e-01: Error is 3.643252e+03 with 2500 iterations
 7.000000e-01: Error is 3.138580e+03 with 2500 iterations
+-1.000000e-01: Error is 3.013102e+03 with 2500 iterations
+3.000000e-01: Error is 3.422386e+03 with 2500 iterations
 6.000000e-01: Error is 3.219791e+03 with 2500 iterations
+9.000000e-01: Error is 2.936092e+03 with 2500 iterations
+4.000000e-01: Error is 3.362406e+03 with 2500 iterations
 8.000000e-01: Error is 3.041307e+03 with 2500 iterations
 2.000000e-01: Error is 3.357771e+03 with 2500 iterations
--4.999000e-01: Error is 3.728073e+03 with 2500 iterations
-4.000000e-01: Error is 3.362406e+03 with 2500 iterations
--2.000000e-01: Error is 3.643252e+03 with 2500 iterations
--1.000000e-01: Error is 3.013102e+03 with 2500 iterations
-5.001000e-01: Error is 3.295761e+03 with 2500 iterations
--4.000000e-01: Error is 3.706185e+03 with 2500 iterations
-3.000000e-01: Error is 3.422386e+03 with 2500 iterations
--7.000000e-01: Error is 1.354514e+04 with 250 iterations
--3.000000e-01: Error is 3.697368e+03 with 2500 iterations
 1.000000e-01: Error is 3.437078e+03 with 2500 iterations
+-3.000000e-01: Error is 3.697368e+03 with 2500 iterations
+-4.000000e-01: Error is 3.706185e+03 with 2500 iterations
+5.001000e-01: Error is 3.295761e+03 with 2500 iterations
+-7.000000e-01: Error is 1.354514e+04 with 250 iterations
 -8.000000e-01: Error is 1.351541e+04 with 250 iterations
 -9.000000e-01: Error is 1.349700e+04 with 250 iterations
-9.000000e-01: Error is 2.025745e+03 with 3125 iterations
-7.000000e-01: Error is 2.232218e+03 with 3125 iterations
-8.000000e-01: Error is 2.132020e+03 with 3125 iterations
 -4.999000e-01: Error is 2.883654e+03 with 3125 iterations
 -2.000000e-01: Error is 2.583943e+03 with 3125 iterations
-6.000000e-01: Error is 2.317942e+03 with 3125 iterations
-4.000000e-01: Error is 2.470371e+03 with 3125 iterations
--3.000000e-01: Error is 2.640010e+03 with 3125 iterations
-2.000000e-01: Error is 2.299183e+03 with 3125 iterations
+7.000000e-01: Error is 2.232218e+03 with 3125 iterations
 -1.000000e-01: Error is 1.833324e+03 with 3125 iterations
--4.000000e-01: Error is 2.854899e+03 with 3125 iterations
-5.001000e-01: Error is 2.398854e+03 with 3125 iterations
 3.000000e-01: Error is 2.535688e+03 with 3125 iterations
+6.000000e-01: Error is 2.317942e+03 with 3125 iterations
+9.000000e-01: Error is 2.025745e+03 with 3125 iterations
+4.000000e-01: Error is 2.470371e+03 with 3125 iterations
+8.000000e-01: Error is 2.132020e+03 with 3125 iterations
+2.000000e-01: Error is 2.299183e+03 with 3125 iterations
 1.000000e-01: Error is 2.377517e+03 with 3125 iterations
+-4.000000e-01: Error is 2.854899e+03 with 3125 iterations
+-3.000000e-01: Error is 2.640010e+03 with 3125 iterations
+5.001000e-01: Error is 2.398854e+03 with 3125 iterations
 -6.000000e-01: Error is 1.101693e+04 with 400 iterations
-9.000000e-01: Error is 1.234148e+03 with 4000 iterations
-7.000000e-01: Error is 1.420735e+03 with 4000 iterations
-8.000000e-01: Error is 1.330021e+03 with 4000 iterations
-6.000000e-01: Error is 1.502476e+03 with 4000 iterations
--2.000000e-01: Error is 1.651196e+03 with 4000 iterations
 -4.999000e-01: Error is 2.073916e+03 with 4000 iterations
--4.000000e-01: Error is 2.042179e+03 with 4000 iterations
-3.000000e-01: Error is 1.713165e+03 with 4000 iterations
--3.000000e-01: Error is 1.703410e+03 with 4000 iterations
-5.001000e-01: Error is 1.578202e+03 with 4000 iterations
+7.000000e-01: Error is 1.420735e+03 with 4000 iterations
+-2.000000e-01: Error is 1.651196e+03 with 4000 iterations
 -1.000000e-01: Error is 9.477007e+02 with 4000 iterations
-1.000000e-01: Error is 1.464817e+03 with 4000 iterations
-2.000000e-01: Error is 1.395628e+03 with 4000 iterations
+3.000000e-01: Error is 1.713165e+03 with 4000 iterations
+6.000000e-01: Error is 1.502476e+03 with 4000 iterations
+9.000000e-01: Error is 1.234148e+03 with 4000 iterations
 4.000000e-01: Error is 1.648872e+03 with 4000 iterations
+8.000000e-01: Error is 1.330021e+03 with 4000 iterations
+2.000000e-01: Error is 1.395628e+03 with 4000 iterations
+1.000000e-01: Error is 1.464817e+03 with 4000 iterations
+-4.000000e-01: Error is 2.042179e+03 with 4000 iterations
+-3.000000e-01: Error is 1.703410e+03 with 4000 iterations
 -7.000000e-01: Error is 1.096552e+04 with 400 iterations
+5.001000e-01: Error is 1.578202e+03 with 4000 iterations
 -8.000000e-01: Error is 1.094458e+04 with 400 iterations
 -6.000000e-01: Error is 9.915785e+03 with 500 iterations
 -9.000000e-01: Error is 1.093282e+04 with 400 iterations
-8.000000e-01: Error is 7.924591e+02 with 5000 iterations
-6.000000e-01: Error is 9.375604e+02 with 5000 iterations
-9.000000e-01: Error is 7.150664e+02 with 5000 iterations
-7.000000e-01: Error is 8.674611e+02 with 5000 iterations
 -4.999000e-01: Error is 1.464110e+03 with 5000 iterations
 -2.000000e-01: Error is 1.020427e+03 with 5000 iterations
--4.000000e-01: Error is 1.431794e+03 with 5000 iterations
-1.000000e-01: Error is 8.675589e+02 with 5000 iterations
+7.000000e-01: Error is 8.674611e+02 with 5000 iterations
 -1.000000e-01: Error is 4.601251e+02 with 5000 iterations
--3.000000e-01: Error is 1.064731e+03 with 5000 iterations
-5.001000e-01: Error is 1.003005e+03 with 5000 iterations
 3.000000e-01: Error is 1.121816e+03 with 5000 iterations
--7.000000e-01: Error is 9.870761e+03 with 500 iterations
+6.000000e-01: Error is 9.375604e+02 with 5000 iterations
+9.000000e-01: Error is 7.150664e+02 with 5000 iterations
 4.000000e-01: Error is 1.064569e+03 with 5000 iterations
+8.000000e-01: Error is 7.924591e+02 with 5000 iterations
 2.000000e-01: Error is 8.121889e+02 with 5000 iterations
--6.000000e-01: Error is 1.140629e+04 with 625 iterations
+1.000000e-01: Error is 8.675589e+02 with 5000 iterations
+-4.000000e-01: Error is 1.431794e+03 with 5000 iterations
+-3.000000e-01: Error is 1.064731e+03 with 5000 iterations
+-7.000000e-01: Error is 9.870761e+03 with 500 iterations
+5.001000e-01: Error is 1.003005e+03 with 5000 iterations
 -8.000000e-01: Error is 9.853197e+03 with 500 iterations
+-6.000000e-01: Error is 1.140629e+04 with 625 iterations
 -9.000000e-01: Error is 9.844825e+03 with 500 iterations
-9.000000e-01: Error is 3.693909e+02 with 6250 iterations
-7.000000e-01: Error is 4.786630e+02 with 6250 iterations
-8.000000e-01: Error is 4.243277e+02 with 6250 iterations
-6.000000e-01: Error is 5.309863e+02 with 6250 iterations
--2.000000e-01: Error is 5.744610e+02 with 6250 iterations
--4.000000e-01: Error is 9.433869e+02 with 6250 iterations
-1.000000e-01: Error is 4.622980e+02 with 6250 iterations
--1.000000e-01: Error is 1.910208e+02 with 6250 iterations
 -4.999000e-01: Error is 9.737572e+02 with 6250 iterations
-5.001000e-01: Error is 5.818523e+02 with 6250 iterations
-4.000000e-01: Error is 6.309421e+02 with 6250 iterations
+-2.000000e-01: Error is 5.744610e+02 with 6250 iterations
+7.000000e-01: Error is 4.786630e+02 with 6250 iterations
+-1.000000e-01: Error is 1.910208e+02 with 6250 iterations
 3.000000e-01: Error is 6.773620e+02 with 6250 iterations
+6.000000e-01: Error is 5.309863e+02 with 6250 iterations
+9.000000e-01: Error is 3.693909e+02 with 6250 iterations
+4.000000e-01: Error is 6.309421e+02 with 6250 iterations
+8.000000e-01: Error is 4.243277e+02 with 6250 iterations
+2.000000e-01: Error is 4.235398e+02 with 6250 iterations
+1.000000e-01: Error is 4.622980e+02 with 6250 iterations
+-4.000000e-01: Error is 9.433869e+02 with 6250 iterations
 -3.000000e-01: Error is 6.086440e+02 with 6250 iterations
 -7.000000e-01: Error is 1.135398e+04 with 625 iterations
-2.000000e-01: Error is 4.235398e+02 with 6250 iterations
+5.001000e-01: Error is 5.818523e+02 with 6250 iterations
 -8.000000e-01: Error is 1.133518e+04 with 625 iterations
--6.000000e-01: Error is 9.716097e+03 with 800 iterations
 -9.000000e-01: Error is 1.132625e+04 with 625 iterations
+-6.000000e-01: Error is 9.716097e+03 with 800 iterations
 -7.000000e-01: Error is 9.676481e+03 with 800 iterations
--6.000000e-01: Error is 8.350758e+03 with 1000 iterations
 -8.000000e-01: Error is 9.665875e+03 with 800 iterations
+-6.000000e-01: Error is 8.350758e+03 with 1000 iterations
 -9.000000e-01: Error is 9.663813e+03 with 800 iterations
-9.000000e-01: Error is 5.474062e+01 with 10000 iterations
-8.000000e-01: Error is 7.008555e+01 with 10000 iterations
-7.000000e-01: Error is 8.700841e+01 with 10000 iterations
-6.000000e-01: Error is 1.049624e+02 with 10000 iterations
 -4.999000e-01: Error is 3.164108e+02 with 10000 iterations
+-2.000000e-01: Error is 1.125827e+02 with 10000 iterations
+7.000000e-01: Error is 8.700841e+01 with 10000 iterations
+-1.000000e-01: Error is 1.475688e+01 with 10000 iterations
+3.000000e-01: Error is 1.631032e+02 with 10000 iterations
+6.000000e-01: Error is 1.049624e+02 with 10000 iterations
+9.000000e-01: Error is 5.474062e+01 with 10000 iterations
+4.000000e-01: Error is 1.431071e+02 with 10000 iterations
+2.000000e-01: Error is 6.572495e+01 with 10000 iterations
+8.000000e-01: Error is 7.008555e+01 with 10000 iterations
+-7.000000e-01: Error is 8.322275e+03 with 1000 iterations
 -4.000000e-01: Error is 2.980380e+02 with 10000 iterations
 1.000000e-01: Error is 7.673283e+01 with 10000 iterations
--1.000000e-01: Error is 1.475688e+01 with 10000 iterations
-4.000000e-01: Error is 1.431071e+02 with 10000 iterations
 -3.000000e-01: Error is 1.247422e+02 with 10000 iterations
--2.000000e-01: Error is 1.125827e+02 with 10000 iterations
-3.000000e-01: Error is 1.631032e+02 with 10000 iterations
-2.000000e-01: Error is 6.572495e+01 with 10000 iterations
 5.001000e-01: Error is 1.237099e+02 with 10000 iterations
--7.000000e-01: Error is 8.322275e+03 with 1000 iterations
 -8.000000e-01: Error is 8.320173e+03 with 1000 iterations
 -6.000000e-01: Error is 7.102345e+03 with 1250 iterations
 -9.000000e-01: Error is 8.323753e+03 with 1000 iterations
-9.000000e-01: Error is 1.585141e+01 with 12500 iterations
-8.000000e-01: Error is 2.184864e+01 with 12500 iterations
-7.000000e-01: Error is 2.895705e+01 with 12500 iterations
-6.000000e-01: Error is 3.695135e+01 with 12500 iterations
 -4.999000e-01: Error is 1.560353e+02 with 12500 iterations
--4.000000e-01: Error is 1.442953e+02 with 12500 iterations
-1.000000e-01: Error is 2.397731e+01 with 12500 iterations
+-2.000000e-01: Error is 3.941536e+01 with 12500 iterations
+7.000000e-01: Error is 2.895705e+01 with 12500 iterations
 -1.000000e-01: Error is 2.744965e+00 with 12500 iterations
 3.000000e-01: Error is 6.556723e+01 with 12500 iterations
--3.000000e-01: Error is 4.508058e+01 with 12500 iterations
-5.001000e-01: Error is 4.581561e+01 with 12500 iterations
+6.000000e-01: Error is 3.695135e+01 with 12500 iterations
+9.000000e-01: Error is 1.585141e+01 with 12500 iterations
 4.000000e-01: Error is 5.533809e+01 with 12500 iterations
 2.000000e-01: Error is 1.967550e+01 with 12500 iterations
--2.000000e-01: Error is 3.941536e+01 with 12500 iterations
+8.000000e-01: Error is 2.184864e+01 with 12500 iterations
 -7.000000e-01: Error is 7.085282e+03 with 1250 iterations
+1.000000e-01: Error is 2.397731e+01 with 12500 iterations
+-4.000000e-01: Error is 1.442953e+02 with 12500 iterations
+-3.000000e-01: Error is 4.508058e+01 with 12500 iterations
+5.001000e-01: Error is 4.581561e+01 with 12500 iterations
 -8.000000e-01: Error is 7.089788e+03 with 1250 iterations
 -9.000000e-01: Error is 7.099448e+03 with 1250 iterations
 -6.000000e-01: Error is 4.787502e+03 with 2000 iterations
-9.000000e-01: Error is 4.250054e-01 with 20000 iterations
-8.000000e-01: Error is 7.275469e-01 with 20000 iterations
-7.000000e-01: Error is 1.153173e+00 with 20000 iterations
-6.000000e-01: Error is 1.740788e+00 with 20000 iterations
--3.000000e-01: Error is 2.285655e+00 with 20000 iterations
--4.000000e-01: Error is 1.780846e+01 with 20000 iterations
 -4.999000e-01: Error is 2.037485e+01 with 20000 iterations
-1.000000e-01: Error is 7.647559e-01 with 20000 iterations
+7.000000e-01: Error is 1.153173e+00 with 20000 iterations
+-2.000000e-01: Error is 1.778744e+00 with 20000 iterations
 -1.000000e-01: Error is 1.829244e-02 with 20000 iterations
 3.000000e-01: Error is 4.544969e+00 with 20000 iterations
-4.000000e-01: Error is 3.416186e+00 with 20000 iterations
+6.000000e-01: Error is 1.740788e+00 with 20000 iterations
+9.000000e-01: Error is 4.250054e-01 with 20000 iterations
 -7.000000e-01: Error is 4.793443e+03 with 2000 iterations
--2.000000e-01: Error is 1.778744e+00 with 20000 iterations
-5.001000e-01: Error is 2.488035e+00 with 20000 iterations
+4.000000e-01: Error is 3.416186e+00 with 20000 iterations
 2.000000e-01: Error is 5.555483e-01 with 20000 iterations
+8.000000e-01: Error is 7.275469e-01 with 20000 iterations
+1.000000e-01: Error is 7.647559e-01 with 20000 iterations
+-4.000000e-01: Error is 1.780846e+01 with 20000 iterations
+-3.000000e-01: Error is 2.285655e+00 with 20000 iterations
+5.001000e-01: Error is 2.488035e+00 with 20000 iterations
 -8.000000e-01: Error is 4.812211e+03 with 2000 iterations
 -6.000000e-01: Error is 3.832287e+03 with 2500 iterations
 -9.000000e-01: Error is 4.833057e+03 with 2000 iterations
-9.000000e-01: Error is 4.600920e-02 with 25000 iterations
-8.000000e-01: Error is 8.303600e-02 with 25000 iterations
-7.000000e-01: Error is 1.440661e-01 with 25000 iterations
--3.000000e-01: Error is 3.148691e-01 with 25000 iterations
-6.000000e-01: Error is 2.404535e-01 with 25000 iterations
-1.000000e-01: Error is 7.868028e-02 with 25000 iterations
-3.000000e-01: Error is 7.917443e-01 with 25000 iterations
--4.000000e-01: Error is 4.528034e+00 with 25000 iterations
 -4.999000e-01: Error is 5.415909e+00 with 25000 iterations
--1.000000e-01: Error is 6.716816e-04 with 25000 iterations
--7.000000e-01: Error is 3.847275e+03 with 2500 iterations
-5.001000e-01: Error is 3.666826e-01 with 25000 iterations
-4.000000e-01: Error is 5.628982e-01 with 25000 iterations
 -2.000000e-01: Error is 2.331995e-01 with 25000 iterations
+7.000000e-01: Error is 1.440661e-01 with 25000 iterations
+-1.000000e-01: Error is 6.716816e-04 with 25000 iterations
+3.000000e-01: Error is 7.917443e-01 with 25000 iterations
+6.000000e-01: Error is 2.404535e-01 with 25000 iterations
+-7.000000e-01: Error is 3.847275e+03 with 2500 iterations
+9.000000e-01: Error is 4.600920e-02 with 25000 iterations
+4.000000e-01: Error is 5.628982e-01 with 25000 iterations
 2.000000e-01: Error is 5.481950e-02 with 25000 iterations
+8.000000e-01: Error is 8.303600e-02 with 25000 iterations
+-4.000000e-01: Error is 4.528034e+00 with 25000 iterations
+1.000000e-01: Error is 7.868028e-02 with 25000 iterations
+-3.000000e-01: Error is 3.148691e-01 with 25000 iterations
+5.001000e-01: Error is 3.666826e-01 with 25000 iterations
 -8.000000e-01: Error is 3.870854e+03 with 2500 iterations
 -6.000000e-01: Error is 2.974744e+03 with 3125 iterations
 -9.000000e-01: Error is 3.896695e+03 with 2500 iterations
 -7.000000e-01: Error is 2.996970e+03 with 3125 iterations
 -8.000000e-01: Error is 3.024634e+03 with 3125 iterations
--6.000000e-01: Error is 2.150290e+03 with 4000 iterations
 -9.000000e-01: Error is 3.053442e+03 with 3125 iterations
+-6.000000e-01: Error is 2.150290e+03 with 4000 iterations
 -1.000000e-01: Converged with error equal to 9.998107e-07 in 35002 iterations
 -7.000000e-01: Error is 2.178437e+03 with 4000 iterations
 -8.000000e-01: Error is 2.208584e+03 with 4000 iterations
@@ -697,36 +698,36 @@ Connected to parallel pool with 18 workers.
 -9.000000e-01: Error is 2.238019e+03 with 4000 iterations
 9.000000e-01: Converged with error equal to 9.998979e-07 in 48088 iterations
 2.000000e-01: Converged with error equal to 9.999696e-07 in 48731 iterations
-8.000000e-01: Error is 1.679043e-06 with 50000 iterations
 -7.000000e-01: Error is 1.556060e+03 with 5000 iterations
-7.000000e-01: Error is 4.728251e-06 with 50000 iterations
--3.000000e-01: Error is 1.791165e-05 with 50000 iterations
-3.000000e-01: Error is 1.818776e-04 with 50000 iterations
-1.000000e-01: Error is 1.136843e-06 with 50000 iterations
--4.000000e-01: Error is 5.353554e-03 with 50000 iterations
-5.001000e-01: Error is 3.607480e-05 with 50000 iterations
-1.000000e-01: Converged with error equal to 9.999539e-07 in 50288 iterations
 -4.999000e-01: Error is 8.477495e-03 with 50000 iterations
+-2.000000e-01: Error is 1.317921e-05 with 50000 iterations
+7.000000e-01: Error is 4.728251e-06 with 50000 iterations
+3.000000e-01: Error is 1.818776e-04 with 50000 iterations
 6.000000e-01: Error is 1.374580e-05 with 50000 iterations
 4.000000e-01: Error is 7.726208e-05 with 50000 iterations
--2.000000e-01: Error is 1.317921e-05 with 50000 iterations
-8.000000e-01: Converged with error equal to 9.995664e-07 in 51178 iterations
+8.000000e-01: Error is 1.679043e-06 with 50000 iterations
+-4.000000e-01: Error is 5.353554e-03 with 50000 iterations
+1.000000e-01: Error is 1.136843e-06 with 50000 iterations
+-3.000000e-01: Error is 1.791165e-05 with 50000 iterations
+1.000000e-01: Converged with error equal to 9.999539e-07 in 50288 iterations
 -8.000000e-01: Error is 1.586033e+03 with 5000 iterations
+5.001000e-01: Error is 3.607480e-05 with 50000 iterations
 -6.000000e-01: Error is 1.022268e+03 with 6250 iterations
+8.000000e-01: Converged with error equal to 9.995664e-07 in 51178 iterations
 -9.000000e-01: Error is 1.615453e+03 with 5000 iterations
 7.000000e-01: Converged with error equal to 9.996483e-07 in 53717 iterations
+-2.000000e-01: Converged with error equal to 9.998508e-07 in 56563 iterations
 6.000000e-01: Converged with error equal to 9.997286e-07 in 56618 iterations
 -3.000000e-01: Converged with error equal to 9.997929e-07 in 57487 iterations
--2.000000e-01: Converged with error equal to 9.998508e-07 in 56563 iterations
 5.001000e-01: Converged with error equal to 9.998826e-07 in 59585 iterations
 -7.000000e-01: Error is 1.049691e+03 with 6250 iterations
 4.000000e-01: Converged with error equal to 9.998319e-07 in 62124 iterations
 -8.000000e-01: Error is 1.077473e+03 with 6250 iterations
--9.000000e-01: Error is 1.104772e+03 with 6250 iterations
 3.000000e-01: Converged with error equal to 9.999206e-07 in 65168 iterations
+-9.000000e-01: Error is 1.104772e+03 with 6250 iterations
 -6.000000e-01: Error is 3.392484e+02 with 10000 iterations
--4.000000e-01: Converged with error equal to 9.998162e-07 in 82315 iterations
 -4.999000e-01: Converged with error equal to 9.998617e-07 in 85301 iterations
+-4.000000e-01: Converged with error equal to 9.998162e-07 in 82315 iterations
 -7.000000e-01: Error is 3.568986e+02 with 10000 iterations
 -6.000000e-01: Error is 1.699175e+02 with 12500 iterations
 -8.000000e-01: Error is 3.742871e+02 with 10000 iterations
@@ -735,8 +736,8 @@ Connected to parallel pool with 18 workers.
 -8.000000e-01: Error is 1.932239e+02 with 12500 iterations
 -9.000000e-01: Error is 2.048450e+02 with 12500 iterations
 -6.000000e-01: Error is 2.329285e+01 with 20000 iterations
--7.000000e-01: Error is 2.617270e+01 with 20000 iterations
 -6.000000e-01: Error is 6.441468e+00 with 25000 iterations
+-7.000000e-01: Error is 2.617270e+01 with 20000 iterations
 -8.000000e-01: Error is 2.925923e+01 with 20000 iterations
 -9.000000e-01: Error is 3.231879e+01 with 20000 iterations
 -7.000000e-01: Error is 7.487219e+00 with 25000 iterations
@@ -752,109 +753,109 @@ Connected to parallel pool with 18 workers.
 -9.000000e-01: Converged with error equal to 9.997859e-07 in 95582 iterations
  : Error is 8.205369e+05 with 1 iterations
  : Error is 1.436546e+07 with 2 iterations
- : Error is 8.204717e+05 with 1 iterations
- : Error is 1.436773e+07 with 2 iterations
- : Error is 8.204536e+05 with 1 iterations
- : Error is 1.436682e+07 with 2 iterations
  : Error is 3.608486e+06 with 4 iterations
  : Error is 1.837940e+06 with 5 iterations
- : Error is 3.611986e+06 with 4 iterations
- : Error is 1.832866e+06 with 5 iterations
+ : Error is 8.204536e+05 with 1 iterations
+ : Error is 1.436682e+07 with 2 iterations
  : Error is 3.606769e+06 with 4 iterations
- : Error is 1.834804e+06 with 5 iterations
+ : Error is 8.204717e+05 with 1 iterations
+ : Error is 1.436773e+07 with 2 iterations
+ : Error is 3.611986e+06 with 4 iterations
  : Error is 2.828202e+05 with 8 iterations
- : Error is 2.792081e+05 with 8 iterations
+ : Error is 1.834804e+06 with 5 iterations
  : Error is 2.809550e+05 with 8 iterations
+ : Error is 1.832866e+06 with 5 iterations
+ : Error is 2.792081e+05 with 8 iterations
  : Error is 1.117384e+05 with 10 iterations
- : Error is 1.036337e+05 with 10 iterations
  : Error is 1.092619e+05 with 10 iterations
+ : Error is 1.036337e+05 with 10 iterations
  : Error is 5.694484e+04 with 16 iterations
- : Error is 4.813041e+04 with 16 iterations
  : Error is 5.166214e+04 with 16 iterations
+ : Error is 4.813041e+04 with 16 iterations
  : Error is 5.188268e+04 with 20 iterations
- : Error is 4.323356e+04 with 20 iterations
  : Error is 4.670014e+04 with 20 iterations
+ : Error is 4.323356e+04 with 20 iterations
  : Error is 4.767204e+04 with 25 iterations
- : Error is 3.910542e+04 with 25 iterations
  : Error is 4.253785e+04 with 25 iterations
+ : Error is 3.910542e+04 with 25 iterations
  : Error is 4.364734e+04 with 32 iterations
- : Error is 3.521495e+04 with 32 iterations
  : Error is 3.861312e+04 with 32 iterations
+ : Error is 3.521495e+04 with 32 iterations
  : Error is 4.032468e+04 with 40 iterations
- : Error is 3.210087e+04 with 40 iterations
  : Error is 3.542485e+04 with 40 iterations
+ : Error is 3.210087e+04 with 40 iterations
  : Error is 3.725781e+04 with 50 iterations
- : Error is 2.927137e+04 with 50 iterations
  : Error is 3.251184e+04 with 50 iterations
+ : Error is 2.927137e+04 with 50 iterations
  : Error is 3.149248e+04 with 80 iterations
- : Error is 2.412039e+04 with 80 iterations
  : Error is 2.714778e+04 with 80 iterations
+ : Error is 2.412039e+04 with 80 iterations
  : Error is 2.901997e+04 with 100 iterations
- : Error is 2.200468e+04 with 100 iterations
  : Error is 2.490894e+04 with 100 iterations
+ : Error is 2.200468e+04 with 100 iterations
  : Error is 2.667761e+04 with 125 iterations
- : Error is 2.006856e+04 with 125 iterations
  : Error is 2.283388e+04 with 125 iterations
- : Error is 1.811047e+04 with 160 iterations
- : Error is 2.069984e+04 with 160 iterations
+ : Error is 2.006856e+04 with 125 iterations
  : Error is 2.420743e+04 with 160 iterations
- : Error is 1.648393e+04 with 200 iterations
- : Error is 1.889349e+04 with 200 iterations
+ : Error is 2.069984e+04 with 160 iterations
+ : Error is 1.811047e+04 with 160 iterations
  : Error is 2.205761e+04 with 200 iterations
+ : Error is 1.889349e+04 with 200 iterations
+ : Error is 1.648393e+04 with 200 iterations
  : Error is 1.996619e+04 with 250 iterations
  : Error is 1.497476e+04 with 250 iterations
  : Error is 1.718235e+04 with 250 iterations
- : Error is 1.210602e+04 with 400 iterations
  : Error is 1.569605e+04 with 400 iterations
+ : Error is 1.210602e+04 with 400 iterations
  : Error is 1.381682e+04 with 400 iterations
- : Error is 1.086108e+04 with 500 iterations
  : Error is 1.372427e+04 with 500 iterations
+ : Error is 1.086108e+04 with 500 iterations
  : Error is 1.230490e+04 with 500 iterations
- : Error is 1.657248e+04 with 625 iterations
  : Error is 1.179891e+04 with 625 iterations
+ : Error is 1.657248e+04 with 625 iterations
  : Error is 1.386434e+04 with 625 iterations
- : Error is 1.321674e+04 with 800 iterations
  : Error is 9.749798e+03 with 800 iterations
+ : Error is 1.321674e+04 with 800 iterations
  : Error is 1.136176e+04 with 800 iterations
- : Error is 1.064989e+04 with 1000 iterations
  : Error is 8.004035e+03 with 1000 iterations
+ : Error is 1.064989e+04 with 1000 iterations
  : Error is 9.308502e+03 with 1000 iterations
- : Error is 8.408135e+03 with 1250 iterations
  : Error is 6.397796e+03 with 1250 iterations
+ : Error is 8.408135e+03 with 1250 iterations
  : Error is 7.448040e+03 with 1250 iterations
- : Error is 4.617670e+03 with 2000 iterations
  : Error is 3.630767e+03 with 2000 iterations
+ : Error is 4.617670e+03 with 2000 iterations
  : Error is 4.218708e+03 with 2000 iterations
- : Error is 3.251689e+03 with 2500 iterations
  : Error is 2.653847e+03 with 2500 iterations
+ : Error is 3.251689e+03 with 2500 iterations
  : Error is 3.045064e+03 with 2500 iterations
+ : Error is 1.892240e+03 with 3125 iterations
  : Error is 2.167197e+03 with 3125 iterations
  : Error is 2.109836e+03 with 3125 iterations
- : Error is 1.892240e+03 with 3125 iterations
- : Error is 1.278074e+03 with 4000 iterations
  : Error is 1.269639e+03 with 4000 iterations
+ : Error is 1.278074e+03 with 4000 iterations
  : Error is 1.336405e+03 with 4000 iterations
+ : Error is 8.658753e+02 with 5000 iterations
  : Error is 7.289166e+02 with 5000 iterations
  : Error is 8.398637e+02 with 5000 iterations
- : Error is 8.658753e+02 with 5000 iterations
+ : Error is 5.755113e+02 with 6250 iterations
  : Error is 3.766349e+02 with 6250 iterations
  : Error is 5.015728e+02 with 6250 iterations
- : Error is 5.755113e+02 with 6250 iterations
+ : Error is 2.057265e+02 with 10000 iterations
  : Error is 6.161245e+01 with 10000 iterations
  : Error is 1.325716e+02 with 10000 iterations
- : Error is 2.057265e+02 with 10000 iterations
+ : Error is 1.108093e+02 with 12500 iterations
  : Error is 2.006091e+01 with 12500 iterations
  : Error is 5.951960e+01 with 12500 iterations
- : Error is 1.108093e+02 with 12500 iterations
+ : Error is 1.901741e+01 with 20000 iterations
  : Error is 8.449785e-01 with 20000 iterations
  : Error is 6.085335e+00 with 20000 iterations
- : Error is 1.901741e+01 with 20000 iterations
+ : Error is 6.112257e+00 with 25000 iterations
  : Error is 1.102579e-01 with 25000 iterations
  : Error is 1.379839e+00 with 25000 iterations
- : Error is 6.112257e+00 with 25000 iterations
+ : Error is 2.512447e-02 with 50000 iterations
  : Error is 2.589020e-06 with 50000 iterations
  : Error is 1.550195e-03 with 50000 iterations
- : Error is 2.512447e-02 with 50000 iterations
  : Converged with error equal to 9.999982e-07 in 52196 iterations
  : Converged with error equal to 9.999003e-07 in 74820 iterations
  : Converged with error equal to 9.999929e-07 in 93472 iterations
@@ -893,437 +894,408 @@ Connected to parallel pool with 18 workers.
  : Error is 1.055722e-02 with 20000 iterations
  : Error is 3.266243e-04 with 25000 iterations
  : Converged with error equal to 9.996185e-07 in 33340 iterations
-Starting parallel pool (parpool) using the 'Processes' profile ...
-IdleTimeout has been reached.
-Parallel pool using the 'Processes' profile is shutting down.
-27-Jun-2026 12:00:20: Connected to 3 of 18 parallel pool workers.
-
-[Warning: Failed to automatically create a parallel pool with the default parallel environment. Running serially on the client instead. Fallback
-to serial execution will be removed in a future release. Error details:
-
-Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('parallel.internal.parpool.getOrCreateCurrentPool', '/Applications/MATLAB_R2026a.app/toolbox/parallel/cluster/+parallel/+internal/+parpool/getOrCreateCurrentPool.m', 16)" style="font-weight:bold">parallel.internal.parpool.getOrCreateCurrentPool</a> (<a href="matlab: opentoline('/Applications/MATLAB_R2026a.app/toolbox/parallel/cluster/+parallel/+internal/+parpool/getOrCreateCurrentPool.m',16,0)">line 16</a>)
-Parallel pool failed to start with the following error. For more detailed information, validate the profile 'Processes' in the Cluster Profile
-Manager.
-
-Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('pctTryCreatePoolIfNecessary', '/Applications/MATLAB_R2026a.app/toolbox/parallel/cluster/cluster/pctTryCreatePoolIfNecessary.m', 20)" style="font-weight:bold">pctTryCreatePoolIfNecessary</a> (<a href="matlab: opentoline('/Applications/MATLAB_R2026a.app/toolbox/parallel/cluster/cluster/pctTryCreatePoolIfNecessary.m',20,0)">line 20</a>)
-    pool = parallel.internal.parpool.getOrCreateCurrentPool();
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('parallel_function', '/Applications/MATLAB_R2026a.app/toolbox/matlab/lang/parallel_function.m', 395)" style="font-weight:bold">parallel_function</a> (<a href="matlab: opentoline('/Applications/MATLAB_R2026a.app/toolbox/matlab/lang/parallel_function.m',395,0)">line 395</a>)
-    [isPoolRunning, pool] = pctTryCreatePoolIfNecessary();
-                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('main', '/Users/lucielu/Library/CloudStorage/Dropbox/TwoTrees_EGJL/EGJL_Replication/code/matlab/main.m', 186)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('/Users/lucielu/Library/CloudStorage/Dropbox/TwoTrees_EGJL/EGJL_Replication/code/matlab/main.m',186,0)">line 186</a>)
-parfor k=1:length(mlist)
-^
-Caused by:
-    Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('parallel.internal.pool.AbstractClusterPool>iStartClient', '/Applications/MATLAB_R2026a.app/toolbox/parallel/cluster/+parallel/+internal/+pool/@AbstractClusterPool/AbstractClusterPool.m', 812)" style="font-weight:bold">parallel.internal.pool.AbstractClusterPool>iStartClient</a> (<a href="matlab: opentoline('/Applications/MATLAB_R2026a.app/toolbox/parallel/cluster/+parallel/+internal/+pool/@AbstractClusterPool/AbstractClusterPool.m',812,0)">line 812</a>)
-    The parallel pool job errored with the following message: Timed out opening port localhost:27384.
-        Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('parallel.internal.pool.SpfWorkerSession/addBindEndpoint')" style="font-weight:bold">parallel.internal.pool.SpfWorkerSession/addBindEndpoint</a>
-        Timed out opening port localhost:27384.] 
  : Error is 9.438344e+06 with 1 iterations
  : Error is 2.609956e+07 with 2 iterations
  : Error is 6.508438e+06 with 4 iterations
  : Error is 3.289711e+06 with 5 iterations
- : Error is 4.651177e+05 with 8 iterations
- : Error is 1.312446e+05 with 10 iterations
- : Error is 6.914861e+04 with 16 iterations
- : Error is 6.323724e+04 with 20 iterations
- : Error is 5.854965e+04 with 25 iterations
- : Error is 5.419985e+04 with 32 iterations
- : Error is 5.061164e+04 with 40 iterations
- : Error is 4.725976e+04 with 50 iterations
- : Error is 4.079212e+04 with 80 iterations
- : Error is 3.792027e+04 with 100 iterations
- : Error is 3.512609e+04 with 125 iterations
- : Error is 3.208511e+04 with 160 iterations
- : Error is 2.934967e+04 with 200 iterations
- : Error is 2.660279e+04 with 250 iterations
- : Error is 2.072684e+04 with 400 iterations
- : Error is 1.790433e+04 with 500 iterations
- : Error is 3.284938e+04 with 625 iterations
- : Error is 1.808117e+04 with 800 iterations
- : Error is 9.660470e+03 with 1000 iterations
- : Error is 4.642233e+03 with 1250 iterations
- : Error is 6.287063e+02 with 2000 iterations
- : Error is 1.867833e+02 with 2500 iterations
- : Error is 4.816943e+01 with 3125 iterations
- : Error is 1.152356e+01 with 4000 iterations
- : Error is 4.278942e+00 with 5000 iterations
- : Error is 1.709005e+00 with 6250 iterations
- : Error is 1.375401e-01 with 10000 iterations
- : Error is 2.516803e-02 with 12500 iterations
- : Error is 1.373166e-04 with 20000 iterations
- : Error is 4.069476e-06 with 25000 iterations
- : Converged with error equal to 9.993465e-07 in 26990 iterations
  : Error is 9.437757e+06 with 1 iterations
  : Error is 2.610074e+07 with 2 iterations
  : Error is 6.504587e+06 with 4 iterations
- : Error is 3.283395e+06 with 5 iterations
- : Error is 4.508075e+05 with 8 iterations
- : Error is 1.377825e+05 with 10 iterations
- : Error is 5.851645e+04 with 16 iterations
- : Error is 5.273754e+04 with 20 iterations
- : Error is 4.814064e+04 with 25 iterations
- : Error is 4.394324e+04 with 32 iterations
- : Error is 4.061549e+04 with 40 iterations
- : Error is 3.756314e+04 with 50 iterations
- : Error is 3.188194e+04 with 80 iterations
- : Error is 2.947163e+04 with 100 iterations
- : Error is 2.720533e+04 with 125 iterations
- : Error is 2.483285e+04 with 160 iterations
- : Error is 2.278206e+04 with 200 iterations
- : Error is 2.079672e+04 with 250 iterations
- : Error is 1.674576e+04 with 400 iterations
- : Error is 1.485802e+04 with 500 iterations
- : Error is 3.038077e+04 with 625 iterations
- : Error is 1.969419e+04 with 800 iterations
- : Error is 1.263391e+04 with 1000 iterations
- : Error is 7.560186e+03 with 1250 iterations
- : Error is 1.876645e+03 with 2000 iterations
- : Error is 7.964656e+02 with 2500 iterations
- : Error is 2.873364e+02 with 3125 iterations
- : Error is 7.502007e+01 with 4000 iterations
- : Error is 1.865160e+01 with 5000 iterations
- : Error is 4.359972e+00 with 6250 iterations
- : Error is 2.177603e-01 with 10000 iterations
- : Error is 3.979814e-02 with 12500 iterations
- : Error is 2.159736e-04 with 20000 iterations
- : Error is 6.489817e-06 with 25000 iterations
- : Converged with error equal to 9.992994e-07 in 27664 iterations
  : Error is 9.437368e+06 with 1 iterations
  : Error is 2.610156e+07 with 2 iterations
  : Error is 6.513656e+06 with 4 iterations
+ : Error is 4.651177e+05 with 8 iterations
+ : Error is 3.283395e+06 with 5 iterations
+ : Error is 4.508075e+05 with 8 iterations
  : Error is 3.284995e+06 with 5 iterations
  : Error is 4.214825e+05 with 8 iterations
+ : Error is 1.312446e+05 with 10 iterations
+ : Error is 1.377825e+05 with 10 iterations
  : Error is 1.414172e+05 with 10 iterations
+ : Error is 6.914861e+04 with 16 iterations
+ : Error is 5.851645e+04 with 16 iterations
  : Error is 5.130030e+04 with 16 iterations
+ : Error is 6.323724e+04 with 20 iterations
+ : Error is 5.273754e+04 with 20 iterations
  : Error is 4.573142e+04 with 20 iterations
+ : Error is 5.854965e+04 with 25 iterations
+ : Error is 4.814064e+04 with 25 iterations
  : Error is 4.121357e+04 with 25 iterations
+ : Error is 5.419985e+04 with 32 iterations
+ : Error is 4.394324e+04 with 32 iterations
  : Error is 3.709104e+04 with 32 iterations
+ : Error is 5.061164e+04 with 40 iterations
+ : Error is 4.061549e+04 with 40 iterations
  : Error is 3.389375e+04 with 40 iterations
+ : Error is 4.725976e+04 with 50 iterations
+ : Error is 3.756314e+04 with 50 iterations
  : Error is 3.099904e+04 with 50 iterations
+ : Error is 4.079212e+04 with 80 iterations
+ : Error is 3.188194e+04 with 80 iterations
  : Error is 2.572404e+04 with 80 iterations
+ : Error is 3.792027e+04 with 100 iterations
+ : Error is 2.947163e+04 with 100 iterations
  : Error is 2.354960e+04 with 100 iterations
+ : Error is 3.512609e+04 with 125 iterations
+ : Error is 2.720533e+04 with 125 iterations
  : Error is 2.155266e+04 with 125 iterations
+ : Error is 3.208511e+04 with 160 iterations
+ : Error is 2.483285e+04 with 160 iterations
  : Error is 1.952141e+04 with 160 iterations
+ : Error is 2.934967e+04 with 200 iterations
+ : Error is 2.278206e+04 with 200 iterations
  : Error is 1.782272e+04 with 200 iterations
+ : Error is 2.660279e+04 with 250 iterations
+ : Error is 2.079672e+04 with 250 iterations
  : Error is 1.623371e+04 with 250 iterations
+ : Error is 2.072684e+04 with 400 iterations
+ : Error is 1.674576e+04 with 400 iterations
  : Error is 1.316781e+04 with 400 iterations
+ : Error is 1.790433e+04 with 500 iterations
+ : Error is 1.485802e+04 with 500 iterations
  : Error is 1.181422e+04 with 500 iterations
+ : Error is 3.284938e+04 with 625 iterations
+ : Error is 3.038077e+04 with 625 iterations
  : Error is 2.552633e+04 with 625 iterations
+ : Error is 1.808117e+04 with 800 iterations
+ : Error is 1.969419e+04 with 800 iterations
  : Error is 1.831664e+04 with 800 iterations
+ : Error is 9.660470e+03 with 1000 iterations
+ : Error is 1.263391e+04 with 1000 iterations
  : Error is 1.326508e+04 with 1000 iterations
+ : Error is 4.642233e+03 with 1250 iterations
  : Error is 9.234570e+03 with 1250 iterations
+ : Error is 7.560186e+03 with 1250 iterations
+ : Error is 6.287063e+02 with 2000 iterations
  : Error is 3.540944e+03 with 2000 iterations
+ : Error is 1.876645e+03 with 2000 iterations
+ : Error is 1.867833e+02 with 2500 iterations
  : Error is 1.975862e+03 with 2500 iterations
+ : Error is 7.964656e+02 with 2500 iterations
+ : Error is 4.816943e+01 with 3125 iterations
  : Error is 9.859410e+02 with 3125 iterations
+ : Error is 2.873364e+02 with 3125 iterations
+ : Error is 1.152356e+01 with 4000 iterations
  : Error is 3.876412e+02 with 4000 iterations
+ : Error is 7.502007e+01 with 4000 iterations
+ : Error is 4.278942e+00 with 5000 iterations
  : Error is 1.380892e+02 with 5000 iterations
+ : Error is 1.865160e+01 with 5000 iterations
+ : Error is 1.709005e+00 with 6250 iterations
  : Error is 3.926823e+01 with 6250 iterations
+ : Error is 4.359972e+00 with 6250 iterations
+ : Error is 1.375401e-01 with 10000 iterations
  : Error is 1.075588e+00 with 10000 iterations
+ : Error is 2.177603e-01 with 10000 iterations
+ : Error is 2.516803e-02 with 12500 iterations
  : Error is 1.158501e-01 with 12500 iterations
+ : Error is 3.979814e-02 with 12500 iterations
+ : Error is 1.373166e-04 with 20000 iterations
  : Error is 3.607635e-04 with 20000 iterations
+ : Error is 2.159736e-04 with 20000 iterations
+ : Error is 4.069476e-06 with 25000 iterations
+ : Converged with error equal to 9.993465e-07 in 26990 iterations
  : Error is 1.083501e-05 with 25000 iterations
+ : Error is 6.489817e-06 with 25000 iterations
+ : Converged with error equal to 9.992994e-07 in 27664 iterations
  : Converged with error equal to 9.996365e-07 in 28422 iterations
-Starting parallel pool (parpool) using the 'Processes' profile ...
-Parallel pool using the 'Processes' profile is shutting down.
-Connected to parallel pool with 18 workers.
- : Error is 7.742686e+05 with 1 iterations
- : Error is 1.353204e+07 with 2 iterations
- : Error is 8.519088e+05 with 1 iterations
- : Error is 1.491995e+07 with 2 iterations
- : Error is 7.468577e+05 with 1 iterations
- : Error is 1.300417e+07 with 2 iterations
- : Error is 8.586159e+05 with 1 iterations
- : Error is 1.508737e+07 with 2 iterations
  : Error is 8.263026e+05 with 1 iterations
+ : Error is 1.446391e+07 with 2 iterations
+ : Error is 3.637478e+06 with 4 iterations
  : Error is 7.904151e+05 with 1 iterations
  : Error is 1.378871e+07 with 2 iterations
- : Error is 3.417689e+06 with 4 iterations
- : Error is 8.922516e+05 with 1 iterations
- : Error is 1.568126e+07 with 2 iterations
  : Error is 8.205202e+05 with 1 iterations
  : Error is 1.436812e+07 with 2 iterations
+ : Error is 3.625530e+06 with 4 iterations
  : Error is 8.028893e+05 with 1 iterations
  : Error is 1.403416e+07 with 2 iterations
- : Error is 3.764883e+06 with 4 iterations
- : Error is 1.909751e+06 with 5 iterations
+ : Error is 3.544601e+06 with 4 iterations
+ : Error is 7.468577e+05 with 1 iterations
+ : Error is 1.300417e+07 with 2 iterations
  : Error is 3.284438e+06 with 4 iterations
- : Error is 1.667352e+06 with 5 iterations
+ : Error is 8.586159e+05 with 1 iterations
+ : Error is 1.508737e+07 with 2 iterations
  : Error is 3.794499e+06 with 4 iterations
- : Error is 1.930185e+06 with 5 iterations
- : Error is 1.446391e+07 with 2 iterations
+ : Error is 7.742686e+05 with 1 iterations
+ : Error is 1.353204e+07 with 2 iterations
+ : Error is 3.417689e+06 with 4 iterations
+ : Error is 8.519088e+05 with 1 iterations
+ : Error is 1.491995e+07 with 2 iterations
+ : Error is 3.764883e+06 with 4 iterations
+ : Error is 8.922516e+05 with 1 iterations
+ : Error is 1.568126e+07 with 2 iterations
+ : Error is 3.944260e+06 with 4 iterations
+ : Error is 1.850142e+06 with 5 iterations
  : Error is 3.479399e+06 with 4 iterations
  : Error is 1.764275e+06 with 5 iterations
- : Error is 1.735188e+06 with 5 iterations
- : Error is 3.944260e+06 with 4 iterations
- : Error is 2.006627e+06 with 5 iterations
- : Error is 3.625530e+06 with 4 iterations
  : Error is 1.838702e+06 with 5 iterations
- : Error is 3.544601e+06 with 4 iterations
  : Error is 1.799853e+06 with 5 iterations
- : Error is 2.902976e+05 with 8 iterations
- : Error is 3.637478e+06 with 4 iterations
- : Error is 1.850142e+06 with 5 iterations
- : Error is 2.644391e+05 with 8 iterations
+ : Error is 1.667352e+06 with 5 iterations
+ : Error is 1.930185e+06 with 5 iterations
+ : Error is 1.735188e+06 with 5 iterations
+ : Error is 1.909751e+06 with 5 iterations
+ : Error is 2.006627e+06 with 5 iterations
+ : Error is 2.887647e+05 with 8 iterations
+ : Error is 1.174109e+05 with 10 iterations
+ : Error is 2.684586e+05 with 8 iterations
+ : Error is 9.950086e+04 with 10 iterations
  : Error is 2.794108e+05 with 8 iterations
  : Error is 1.040619e+05 with 10 iterations
  : Error is 2.744735e+05 with 8 iterations
- : Error is 1.086388e+05 with 10 iterations
+ : Error is 1.024678e+05 with 10 iterations
  : Error is 2.540861e+05 with 8 iterations
+ : Error is 9.453166e+04 with 10 iterations
  : Error is 2.968733e+05 with 8 iterations
  : Error is 1.210062e+05 with 10 iterations
- : Error is 2.684586e+05 with 8 iterations
- : Error is 9.950086e+04 with 10 iterations
+ : Error is 2.644391e+05 with 8 iterations
  : Error is 9.847135e+04 with 10 iterations
+ : Error is 2.902976e+05 with 8 iterations
+ : Error is 1.086388e+05 with 10 iterations
  : Error is 3.025578e+05 with 8 iterations
- : Error is 1.024678e+05 with 10 iterations
- : Error is 9.453166e+04 with 10 iterations
- : Error is 2.887647e+05 with 8 iterations
  : Error is 1.244660e+05 with 10 iterations
- : Error is 4.822452e+04 with 16 iterations
- : Error is 5.045395e+04 with 16 iterations
- : Error is 1.174109e+05 with 10 iterations
+ : Error is 4.837839e+04 with 16 iterations
  : Error is 4.445281e+04 with 16 iterations
  : Error is 4.631286e+04 with 16 iterations
  : Error is 4.431535e+04 with 16 iterations
  : Error is 4.087764e+04 with 16 iterations
+ : Error is 5.045395e+04 with 16 iterations
  : Error is 4.254573e+04 with 16 iterations
+ : Error is 4.822452e+04 with 16 iterations
  : Error is 5.258632e+04 with 16 iterations
- : Error is 4.319709e+04 with 20 iterations
- : Error is 4.554828e+04 with 20 iterations
- : Error is 4.837839e+04 with 16 iterations
- : Error is 3.979265e+04 with 20 iterations
- : Error is 3.793309e+04 with 20 iterations
  : Error is 4.146224e+04 with 20 iterations
  : Error is 3.948132e+04 with 20 iterations
  : Error is 3.643557e+04 with 20 iterations
+ : Error is 4.554828e+04 with 20 iterations
+ : Error is 3.793309e+04 with 20 iterations
+ : Error is 4.319709e+04 with 20 iterations
  : Error is 4.751362e+04 with 20 iterations
- : Error is 3.893208e+04 with 25 iterations
- : Error is 4.150447e+04 with 25 iterations
  : Error is 4.367172e+04 with 20 iterations
+ : Error is 3.979265e+04 with 20 iterations
+ : Error is 3.263556e+04 with 25 iterations
+ : Error is 3.397745e+04 with 25 iterations
+ : Error is 3.893208e+04 with 25 iterations
+ : Error is 4.330338e+04 with 25 iterations
+ : Error is 3.979562e+04 with 25 iterations
  : Error is 3.585512e+04 with 25 iterations
  : Error is 3.736138e+04 with 25 iterations
  : Error is 3.536827e+04 with 25 iterations
- : Error is 3.263556e+04 with 25 iterations
- : Error is 3.397745e+04 with 25 iterations
- : Error is 4.330338e+04 with 25 iterations
- : Error is 3.979562e+04 with 25 iterations
- : Error is 3.489712e+04 with 32 iterations
- : Error is 2.903681e+04 with 32 iterations
- : Error is 3.763162e+04 with 32 iterations
- : Error is 3.213747e+04 with 32 iterations
- : Error is 3.022860e+04 with 32 iterations
+ : Error is 4.150447e+04 with 25 iterations
+ : Error is 3.607827e+04 with 32 iterations
  : Error is 3.348648e+04 with 32 iterations
  : Error is 3.146641e+04 with 32 iterations
- : Error is 3.607827e+04 with 32 iterations
+ : Error is 2.903681e+04 with 32 iterations
+ : Error is 3.763162e+04 with 32 iterations
+ : Error is 3.022860e+04 with 32 iterations
+ : Error is 3.489712e+04 with 32 iterations
  : Error is 3.927379e+04 with 32 iterations
- : Error is 3.168578e+04 with 40 iterations
- : Error is 3.449464e+04 with 40 iterations
- : Error is 2.917603e+04 with 40 iterations
- : Error is 2.727193e+04 with 40 iterations
+ : Error is 3.213747e+04 with 32 iterations
  : Error is 3.040125e+04 with 40 iterations
  : Error is 2.838943e+04 with 40 iterations
  : Error is 2.619722e+04 with 40 iterations
+ : Error is 3.449464e+04 with 40 iterations
  : Error is 3.601169e+04 with 40 iterations
  : Error is 3.306479e+04 with 40 iterations
- : Error is 2.878165e+04 with 50 iterations
- : Error is 2.364874e+04 with 50 iterations
- : Error is 3.163965e+04 with 50 iterations
- : Error is 2.649637e+04 with 50 iterations
- : Error is 2.461832e+04 with 50 iterations
+ : Error is 2.917603e+04 with 40 iterations
+ : Error is 2.727193e+04 with 40 iterations
+ : Error is 3.168578e+04 with 40 iterations
  : Error is 2.761047e+04 with 50 iterations
  : Error is 2.562866e+04 with 50 iterations
- : Error is 3.032170e+04 with 50 iterations
+ : Error is 2.364874e+04 with 50 iterations
+ : Error is 3.163965e+04 with 50 iterations
+ : Error is 2.461832e+04 with 50 iterations
+ : Error is 2.878165e+04 with 50 iterations
  : Error is 3.304281e+04 with 50 iterations
- : Error is 2.641831e+04 with 80 iterations
- : Error is 1.982944e+04 with 80 iterations
+ : Error is 3.032170e+04 with 50 iterations
+ : Error is 2.649637e+04 with 50 iterations
  : Error is 2.255380e+04 with 80 iterations
  : Error is 2.064629e+04 with 80 iterations
- : Error is 2.351955e+04 with 80 iterations
  : Error is 1.904952e+04 with 80 iterations
- : Error is 2.164017e+04 with 80 iterations
+ : Error is 2.641831e+04 with 80 iterations
  : Error is 2.761232e+04 with 80 iterations
  : Error is 2.530420e+04 with 80 iterations
+ : Error is 2.164017e+04 with 80 iterations
+ : Error is 1.982944e+04 with 80 iterations
+ : Error is 2.351955e+04 with 80 iterations
  : Error is 2.049063e+04 with 100 iterations
- : Error is 1.862585e+04 with 100 iterations
- : Error is 2.137226e+04 with 100 iterations
  : Error is 1.718416e+04 with 100 iterations
- : Error is 2.425843e+04 with 100 iterations
- : Error is 1.965893e+04 with 100 iterations
- : Error is 1.788754e+04 with 100 iterations
  : Error is 2.536589e+04 with 100 iterations
+ : Error is 1.862585e+04 with 100 iterations
+ : Error is 2.425843e+04 with 100 iterations
+ : Error is 1.788754e+04 with 100 iterations
+ : Error is 2.137226e+04 with 100 iterations
  : Error is 2.322819e+04 with 100 iterations
- : Error is 1.941860e+04 with 125 iterations
- : Error is 2.227022e+04 with 125 iterations
- : Error is 1.785554e+04 with 125 iterations
- : Error is 1.613012e+04 with 125 iterations
- : Error is 2.329692e+04 with 125 iterations
+ : Error is 1.965893e+04 with 100 iterations
  : Error is 1.861342e+04 with 125 iterations
  : Error is 1.679733e+04 with 125 iterations
  : Error is 1.549600e+04 with 125 iterations
+ : Error is 2.227022e+04 with 125 iterations
+ : Error is 2.329692e+04 with 125 iterations
+ : Error is 1.613012e+04 with 125 iterations
+ : Error is 1.941860e+04 with 125 iterations
  : Error is 2.131679e+04 with 125 iterations
+ : Error is 1.785554e+04 with 125 iterations
+ : Error is 1.381226e+04 with 160 iterations
  : Error is 1.672806e+04 with 160 iterations
  : Error is 1.497383e+04 with 160 iterations
- : Error is 1.745601e+04 with 160 iterations
- : Error is 1.381226e+04 with 160 iterations
  : Error is 2.024119e+04 with 160 iterations
- : Error is 1.936628e+04 with 160 iterations
- : Error is 1.604440e+04 with 160 iterations
- : Error is 1.437770e+04 with 160 iterations
  : Error is 2.118598e+04 with 160 iterations
+ : Error is 1.936628e+04 with 160 iterations
+ : Error is 1.437770e+04 with 160 iterations
+ : Error is 1.745601e+04 with 160 iterations
+ : Error is 1.604440e+04 with 160 iterations
+ : Error is 1.243816e+04 with 200 iterations
  : Error is 1.517584e+04 with 200 iterations
  : Error is 1.348572e+04 with 200 iterations
- : Error is 1.584038e+04 with 200 iterations
+ : Error is 1.941439e+04 with 200 iterations
  : Error is 1.853948e+04 with 200 iterations
+ : Error is 1.294758e+04 with 200 iterations
+ : Error is 1.584038e+04 with 200 iterations
  : Error is 1.772963e+04 with 200 iterations
  : Error is 1.455302e+04 with 200 iterations
- : Error is 1.294758e+04 with 200 iterations
- : Error is 1.941439e+04 with 200 iterations
- : Error is 1.243816e+04 with 200 iterations
+ : Error is 1.118827e+04 with 250 iterations
  : Error is 1.374931e+04 with 250 iterations
  : Error is 1.213209e+04 with 250 iterations
- : Error is 1.435513e+04 with 250 iterations
- : Error is 1.118827e+04 with 250 iterations
  : Error is 1.694133e+04 with 250 iterations
- : Error is 1.619320e+04 with 250 iterations
- : Error is 1.318245e+04 with 250 iterations
- : Error is 1.164691e+04 with 250 iterations
  : Error is 1.775019e+04 with 250 iterations
- : Error is 1.383802e+04 with 400 iterations
+ : Error is 1.619320e+04 with 250 iterations
+ : Error is 1.164691e+04 with 250 iterations
+ : Error is 1.435513e+04 with 250 iterations
+ : Error is 1.318245e+04 with 250 iterations
+ : Error is 8.899083e+03 with 400 iterations
  : Error is 1.108549e+04 with 400 iterations
  : Error is 9.653805e+03 with 400 iterations
+ : Error is 1.383802e+04 with 400 iterations
+ : Error is 1.451529e+04 with 400 iterations
+ : Error is 9.265563e+03 with 400 iterations
  : Error is 1.158071e+04 with 400 iterations
  : Error is 1.321028e+04 with 400 iterations
  : Error is 1.062234e+04 with 400 iterations
- : Error is 9.265563e+03 with 400 iterations
- : Error is 8.899083e+03 with 400 iterations
- : Error is 1.451529e+04 with 400 iterations
+ : Error is 7.949387e+03 with 500 iterations
+ : Error is 9.952698e+03 with 500 iterations
  : Error is 8.625505e+03 with 500 iterations
  : Error is 1.245723e+04 with 500 iterations
+ : Error is 1.307493e+04 with 500 iterations
  : Error is 8.277898e+03 with 500 iterations
- : Error is 9.952698e+03 with 500 iterations
  : Error is 1.040047e+04 with 500 iterations
- : Error is 7.949387e+03 with 500 iterations
  : Error is 1.188426e+04 with 500 iterations
  : Error is 9.533391e+03 with 500 iterations
- : Error is 1.307493e+04 with 500 iterations
+ : Error is 2.875629e+04 with 625 iterations
+ : Error is 3.571689e+04 with 625 iterations
+ : Error is 4.474130e+04 with 625 iterations
  : Error is 3.097979e+04 with 625 iterations
  : Error is 4.287528e+04 with 625 iterations
- : Error is 4.111109e+04 with 625 iterations
- : Error is 3.571689e+04 with 625 iterations
  : Error is 2.984180e+04 with 625 iterations
- : Error is 4.474130e+04 with 625 iterations
  : Error is 3.715917e+04 with 625 iterations
- : Error is 2.875629e+04 with 625 iterations
+ : Error is 4.111109e+04 with 625 iterations
  : Error is 3.434574e+04 with 625 iterations
+ : Error is 1.862420e+04 with 800 iterations
  : Error is 2.246470e+04 with 800 iterations
  : Error is 2.022512e+04 with 800 iterations
  : Error is 2.500407e+04 with 800 iterations
- : Error is 2.376565e+04 with 800 iterations
- : Error is 2.349574e+04 with 800 iterations
- : Error is 1.862420e+04 with 800 iterations
- : Error is 1.940923e+04 with 800 iterations
  : Error is 2.627805e+04 with 800 iterations
+ : Error is 1.940923e+04 with 800 iterations
+ : Error is 2.349574e+04 with 800 iterations
+ : Error is 2.376565e+04 with 800 iterations
  : Error is 2.146833e+04 with 800 iterations
- : Error is 1.380476e+04 with 1000 iterations
- : Error is 1.388555e+04 with 1000 iterations
- : Error is 1.453637e+04 with 1000 iterations
- : Error is 1.527480e+04 with 1000 iterations
- : Error is 1.470120e+04 with 1000 iterations
- : Error is 1.320641e+04 with 1000 iterations
- : Error is 1.552783e+04 with 1000 iterations
  : Error is 1.261613e+04 with 1000 iterations
+ : Error is 1.453637e+04 with 1000 iterations
+ : Error is 1.470120e+04 with 1000 iterations
+ : Error is 1.552783e+04 with 1000 iterations
+ : Error is 1.380476e+04 with 1000 iterations
+ : Error is 1.320641e+04 with 1000 iterations
+ : Error is 1.527480e+04 with 1000 iterations
+ : Error is 1.388555e+04 with 1000 iterations
  : Error is 1.381095e+04 with 1000 iterations
- : Error is 7.548765e+03 with 1250 iterations
- : Error is 9.160778e+03 with 1250 iterations
+ : Error is 8.291729e+03 with 1250 iterations
  : Error is 8.968498e+03 with 1250 iterations
  : Error is 8.034640e+03 with 1250 iterations
- : Error is 8.720128e+03 with 1250 iterations
  : Error is 8.503788e+03 with 1250 iterations
+ : Error is 9.160778e+03 with 1250 iterations
+ : Error is 8.720128e+03 with 1250 iterations
  : Error is 9.470822e+03 with 1250 iterations
- : Error is 8.291729e+03 with 1250 iterations
+ : Error is 7.548765e+03 with 1250 iterations
  : Error is 8.472949e+03 with 1250 iterations
- : Error is 3.218205e+03 with 2000 iterations
- : Error is 1.432846e+03 with 2000 iterations
- : Error is 2.507960e+03 with 2000 iterations
- : Error is 3.027566e+03 with 2000 iterations
- : Error is 1.617052e+03 with 2000 iterations
- : Error is 2.674704e+03 with 2000 iterations
- : Error is 1.535844e+03 with 2000 iterations
  : Error is 2.841922e+03 with 2000 iterations
+ : Error is 2.507960e+03 with 2000 iterations
+ : Error is 1.535844e+03 with 2000 iterations
+ : Error is 1.617052e+03 with 2000 iterations
+ : Error is 3.218205e+03 with 2000 iterations
+ : Error is 3.027566e+03 with 2000 iterations
+ : Error is 2.674704e+03 with 2000 iterations
+ : Error is 1.432846e+03 with 2000 iterations
  : Error is 2.334815e+03 with 2000 iterations
- : Error is 1.719421e+03 with 2500 iterations
- : Error is 4.987427e+02 with 2500 iterations
- : Error is 1.143286e+03 with 2500 iterations
- : Error is 1.605807e+03 with 2500 iterations
- : Error is 5.515457e+02 with 2500 iterations
- : Error is 5.279869e+02 with 2500 iterations
- : Error is 1.220125e+03 with 2500 iterations
  : Error is 1.494509e+03 with 2500 iterations
+ : Error is 1.143286e+03 with 2500 iterations
+ : Error is 5.279869e+02 with 2500 iterations
+ : Error is 5.515457e+02 with 2500 iterations
+ : Error is 1.719421e+03 with 2500 iterations
+ : Error is 1.220125e+03 with 2500 iterations
+ : Error is 1.605807e+03 with 2500 iterations
+ : Error is 4.987427e+02 with 2500 iterations
  : Error is 1.054708e+03 with 2500 iterations
- : Error is 8.160157e+02 with 3125 iterations
- : Error is 1.330065e+02 with 3125 iterations
- : Error is 1.436531e+02 with 3125 iterations
- : Error is 4.405263e+02 with 3125 iterations
- : Error is 7.574521e+02 with 3125 iterations
- : Error is 1.439468e+02 with 3125 iterations
- : Error is 4.726453e+02 with 3125 iterations
  : Error is 6.963583e+02 with 3125 iterations
+ : Error is 4.405263e+02 with 3125 iterations
+ : Error is 1.439468e+02 with 3125 iterations
+ : Error is 1.436531e+02 with 3125 iterations
+ : Error is 8.160157e+02 with 3125 iterations
+ : Error is 4.726453e+02 with 3125 iterations
+ : Error is 7.574521e+02 with 3125 iterations
+ : Error is 1.330065e+02 with 3125 iterations
  : Error is 4.070876e+02 with 3125 iterations
- : Error is 2.984723e+02 with 4000 iterations
- : Error is 2.140612e+01 with 4000 iterations
- : Error is 1.193810e+02 with 4000 iterations
- : Error is 2.140635e+01 with 4000 iterations
- : Error is 2.738904e+02 with 4000 iterations
- : Error is 2.261324e+01 with 4000 iterations
- : Error is 1.307687e+02 with 4000 iterations
  : Error is 2.494238e+02 with 4000 iterations
+ : Error is 1.193810e+02 with 4000 iterations
+ : Error is 2.261324e+01 with 4000 iterations
+ : Error is 2.140635e+01 with 4000 iterations
+ : Error is 2.984723e+02 with 4000 iterations
+ : Error is 1.307687e+02 with 4000 iterations
+ : Error is 2.738904e+02 with 4000 iterations
+ : Error is 2.140612e+01 with 4000 iterations
  : Error is 1.087996e+02 with 4000 iterations
- : Error is 9.765088e+01 with 5000 iterations
- : Error is 2.603758e+00 with 5000 iterations
- : Error is 2.779018e+01 with 5000 iterations
- : Error is 2.587788e+00 with 5000 iterations
- : Error is 8.870208e+01 with 5000 iterations
- : Error is 2.940844e+01 with 5000 iterations
- : Error is 2.578016e+00 with 5000 iterations
  : Error is 7.930559e+01 with 5000 iterations
+ : Error is 2.779018e+01 with 5000 iterations
+ : Error is 2.578016e+00 with 5000 iterations
+ : Error is 2.587788e+00 with 5000 iterations
+ : Error is 9.765088e+01 with 5000 iterations
+ : Error is 2.940844e+01 with 5000 iterations
+ : Error is 8.870208e+01 with 5000 iterations
+ : Error is 2.603758e+00 with 5000 iterations
  : Error is 2.542640e+01 with 5000 iterations
- : Error is 2.456348e+01 with 6250 iterations
- : Error is 1.882404e-01 with 6250 iterations
- : Error is 4.413254e+00 with 6250 iterations
- : Error is 1.556098e-01 with 6250 iterations
- : Error is 2.201232e+01 with 6250 iterations
- : Error is 5.314762e+00 with 6250 iterations
- : Error is 1.859977e-01 with 6250 iterations
  : Error is 1.975901e+01 with 6250 iterations
+ : Error is 4.413254e+00 with 6250 iterations
+ : Error is 1.859977e-01 with 6250 iterations
+ : Error is 1.556098e-01 with 6250 iterations
+ : Error is 2.456348e+01 with 6250 iterations
+ : Error is 5.314762e+00 with 6250 iterations
+ : Error is 2.201232e+01 with 6250 iterations
+ : Error is 1.882404e-01 with 6250 iterations
  : Error is 3.887602e+00 with 6250 iterations
- : Error is 4.480181e-01 with 10000 iterations
- : Error is 1.069124e-04 with 10000 iterations
+ : Error is 3.311146e-01 with 10000 iterations
  : Error is 1.958710e-02 with 10000 iterations
+ : Error is 6.747801e-05 with 10000 iterations
  : Error is 4.612406e-05 with 10000 iterations
+ : Error is 4.480181e-01 with 10000 iterations
  : Error is 2.104738e-02 with 10000 iterations
  : Error is 4.070265e-01 with 10000 iterations
- : Error is 6.747801e-05 with 10000 iterations
- : Error is 3.311146e-01 with 10000 iterations
+ : Error is 1.069124e-04 with 10000 iterations
  : Error is 1.878416e-02 with 10000 iterations
  : Converged with error equal to 9.992832e-07 in 11783 iterations
  : Converged with error equal to 9.990919e-07 in 12020 iterations
- : Converged with error equal to 9.979704e-07 in 12327 iterations
- : Error is 3.573699e-02 with 12500 iterations
- : Error is 5.617067e-04 with 12500 iterations
- : Error is 5.709708e-04 with 12500 iterations
- : Error is 3.199504e-02 with 12500 iterations
  : Error is 3.285772e-02 with 12500 iterations
+ : Error is 5.617067e-04 with 12500 iterations
+ : Error is 3.573699e-02 with 12500 iterations
+ : Error is 5.709708e-04 with 12500 iterations
+ : Converged with error equal to 9.979704e-07 in 12327 iterations
+ : Error is 3.199504e-02 with 12500 iterations
  : Error is 5.707131e-04 with 12500 iterations
  : Converged with error equal to 9.995646e-07 in 16986 iterations
  : Converged with error equal to 9.992520e-07 in 16991 iterations
  : Converged with error equal to 9.992680e-07 in 17005 iterations
+ : Error is 1.091911e-05 with 20000 iterations
  : Error is 1.433003e-05 with 20000 iterations
  : Error is 1.216562e-05 with 20000 iterations
- : Error is 1.091911e-05 with 20000 iterations
  : Converged with error equal to 9.996592e-07 in 22213 iterations
- : Converged with error equal to 9.986607e-07 in 22352 iterations
  : Converged with error equal to 9.999838e-07 in 22533 iterations
+ : Converged with error equal to 9.986607e-07 in 22352 iterations
 Timestep 1: converged with error 9.326519e-07 in 122 iterations
 Timestep 2: converged with error 9.763384e-07 in 135 iterations
 Timestep 3: converged with error 9.924403e-07 in 138 iterations
@@ -1724,146 +1696,190 @@ Timestep 197: converged with error 9.777281e-07 in 150 iterations
 Timestep 198: converged with error 9.764331e-07 in 150 iterations
 Timestep 199: converged with error 9.751463e-07 in 150 iterations
 Timestep 200: converged with error 9.738677e-07 in 150 iterations
- : Error is 8.204527e+05 with 1 iterations
- : Error is 1.436728e+07 with 2 iterations
- : Error is 3.612520e+06 with 4 iterations
+Iter 1000, err = 12447.8185201
+Iter 2000, err = 5191.66792051
+Iter 3000, err = 2601.89010352
+Iter 4000, err = 1396.68725766
+Iter 5000, err = 776.442217334
+Iter 6000, err = 440.332125508
+Iter 7000, err = 252.755918156
+Iter 8000, err = 146.195809717
+Iter 9000, err = 84.9796912799
+Iter 10000, err = 49.5574970992
+Iter 11000, err = 28.9629441547
+Iter 12000, err = 16.9512103648
+Iter 13000, err = 9.93052540256
+Iter 14000, err = 5.82122422023
+Iter 15000, err = 3.41373641651
+Iter 16000, err = 2.00241181293
+Iter 17000, err = 1.1747357453
+Iter 18000, err = 0.689224484515
+Iter 19000, err = 0.404385383093
+Iter 20000, err = 0.237264044016
+Iter 21000, err = 0.139207423974
+Iter 22000, err = 0.0816737226487
+Iter 23000, err = 0.0479169810322
+Iter 24000, err = 0.0281114194938
+Iter 25000, err = 0.0164915826822
+Iter 26000, err = 0.00967450305761
+Iter 27000, err = 0.00567521933283
+Iter 28000, err = 0.00332908868473
+Iter 29000, err = 0.0019528002786
+Iter 30000, err = 0.00114546334867
+Iter 31000, err = 0.000671887602501
+Iter 32000, err = 0.000394098379087
+Iter 33000, err = 0.000231157177127
+Iter 34000, err = 0.000135582489073
+Iter 35000, err = 7.9523344171e-05
+Iter 36000, err = 4.66423424668e-05
+Iter 37000, err = 2.73567440052e-05
+Iter 38000, err = 1.60451271785e-05
+Iter 39000, err = 9.41070317521e-06
+Iter 40000, err = 5.51967291871e-06
+Iter 41000, err = 3.23768489665e-06
+Iter 42000, err = 1.89890459805e-06
+Iter 43000, err = 1.11420362873e-06
+Interest-off counterfactual converged with error 9.99805295833e-07 in 43203 iterations
  : Error is 8.204841e+05 with 1 iterations
  : Error is 1.436636e+07 with 2 iterations
  : Error is 3.607656e+06 with 4 iterations
- : Error is 8.204766e+05 with 1 iterations
- : Error is 1.436623e+07 with 2 iterations
- : Error is 3.607499e+06 with 4 iterations
+ : Error is 1.836355e+06 with 5 iterations
  : Error is 8.475969e+05 with 1 iterations
  : Error is 1.486156e+07 with 2 iterations
  : Error is 3.751322e+06 with 4 iterations
+ : Error is 1.904551e+06 with 5 iterations
+ : Error is 8.204527e+05 with 1 iterations
+ : Error is 1.436728e+07 with 2 iterations
+ : Error is 3.612520e+06 with 4 iterations
+ : Error is 8.204766e+05 with 1 iterations
+ : Error is 1.436623e+07 with 2 iterations
+ : Error is 3.607499e+06 with 4 iterations
+ : Error is 2.806912e+05 with 8 iterations
+ : Error is 2.893771e+05 with 8 iterations
  : Error is 1.833787e+06 with 5 iterations
  : Error is 2.808137e+05 with 8 iterations
- : Error is 1.836355e+06 with 5 iterations
- : Error is 2.806912e+05 with 8 iterations
  : Error is 1.836148e+06 with 5 iterations
  : Error is 2.808757e+05 with 8 iterations
- : Error is 1.904551e+06 with 5 iterations
- : Error is 2.893771e+05 with 8 iterations
- : Error is 1.070643e+05 with 10 iterations
  : Error is 1.104656e+05 with 10 iterations
- : Error is 1.101048e+05 with 10 iterations
  : Error is 1.078358e+05 with 10 iterations
- : Error is 4.990318e+04 with 16 iterations
+ : Error is 1.070643e+05 with 10 iterations
+ : Error is 1.101048e+05 with 10 iterations
  : Error is 5.416085e+04 with 16 iterations
- : Error is 5.391723e+04 with 16 iterations
  : Error is 5.144391e+04 with 16 iterations
- : Error is 4.498161e+04 with 20 iterations
  : Error is 4.916198e+04 with 20 iterations
  : Error is 4.633420e+04 with 20 iterations
+ : Error is 4.990318e+04 with 16 iterations
+ : Error is 4.498161e+04 with 20 iterations
+ : Error is 5.391723e+04 with 16 iterations
  : Error is 4.892012e+04 with 20 iterations
- : Error is 4.083511e+04 with 25 iterations
  : Error is 4.497685e+04 with 25 iterations
- : Error is 4.473797e+04 with 25 iterations
  : Error is 4.201514e+04 with 25 iterations
- : Error is 3.693011e+04 with 32 iterations
+ : Error is 4.083511e+04 with 25 iterations
+ : Error is 4.473797e+04 with 25 iterations
  : Error is 4.101579e+04 with 32 iterations
- : Error is 4.077719e+04 with 32 iterations
  : Error is 3.794994e+04 with 32 iterations
- : Error is 3.378016e+04 with 40 iterations
+ : Error is 3.693011e+04 with 32 iterations
+ : Error is 4.077719e+04 with 32 iterations
  : Error is 3.777410e+04 with 40 iterations
- : Error is 3.753569e+04 with 40 iterations
  : Error is 3.466120e+04 with 40 iterations
- : Error is 3.090990e+04 with 50 iterations
+ : Error is 3.378016e+04 with 40 iterations
+ : Error is 3.753569e+04 with 40 iterations
  : Error is 3.479850e+04 with 50 iterations
- : Error is 3.456097e+04 with 50 iterations
  : Error is 3.166530e+04 with 50 iterations
- : Error is 2.565634e+04 with 80 iterations
+ : Error is 3.456097e+04 with 50 iterations
+ : Error is 3.090990e+04 with 50 iterations
  : Error is 2.926822e+04 with 80 iterations
  : Error is 2.617987e+04 with 80 iterations
+ : Error is 2.565634e+04 with 80 iterations
  : Error is 2.903684e+04 with 80 iterations
- : Error is 2.348166e+04 with 100 iterations
  : Error is 2.693186e+04 with 100 iterations
- : Error is 2.670509e+04 with 100 iterations
  : Error is 2.390982e+04 with 100 iterations
- : Error is 2.147982e+04 with 125 iterations
+ : Error is 2.348166e+04 with 100 iterations
+ : Error is 2.670509e+04 with 100 iterations
  : Error is 2.474427e+04 with 125 iterations
  : Error is 2.181998e+04 with 125 iterations
+ : Error is 2.147982e+04 with 125 iterations
  : Error is 2.452437e+04 with 125 iterations
- : Error is 1.943818e+04 with 160 iterations
  : Error is 2.246783e+04 with 160 iterations
- : Error is 2.225607e+04 with 160 iterations
  : Error is 1.969239e+04 with 160 iterations
- : Error is 1.772661e+04 with 200 iterations
- : Error is 1.790273e+04 with 200 iterations
+ : Error is 1.943818e+04 with 160 iterations
+ : Error is 2.225607e+04 with 160 iterations
  : Error is 2.051412e+04 with 200 iterations
+ : Error is 1.790273e+04 with 200 iterations
+ : Error is 1.772661e+04 with 200 iterations
  : Error is 2.031261e+04 with 200 iterations
- : Error is 1.612200e+04 with 250 iterations
  : Error is 1.863891e+04 with 250 iterations
- : Error is 1.844877e+04 with 250 iterations
  : Error is 1.623270e+04 with 250 iterations
- : Error is 1.301695e+04 with 400 iterations
+ : Error is 1.612200e+04 with 250 iterations
+ : Error is 1.844877e+04 with 250 iterations
  : Error is 1.487398e+04 with 400 iterations
- : Error is 1.471398e+04 with 400 iterations
  : Error is 1.299358e+04 with 400 iterations
- : Error is 1.164401e+04 with 500 iterations
- : Error is 1.156778e+04 with 500 iterations
+ : Error is 1.301695e+04 with 400 iterations
+ : Error is 1.471398e+04 with 400 iterations
  : Error is 1.315302e+04 with 500 iterations
+ : Error is 1.156778e+04 with 500 iterations
+ : Error is 1.164401e+04 with 500 iterations
  : Error is 1.301016e+04 with 500 iterations
- : Error is 1.760238e+04 with 625 iterations
  : Error is 1.462517e+04 with 625 iterations
  : Error is 1.305512e+04 with 625 iterations
+ : Error is 1.760238e+04 with 625 iterations
  : Error is 1.447143e+04 with 625 iterations
- : Error is 1.380225e+04 with 800 iterations
- : Error is 1.175737e+04 with 800 iterations
- : Error is 1.163678e+04 with 800 iterations
  : Error is 1.075005e+04 with 800 iterations
- : Error is 1.089422e+04 with 1000 iterations
- : Error is 9.429220e+03 with 1000 iterations
+ : Error is 1.175737e+04 with 800 iterations
+ : Error is 1.380225e+04 with 800 iterations
+ : Error is 1.163678e+04 with 800 iterations
  : Error is 8.873378e+03 with 1000 iterations
+ : Error is 9.429220e+03 with 1000 iterations
+ : Error is 1.089422e+04 with 1000 iterations
  : Error is 9.337509e+03 with 1000 iterations
- : Error is 8.389982e+03 with 1250 iterations
- : Error is 7.360464e+03 with 1250 iterations
  : Error is 7.179711e+03 with 1250 iterations
+ : Error is 7.360464e+03 with 1250 iterations
+ : Error is 8.389982e+03 with 1250 iterations
  : Error is 7.295354e+03 with 1250 iterations
- : Error is 4.322221e+03 with 2000 iterations
  : Error is 4.218979e+03 with 2000 iterations
  : Error is 3.940180e+03 with 2000 iterations
+ : Error is 4.322221e+03 with 2000 iterations
  : Error is 3.918623e+03 with 2000 iterations
- : Error is 2.948166e+03 with 2500 iterations
  : Error is 3.128834e+03 with 2500 iterations
  : Error is 2.776906e+03 with 2500 iterations
+ : Error is 2.948166e+03 with 2500 iterations
  : Error is 2.771676e+03 with 2500 iterations
- : Error is 1.906868e+03 with 3125 iterations
  : Error is 2.246052e+03 with 3125 iterations
  : Error is 1.891919e+03 with 3125 iterations
+ : Error is 1.906868e+03 with 3125 iterations
  : Error is 1.895792e+03 with 3125 iterations
- : Error is 1.097711e+03 with 4000 iterations
  : Error is 1.499862e+03 with 4000 iterations
  : Error is 1.188846e+03 with 4000 iterations
+ : Error is 1.097711e+03 with 4000 iterations
  : Error is 1.198626e+03 with 4000 iterations
- : Error is 6.187929e+02 with 5000 iterations
  : Error is 1.006829e+03 with 5000 iterations
  : Error is 7.500982e+02 with 5000 iterations
+ : Error is 6.187929e+02 with 5000 iterations
  : Error is 7.629986e+02 with 5000 iterations
- : Error is 3.207445e+02 with 6250 iterations
  : Error is 6.550756e+02 with 6250 iterations
  : Error is 4.517659e+02 with 6250 iterations
+ : Error is 3.207445e+02 with 6250 iterations
  : Error is 4.644965e+02 with 6250 iterations
- : Error is 5.581263e+01 with 10000 iterations
  : Error is 2.301627e+02 with 10000 iterations
  : Error is 1.209095e+02 with 10000 iterations
  : Error is 1.285882e+02 with 10000 iterations
- : Error is 1.882158e+01 with 12500 iterations
+ : Error is 5.581263e+01 with 10000 iterations
  : Error is 1.259306e+02 with 12500 iterations
  : Error is 5.450400e+01 with 12500 iterations
  : Error is 5.839342e+01 with 12500 iterations
- : Error is 8.099572e-01 with 20000 iterations
+ : Error is 1.882158e+01 with 12500 iterations
  : Error is 2.300606e+01 with 20000 iterations
  : Error is 5.224791e+00 with 20000 iterations
  : Error is 6.054011e+00 with 20000 iterations
- : Error is 9.947710e-02 with 25000 iterations
+ : Error is 8.099572e-01 with 20000 iterations
  : Error is 7.854581e+00 with 25000 iterations
  : Error is 1.140999e+00 with 25000 iterations
  : Error is 1.363507e+00 with 25000 iterations
- : Error is 2.413968e-06 with 50000 iterations
+ : Error is 9.947710e-02 with 25000 iterations
  : Error is 2.869560e-02 with 50000 iterations
  : Error is 5.465089e-04 with 50000 iterations
  : Error is 6.839788e-04 with 50000 iterations
+ : Error is 2.413968e-06 with 50000 iterations
  : Converged with error equal to 9.995979e-07 in 52027 iterations
  : Converged with error equal to 9.996583e-07 in 70059 iterations
  : Converged with error equal to 9.997142e-07 in 70936 iterations
@@ -2044,4 +2060,4 @@ ans =
     0.0657    0.1435    0.1985
 
 Wrote /Users/lucielu/Library/CloudStorage/Dropbox/TwoTrees_EGJL/EGJL_Replication/code/matlab/../../output/tables/TableOA10_CPE_spillover.tex
-Total runtime: 15.70 hours (56514 seconds)
+Total runtime: 10.05 hours (36170 seconds)

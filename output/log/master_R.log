@@ -79,7 +79,7 @@ date  (1): date
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
->> Step 2 done in 213.7 min: bootstrap B=1000, block_length=4, seed=123, num_cores=15; 12 estimate files in Data/Estimates/length4/
+>> Step 2 done in 53.8 min: bootstrap B=1000, block_length=4, seed=123, num_cores=15; 12 estimate files in Data/Estimates/length4/
 >> Building empirical exhibits (main_empirics.Rmd) ...
 
 
@@ -109,10 +109,10 @@ processing file: main_empirics.Rmd
 23/26                            
 24/26 [prob-fit-data]            
 25/26                            
-26/26 [figure-oa4]               
+26/26 [figure-oa5]               
 output file: main_empirics.knit.md
 
-/opt/homebrew/bin/pandoc +RTS -K512m -RTS main_empirics.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/lucielu/Library/CloudStorage/Dropbox/TwoTrees_EGJL/EGJL_Replication/output/main_empirics.html --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/latex-div.lua --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/table-classes.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=cosmo --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/9w/2hpdhc01181bwrbszl79pl240000gn/T//RtmpJfDKUf/rmarkdown-strd13838289fb5.html 
+/opt/homebrew/bin/pandoc +RTS -K512m -RTS main_empirics.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/lucielu/Library/CloudStorage/Dropbox/TwoTrees_EGJL/EGJL_Replication/output/main_empirics.html --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/latex-div.lua --lua-filter /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmarkdown/lua/table-classes.lua --embed-resources --standalone --variable bs3=TRUE --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Users/lucielu/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/rmarkdown/2.29/df99277f63d01c34e95e3d2f06a79736/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=cosmo --mathjax --variable 'mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --include-in-header /var/folders/9w/2hpdhc01181bwrbszl79pl240000gn/T//Rtmp3qH9oU/rmarkdown-str184112506a61a.html 
 
 Output created: output/main_empirics.html
 Done. Tables -> output/tables/ , figures -> output/figures/ , report -> output/main_empirics.html

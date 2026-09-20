@@ -118,6 +118,14 @@ Nsim = 20000;           %The number of simulations to run
 
 if RECOMPUTE
 
+%Start the parallel pool once, with the default number of workers (one per core),
+%and disable the idle timeout. By default the pool shuts down after 30 idle minutes,
+%which happens during the long serial steps below; a failed restart then makes the
+%next parfor block run serially.
+delete(gcp('nocreate'));
+pool = parpool('Processes','IdleTimeout',Inf);
+fprintf('Parallel pool started with %d workers (IdleTimeout = Inf)\n', pool.NumWorkers);
+
 %CHANGING LEVERAGE [Needed for FIGURE 3]
 %This uses parallel commands for different values of leverage (parameter c being 0.2, 0.4 and 0.6, 0.4 is base case)
 parfor k=1:3
@@ -218,9 +226,13 @@ Ntprob = 200; %The number of time steps used in the numerical computation
 [probQ] = PROBDEF(B00,Ny,Ns,Ntprob,Tmax,ymin,ymax,sig,sigB,rho,mu,muB,omega,1); %Needs to use the same Ns as the boundary B00 was computed with
 
 
-%SIMULATION CALCULATIONS [Needed for Table 2 and Table OA.2, and Figure AO.1, Figre AO.2 and Figure A0.3]
+%SIMULATION CALCULATIONS [Needed for Table 2 and Table OA.2, and Figure OA.2, Figure OA.3 and Figure OA.4]
 %This runs Nsim simulations over [0,Tmax] with Nt timesteps for our baseline model (m=0) it also computes the values corresponding to a static boundary set at b(s=0.5)
 [xA,xB,sims,DefA,DefB,xAstat,xBstat,simsstat,DefAstat,DefBstat] = Simulation(B00,xAl,xAu,Tmax,Nt,Nsim,sig,sigB,rho,mu,muB,del,c);
+
+
+%CALCULATING THE FIXED INTEREST COUNTERFACTUAL DEBT AND EQUITY VALUES [Needed for Figure OA.1]
+[E00count,D00count,~] = Counterfactual(B00,Ny,Ns,ymin,ymax,sig,sigB,rho,del,mu,muB,phi,cost,c,m,p,omega,q,0);
 
 
 %CALCULATING DEBT VALUES FOR SOVEREIGN DEBT SPILLOVER CASE STUDY [Needed for Table OA.10]
@@ -240,6 +252,7 @@ D7sig=D{4};
 %-v7.3 is required because the simulation arrays exceed the 2GB v7 limit.
 save(datafile, ...
     'E00','D00','B00','BM0','BP0', ...
+    'E00count','D00count', ...
     'Bcorm09','Bcorm08','Bcorm07','Bcorm06','Bcorm05','Bcorm04','Bcorm03','Bcorm02','Bcorm01', ...
     'Bcorp01','Bcorp02','Bcorp03','Bcorp04','Bcorp05','Bcorp06','Bcorp07','Bcorp08','Bcorp09', ...
     'E0M','D0M','B0M','E0','D0','B0','E0P','D0P','B0P', ...
@@ -590,30 +603,30 @@ title('(B) Risk-free rate')
 
 %FIG-2c:
 subplot(3,2,3)
-plot(s(2:Ns),Eunlev(ibase,2:Ns)/(1-phi),'-b','LineWidth',2)
-xlim([0 1])
-ylabel('Total asset value')
-title('(C) Total asset valuation of tree A')
-
-%FIG-2d:
-subplot(3,2,4)
 plot(s(2:Ns),E00(ibase,2:Ns),'-b','LineWidth',2)
 hold on
 plot(s(2:Ns),Eunlev(ibase,2:Ns),':r','LineWidth',2)
 xlim([0 1])
 ylabel('Equity value')
-title('(D) Equity valuation of tree A')
+title('(C) Equity valuation of tree A')
 legend({'Levered','Unlevered'},'Location','northeast')
 legend('boxoff')
 
-%FIG-2e:
-subplot(3,2,5)
+%FIG-2d:
+subplot(3,2,4)
 plot(s,D00(ibase,:),'-b','LineWidth',2)
 xlim([0 1])
 ylim([5 10])
 ylabel('Debt value')
+title('(D) Debt valuation of tree A')
+
+%FIG-2e:
+subplot(3,2,5)
+plot(s(2:Ns),Eunlev(ibase,2:Ns)/(1-phi),'-b','LineWidth',2)
+xlim([0 1])
+ylabel('Total asset value')
 xlabel('Share of tree A')
-title('(E) Debt valuation of tree A')
+title('(E) Total asset valuation of tree A')
 
 %FIG-2f:
 subplot(3,2,6)
@@ -1208,8 +1221,91 @@ fprintf('Wrote %s\n', fullfile(tabledir,'TableOA10_CPE_spillover.tex'));
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code for Figure OA.1:                  %
+% 'Equilibrium asset pricing quantities' %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%The three lines below compute the levered equity risk premium (for X=1), the unlevered equity value, and the unlevered equity risk premium (for X=1)
+[ERPA,~] = ERPPlot(Ny,Ns,ymin,ymax,sig,sigB,rho,E00,1);
+[Eunlev] = UnleveredEquity(Ny,Ns,ymin,ymax,sig,sigB,rho,del,mu,muB,phi);
+
+%Interest-rate counter factual (assuming full boundary)
+[ERPAcount,~] = ERPPlot(Ny,Ns,ymin,ymax,sig,sigB,rho,E00count,1);
+[Eunlevcount,~] = UnleveredEquity_count(Ny,Ns,ymin,ymax,sig,sigB,rho,del,mu,muB,phi,0);
+
+%This plots the 3x2 figure
+FigOA1=figure;
+%FIG-a:
+subplot(3,2,1)
+plot(s(4:Ns),ERPA(4:Ns),'-b','LineWidth',2)
+hold on
+plot(s(4:Ns),ERPAcount(4:Ns),':b','LineWidth',2)
+xlim([0 1])
+ylabel('Equity risk premium')
+title('(A) Risk Premium')
+legend({'Full model','Counterfactual'},'Location','northwest')
+legend('boxoff')
+
+%FIG-b:
+subplot(3,2,2)
+plot(s(1:Ns),rf(1:Ns),'-b','LineWidth',2)
+hold on
+plot(s(1:Ns),rf(1)*ones(Ns,1),':b','LineWidth',2)
+xlim([0 1])
+ylim([0.03 0.07])
+ylabel('Risk-free rate')
+title('(B) Risk-free rate')
+
+%FIG-c:
+subplot(3,2,3)
+plot(s(1:Ns),E00(ibase,1:Ns),'-b','LineWidth',2)
+hold on
+plot(s(1:Ns),E00count(ibase,1:Ns),':b','LineWidth',2)
+xlim([0 1])
+ylabel('Equity value')
+title('(C) Equity valuation of tree A')
+
+%FIG-d:
+subplot(3,2,4)
+plot(s,D00(ibase,:),'-b','LineWidth',2)
+hold on
+plot(s,D00count(ibase,:),':b','LineWidth',2)
+xlim([0 1])
+ylim([5 10])
+ylabel('Debt value')
+title('(D) Debt valuation of tree A')
+
+%FIG-e:
+subplot(3,2,5)
+plot(s(1:Ns),Eunlev(ibase,1:Ns)/(1-phi),'-b','LineWidth',2)
+hold on
+plot(s(1:Ns),Eunlevcount(ibase,1:Ns)/(1-phi),':b','LineWidth',2)
+xlim([0 1])
+ylabel('Total asset value')
+xlabel('Share of tree A')
+title('(E) Total asset valuation of tree A')
+
+%FIG-f:
+subplot(3,2,6)
+plot(s(2:Ns),D00(ibase,2:Ns)./(E00(ibase,2:Ns)+D00(ibase,2:Ns)),'-b','LineWidth',2)
+hold on
+plot(s(2:Ns),D00count(ibase,2:Ns)./(E00count(ibase,2:Ns)+D00count(ibase,2:Ns)),':b','LineWidth',2)
+xlim([0 1])
+ylim([0.3 0.5])
+ylabel('Debt/(Equity+Debt)')
+xlabel('Share of tree A')
+title('(F) Leverage ratio of tree A')
+
+set(FigOA1,'Units','inches')
+set(FigOA1,'Position',[25 1 8 9.66])
+theme(FigOA1,'light')
+exportgraphics(FigOA1,fullfile(figdir,'FigOA1.eps'),'BackgroundColor','none')
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Code for Figure OA.1:                                       %
+% Code for Figure OA.2:                                       %
 % 'Distribution of asset pricing moments accross simulations' %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1235,7 +1331,7 @@ a3 = round(mean(mean_EvolA(:),'omitnan'),4);
 a4 = round(mean(mean_ERPA(:),'omitnan'),4);
 
 %This plots the 2x2 figure 
-FigOA1=figure;
+FigOA2=figure;
 %FIG-a:
 subplot(2,2,1)
 histogram(mean_LevA(:),'BinWidth',0.015)
@@ -1278,15 +1374,15 @@ text(mean(mean_ERPA(:),'omitnan')+0.003,1200,num2str(a4),'Color','black','FontSi
 xlabel('Average Equity Risk Premium')
 title('(D) Equity Risk Premium')
 
-set(FigOA1,'Units','inches')
-set(FigOA1,'Position',[25 2 8 6.33])
-theme(FigOA1,'light')
-exportgraphics(FigOA1,fullfile(figdir,'FigOA1.pdf'),'BackgroundColor','none')
+set(FigOA2,'Units','inches')
+set(FigOA2,'Position',[25 2 8 6.33])
+theme(FigOA2,'light')
+exportgraphics(FigOA2,fullfile(figdir,'FigOA2.pdf'),'BackgroundColor','none')
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Code for Figure OA.2:                                                       %
+% Code for Figure OA.3:                                                       %
 % 'Distribution of default risk correlations - model vs. counterfactual case' %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1336,7 +1432,7 @@ CSInterpstat = griddedInterpolant(Y,S,CSstat,'makima','none');
 
 %This plots the 2x2 figure of the histograms
 %NOTE: the non-static boundary simulation results should have already been computed when producing Table 2 so make sure the computations for this table are run first
-FigOA2=figure;
+FigOA3=figure;
 %FIG-a:
 subplot(2,2,1)
 histogram(CorDD,'BinWidth',0.0075)
@@ -1386,15 +1482,15 @@ xlabel('Correlation')
 title('(D) Credit spread')
 legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 
-set(FigOA2,'Units','inches')
-set(FigOA2,'Position',[25 2 8 6.33])
-theme(FigOA2,'light')
-exportgraphics(FigOA2,fullfile(figdir,'FigOA2.pdf'),'BackgroundColor','none')
+set(FigOA3,'Units','inches')
+set(FigOA3,'Position',[25 2 8 6.33])
+theme(FigOA3,'light')
+exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'),'BackgroundColor','none')
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Code for Figure OA.3:                                       %
+% Code for Figure OA.4:                                       %
 % 'Distribution of the correlations in asset pricing moments' %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1454,7 +1550,7 @@ DvolInterpstat = griddedInterpolant(Y,S,Dvolstat,'makima','none');
 
 %This plots the 2x2 figure of the histograms
 %NOTE: the non-static boundary simulation results should have already been computed when producing Table 2 so make sure the computations for this table are run first
-FigOA3=figure;
+FigOA4=figure;
 %FIG-a:
 subplot(2,2,1)
 histogram(CorERP,'BinWidth',0.01)
@@ -1504,10 +1600,10 @@ xlabel('Correlation')
 title('(D) Debt volatility')
 legend({'Stochastic boundary','Static boundary'},'Location','northeast')
 
-set(FigOA3,'Units','inches')
-set(FigOA3,'Position',[25 2 8 6.33])
-theme(FigOA3,'light')
-exportgraphics(FigOA3,fullfile(figdir,'FigOA3.pdf'),'BackgroundColor','none')
+set(FigOA4,'Units','inches')
+set(FigOA4,'Position',[25 2 8 6.33])
+theme(FigOA4,'light')
+exportgraphics(FigOA4,fullfile(figdir,'FigOA4.pdf'),'BackgroundColor','none')
 
 fprintf('Total runtime: %.2f hours (%.0f seconds)\n', toc(tStart)/3600, toc(tStart));
 diary off;

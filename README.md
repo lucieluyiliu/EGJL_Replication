@@ -4,10 +4,10 @@ Replication package for the paper (Management Science, R2) by Ericsson, Glover, 
 It has two self-contained components:
 
 - **Theory (MATLAB)**: the calibrated two-tree model. Produces Tables 1–2, OA.1–OA.2, and OA.10, and
-  Figures 2–6 and OA.1–OA.3. Code in `code/matlab/` (see §4).
+  Figures 2–6 and OA.1–OA.4. Code in `code/matlab/` (see §4).
 - **Empirics (Python + R)**: industry-pair **total** and **excess** correlations of default risk and
   equity moments. Produces Table 3, Online Appendix Tables OA.4–OA.9, and the default-probability
-  (PROB) goodness-of-fit Figure OA.4. Code in `code/python/` and `code/r/`.
+  (PROB) goodness-of-fit Figure OA.5. Code in `code/python/` and `code/r/`.
 
 Following the order of the paper, §4 covers the MATLAB theory code and §5–§8 cover the empirical
 reproduction.
@@ -58,7 +58,7 @@ Per-function documentation is in `code/matlab/readme.txt`.
 
 **Run:** open `code/matlab/main.m` in MATLAB and run it (it sets its own working directory, so the
 helper functions resolve from any starting folder). It generates the data for Tables 1–2, OA.1–OA.2,
-and OA.10, writes the figures for Figures 2–6 and OA.1–OA.3 (`.pdf`/`.eps`) to `output/figures/`, and
+and OA.10, writes the figures for Figures 2–6 and OA.1–OA.4 (`.pdf`/`.eps`) to `output/figures/`, and
 prints the asset-pricing moment values reported in Sections 2.1 and 3.3. Calibration parameters are
 those in Sections 2.1, 3.3, and 2.6.
 
@@ -66,16 +66,16 @@ Two ways to run, set by the `RECOMPUTE` flag at the top of `main.m`:
 
 - **Path A — read the precomputed solutions (fast, the default).** With `RECOMPUTE = false` (the
   default), `main.m` loads the model solutions from `Data/DataFile.mat` and produces all theory
-  exhibits without re-solving (minutes instead of ~15 h). Requires `Data/DataFile.mat` (~2 GB),
+  exhibits without re-solving (minutes instead of ~10 h). Requires `Data/DataFile.mat` (~2 GB),
   shipped with the package.
 - **Path B — recompute from scratch (slow).** Set `RECOMPUTE = true`: `main.m` re-solves the model
-  and re-runs the simulation (~15 h, see §7), saves a fresh `Data/DataFile.mat`, then produces the
+  and re-runs the simulation (~10 h, see §7), saves a fresh `Data/DataFile.mat`, then produces the
   exhibits.
 
 | Paper exhibit | Produced by |
 |---|---|
 | Tables 1–2, OA.1–OA.2, OA.10 | `code/matlab/main.m` |
-| Figures 2–6, OA.1–OA.3 | `code/matlab/main.m` |
+| Figures 2–6, OA.1–OA.4 | `code/matlab/main.m` |
 
 Key functions (full list in `code/matlab/readme.txt`): `TWOTREEY.m` (debt and equity value with the
 optimal default boundary, via the PSOR finite-difference method), `CorrEst.m` (distance-to-default
@@ -90,7 +90,7 @@ The package ships the derived inputs, so you can regenerate **every empirical ex
 
     Rscript master.R
 
-This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, Figure OA.4 to
+This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, Figure OA.5 to
 `output/figures/`, and an HTML report to `output/main_empirics.html`. It reads the shipped
 `Data/Estimates/` directly. To recompute those bootstrap estimates first (from
 `Data/industry_sorts.csv` + `Data/AggShocks/Agg_shocks.csv`; stationary block bootstrap,
@@ -115,7 +115,7 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
 | Table OA.7 — total & excess corr, unrelated, robustness | `output/tables/TableOA7_Total_Excess_Corr_Unrelated_Robustness.tex` |
 | Table OA.8 — total & excess corr, all industries, robustness | `output/tables/TableOA8_Total_Excess_Corr_All_Robustness.tex` |
 | Table OA.9 — size & book-leverage terciles | `output/tables/TableOA9_Excess_Corr_Size_BookLev_Terciles.tex` |
-| Figure OA.4 — PROB vs. fitted value | `output/figures/FigureOA4_PROB_fit.png` |
+| Figure OA.5 — PROB vs. fitted value | `output/figures/FigureOA5_PROB_fit.png` |
 
 ## 7. Sample, key settings, and runtime
 Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
@@ -124,7 +124,7 @@ Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 
 
 | Stage | Script | Runtime |
 |---|---|---|
-| Theory — full solve + simulation (`RECOMPUTE=true`) | `code/matlab/main.m` | ~15 h (14 h 55 min); 18 cores for the PDE solves, the simulation phase is single-threaded |
+| Theory — full solve + simulation (`RECOMPUTE=true`) | `code/matlab/main.m` | ~10 h (10 h 3 min); 18 cores for the PDE solves, the simulation phase is single-threaded |
 | Empirics Path B — full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
 | Empirics Step 2 — block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min (capped at 15 cores, hardcoded for reproducibility) |
 | Empirics Path A — knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |

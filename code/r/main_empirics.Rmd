@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results = 
 
 library(tidyverse)
 library(kableExtra)
-library(fixest)    # feols (Figure OA.4 fit)
+library(fixest)    # feols (Figure OA.5 fit)
 library(readxl)    # read_xlsx (distress measures)
 library(zoo)       # as.yearqtr
 
@@ -22,7 +22,7 @@ library(zoo)       # as.yearqtr
 
 end_date <- as.Date("2023-12-31")   # sample end
 
-## standardize a predictor using stored mu/sdev (set in the Figure OA.4 chunk)
+## standardize a predictor using stored mu/sdev (set in the Figure OA.5 chunk)
 z <- function(x, nm) (x - mu[[nm]]) / sdev[[nm]]
 
 ## --- Paths (relative; run from the package root) -----------------------------
@@ -432,9 +432,9 @@ prob_merged <- PROB_Agg %>% mutate(date = as.Date(date)) %>%
   ungroup() %>% select(-quarter)
 ```
 
-## Figure OA.4. Campbell et al. (2008)'s default probability vs. fitted value
+## Figure OA.5. Campbell et al. (2008)'s default probability vs. fitted value
 
-```{r figure-oa4, fig.width=8, fig.height=6}
+```{r figure-oa5, fig.width=8, fig.height=6}
 ## Quarterly value-weighted aggregate PROB vs. its fitted value from a concurrent
 ## regression on the distress measures, estimated SEPARATELY before/after 2008Q4.
 predictor_vars <- c("BAA", "Moodys", "CMDI")
@@ -467,7 +467,7 @@ plot_df <- bind_rows(
   fit_period(prob_merged$date >  gfc_end & is_qtr)
 )
 
-p_oa4 <- ggplot(plot_df, aes(x = date, y = value, color = series, linetype = series)) +
+p_oa5 <- ggplot(plot_df, aes(x = date, y = value, color = series, linetype = series)) +
   annotate("rect", xmin = gfc_start, xmax = gfc_end, ymin = -Inf, ymax = Inf,
            fill = "grey50", alpha = 0.12) +
   geom_line() +
@@ -480,8 +480,8 @@ p_oa4 <- ggplot(plot_df, aes(x = date, y = value, color = series, linetype = ser
                         labels = c("Campbell et al. (2008)", "Fitted")) +
   mytheme_white + theme(legend.position = "bottom") + ylim(0, 0.002)
 
-print(p_oa4)
-ggsave(paste0(fig_dir, "FigureOA4_PROB_fit.png"), p_oa4, width = 8, height = 6, dpi = 300)
+print(p_oa5)
+ggsave(paste0(fig_dir, "FigureOA5_PROB_fit.png"), p_oa5, width = 8, height = 6, dpi = 300)
 
 ## Correlation between Campbell et al. (2008) PROB and its fitted value, by subsample
 ## (as in PROB_Goodness_of_Fit_V2.1.Rmd's fit_corr_split).
