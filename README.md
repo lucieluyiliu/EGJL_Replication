@@ -32,7 +32,9 @@ Contents of the package:
 | `output/main_empirics.html` | Report knitted by `main_empirics.Rmd` |
 | `output/log/` | Log files of our runs: `matlab_run.log` (theory), `step1_build.log` (Python data build), `master_R.log` (bootstrap and exhibits) |
 | `renv.lock`, `renv/`, `install_R_packages.R` | R environment |
+| `.Rprofile` | Hidden file that activates the `renv` environment when R starts in the package folder |
 | `pyproject.toml`, `uv.lock`, `requirements.txt`, `environment.yml` | Python environment |
+| `.python-version` | Hidden file that pins Python 3.11 for `uv` |
 
 How to proceed from beginning to end:
 
@@ -137,10 +139,10 @@ The definitions of the firm variables follow Table OA.3 of the Online Appendix.
 - **R 4.5.1** with the packages pinned in `renv.lock` (tidyverse, fixest, kableExtra, rhdf5, zoo,
   psych, broom, modelsummary, viridis, ggforce, ggrepel, cowplot, knitr, pander, gt). Installed via
   `renv` (see Environment setup below).
-- **Python 3.11** with pandas, numpy, scipy, pyreadstat, duckdb, wrds, pandas-datareader, tqdm —
+- **Python 3.11** with pandas, numpy, scipy, pyreadstat, duckdb, wrds, pandas-datareader, tqdm,
   pinned in `pyproject.toml` / `uv.lock`. Only needed for the full WRDS rebuild (Path B).
-- **Pandoc ≥ 1.12.3** (we used 3.10) — a system tool `rmarkdown` needs to knit the exhibits.
-- A **WRDS account** with CRSP, Compustat, IBES, and TRACE access — only for the full rebuild.
+- **Pandoc ≥ 1.12.3** (we used 3.10), a system tool `rmarkdown` needs to knit the exhibits.
+- A **WRDS account** with CRSP, Compustat, IBES, and TRACE access, only for the full rebuild.
 
 ### Environment setup (do this first)
 A fresh clone ships the **lockfiles, not the packages**, so build the environment before running anything.
@@ -152,14 +154,14 @@ A fresh clone ships the **lockfiles, not the packages**, so build the environmen
 `renv::restore()` installs every package at its locked version into a project-local library, and warns
 if your R version differs from the lock. (Quick alternative, *not* version-pinned: `Rscript install_R_packages.R`.)
 
-**Pandoc** (required to knit the exhibits — command-line `Rscript` has no bundled pandoc):
+**Pandoc** (required to knit the exhibits; command-line `Rscript` has no bundled pandoc):
 
     brew install pandoc          # macOS   (Linux: sudo apt-get install pandoc;  conda: conda install -c conda-forge pandoc)
 
 Verify with `pandoc --version`. If R is already open, restart it (or
 `Sys.setenv(RSTUDIO_PANDOC = dirname(Sys.which("pandoc")))`).
 
-**Python** (only for Path B — the full WRDS rebuild):
+**Python** (only for Path B, the full WRDS rebuild):
 
     uv sync                                  # from pyproject.toml + uv.lock (exact versions)
     # or:  pip install -r requirements.txt
@@ -177,10 +179,10 @@ Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 
 
 | Stage | Script | Runtime |
 |---|---|---|
-| Theory — full solve + simulation (`RECOMPUTE=true`) | `code/matlab/main.m` | ~10 h (10 h 3 min); 18 cores for the PDE solves, the simulation phase is single-threaded |
-| Empirics Path B — full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
-| Empirics Step 2 — block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min (capped at 15 cores, hardcoded for reproducibility) |
-| Empirics Path A — knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |
+| Theory: full solve + simulation (`RECOMPUTE=true`) | `code/matlab/main.m` | ~10 h (10 h 3 min); 18 cores for the PDE solves, the simulation phase is single-threaded |
+| Empirics Path B: full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
+| Empirics Step 2: block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min (capped at 15 cores, hardcoded for reproducibility) |
+| Empirics Path A: knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |
 
 The theory `RECOMPUTE=false` path loads `Data/DataFile.mat` instead of re-solving, skipping the
 multi-hour solve and simulation (only the table and figure post-processing re-runs).
@@ -208,18 +210,35 @@ those in Sections 2.1, 3.3, and 2.6.
 
 Two ways to run, set by the `RECOMPUTE` flag at the top of `main.m`:
 
-- **Path A — read the precomputed solutions (fast, the default).** With `RECOMPUTE = false` (the
+- **Path A: read the precomputed solutions (fast, the default).** With `RECOMPUTE = false` (the
   default), `main.m` loads the model solutions from `Data/DataFile.mat` and produces all theory
   exhibits without re-solving (minutes instead of ~10 h). Requires `Data/DataFile.mat` (~2 GB),
   shipped with the package.
-- **Path B — recompute from scratch (slow).** Set `RECOMPUTE = true`: `main.m` re-solves the model
+- **Path B: recompute from scratch (slow).** Set `RECOMPUTE = true`: `main.m` re-solves the model
   and re-runs the simulation (~10 h, see Section 4), saves a fresh `Data/DataFile.mat`, then produces the
   exhibits.
 
-| Paper exhibit | Produced by |
+All theory exhibits are produced by `code/matlab/main.m`.
+
+| Paper exhibit | Output file |
 |---|---|
-| Tables 1–2, OA.1–OA.2, OA.10 | `code/matlab/main.m` |
-| Figures 2–6, OA.1–OA.4 | `code/matlab/main.m` |
+| Table 1: default risk correlation and rollover risk | `output/tables/Table1_corr_by_maturity.tex` |
+| Table 2: co-movement in default risk and equity moments from simulated economies | `output/tables/Table2_histograms.tex` |
+| Figure 2: equilibrium asset pricing quantities | `output/figures/Fig2.eps` |
+| Figure 3: optimal default policy in a two-tree economy | `output/figures/Fig3.eps` |
+| Figure 4: excess default risk correlation by level of fundamental correlation | `output/figures/Fig4.pdf` |
+| Figure 5: co-movement in default probabilities and in credit spreads | `output/figures/Fig5.pdf` |
+| Figure 6: co-movement in equity volatility and in equity risk premium | `output/figures/Fig6.pdf` |
+| Table OA.1: default risk correlation by borrower characteristics | `output/tables/TableOA1_by_characteristics.tex` |
+| Table OA.2: co-movement in simulated economies, excluding defaults | `output/tables/TableOA2_histograms_nodefault.tex` |
+| Table OA.10: sovereign debt spillover, case study | `output/tables/TableOA10_CPE_spillover.tex` |
+| Figure OA.1: equilibrium asset pricing quantities, counterfactual | `output/figures/FigOA1.eps` |
+| Figure OA.2: distribution of asset pricing moments across simulations | `output/figures/FigOA2.pdf` |
+| Figure OA.3: distribution of default risk correlations, model vs. counterfactual case | `output/figures/FigOA3.pdf` |
+| Figure OA.4: distribution of the correlations in asset pricing moments | `output/figures/FigOA4.pdf` |
+
+The asset-pricing moment values reported in Sections 2.1 and 3.3 are printed to the MATLAB console
+and recorded in `output/log/matlab_run.log`.
 
 Key functions (full list in `code/matlab/readme.txt`): `TWOTREEY.m` (debt and equity value with the
 optimal default boundary, via the PSOR finite-difference method), `CorrEst.m` (distance-to-default
@@ -229,7 +248,7 @@ credit spreads, Table OA.10).
 
 ### Empirics: two ways to reproduce
 
-#### Path A — From the shipped derived data (no WRDS needed)
+#### Path A: from the shipped derived data (no WRDS needed)
 The package ships the derived inputs, so you can regenerate **every empirical exhibit** without WRDS:
 
     Rscript master.R
@@ -240,7 +259,7 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
 `Data/industry_sorts.csv` + `Data/AggShocks/Agg_shocks.csv`; stationary block bootstrap,
 ~55 min, see Section 4), set `RUN_STEP2 <- TRUE` near the top of `master.R`.
 
-#### Path B — Full rebuild from WRDS
+#### Path B: full rebuild from WRDS
 1. Ensure WRDS credentials are configured. The third-party input files (bond data and industry
    tags, see Section 2) are already in `Data/`.
 2. `python code/python/iclink.py` then `python code/python/Step1_PrepareAllData.py`
@@ -257,14 +276,14 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
 
 | Paper exhibit | Output file |
 |---|---|
-| Table 3 — excess correlations across industries | `output/tables/Table3_Excess_Corr_Industries.tex` |
-| Table OA.4 — firm fundamentals (unrelated pairs) | `output/tables/TableOA4_Funda_Corr_Unrelated.tex` |
-| Table OA.5 — default risk & equity moments (unrelated pairs) | `output/tables/TableOA5_DefRisk_Equity_Corr_Unrelated.tex` |
-| Table OA.6 — firm fundamentals robustness | `output/tables/TableOA6_Funda_Corr_Unrelated_Robustness.tex` |
-| Table OA.7 — total & excess corr, unrelated, robustness | `output/tables/TableOA7_Total_Excess_Corr_Unrelated_Robustness.tex` |
-| Table OA.8 — total & excess corr, all industries, robustness | `output/tables/TableOA8_Total_Excess_Corr_All_Robustness.tex` |
-| Table OA.9 — size & book-leverage terciles | `output/tables/TableOA9_Excess_Corr_Size_BookLev_Terciles.tex` |
-| Figure OA.5 — PROB vs. fitted value | `output/figures/FigureOA5_PROB_fit.png` |
+| Table 3: excess correlations across industries | `output/tables/Table3_Excess_Corr_Industries.tex` |
+| Table OA.4: firm fundamentals (unrelated pairs) | `output/tables/TableOA4_Funda_Corr_Unrelated.tex` |
+| Table OA.5: default risk & equity moments (unrelated pairs) | `output/tables/TableOA5_DefRisk_Equity_Corr_Unrelated.tex` |
+| Table OA.6: firm fundamentals robustness | `output/tables/TableOA6_Funda_Corr_Unrelated_Robustness.tex` |
+| Table OA.7: total & excess corr, unrelated, robustness | `output/tables/TableOA7_Total_Excess_Corr_Unrelated_Robustness.tex` |
+| Table OA.8: total & excess corr, all industries, robustness | `output/tables/TableOA8_Total_Excess_Corr_All_Robustness.tex` |
+| Table OA.9: size & book-leverage terciles | `output/tables/TableOA9_Excess_Corr_Size_BookLev_Terciles.tex` |
+| Figure OA.5: PROB vs. fitted value | `output/figures/FigureOA5_PROB_fit.png` |
 
 ### Notes
 - The pre-shipped `output/tables` and `output/figures` are the paper's exact exhibits; reproduction

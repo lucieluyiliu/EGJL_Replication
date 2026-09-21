@@ -954,7 +954,7 @@ exportgraphics(Fig6,fullfile(figdir,'Fig6.pdf'),'BackgroundColor','none') %We ne
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Code for Table OA.4:                                   %
+% Code for Table OA.1:                                   %
 % 'Default risk correlation by borrower characteristics' %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
