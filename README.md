@@ -40,7 +40,7 @@ How to proceed from beginning to end:
 
 1. Set up the software environment (Section 4).
 2. Theory exhibits: run `code/matlab/main.m` (Section 5). By default it reads the precomputed model
-   solutions in `Data/DataFile.mat` and finishes in minutes.
+   solutions in `Data/DataFile.mat` and takes about 25 to 30 minutes.
 3. Empirical exhibits: run `Rscript master.R` from the package root (Section 5). It reads the data
    shipped in `Data/` and needs no WRDS access.
 4. Optional, with WRDS access: rebuild the empirical data from WRDS with the Python code (Path B in
@@ -215,23 +215,27 @@ The theory code fixes MATLAB's random number generator at the top of `main.m` wi
 block bootstrap in `Step2_MakeCorrelations_V4.R` uses seed = 123.
 
 ### Sample, key settings, and runtime
-Sample 1987-06-30 → 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
+Sample: 1987-06-30 to 2023-12-31. Block bootstrap: block length 4 quarters, B = 1000, seed = 123.
 
-**Approximate runtime** (MacBook Pro, Apple M5 Pro, 18 cores, 64 GB):
+**Approximate runtime** (MacBook Pro, Apple M5 Pro, 18 cores, 64 GB). The times are taken from the
+log files in `output/log/`.
 
 | Stage | Script | Runtime |
 |---|---|---|
+| Theory, default (`RECOMPUTE=false`): tables and figures from the saved solutions | `code/matlab/main.m` | ~25 to 30 min |
 | Theory: full solve + simulation (`RECOMPUTE=true`) | `code/matlab/main.m` | ~10 h (10 h 3 min); 18 cores for the PDE solves, the simulation phase is single-threaded |
-| Empirics Path B: full WRDS rebuild | `Step1_PrepareAllData.py` | ~1 h 25 min |
-| Empirics Step 2: block bootstrap (B = 1000) | `Step2_MakeCorrelations_V4.R` | ~55 min (capped at 15 cores, hardcoded for reproducibility) |
-| Empirics Path A: knit exhibits | `master.R` (`main_empirics.Rmd`) | a few seconds |
+| Empirics Path A, default: knit exhibits | `master.R` (`main_empirics.Rmd`) | under a minute |
+| Empirics Step 2: block bootstrap (B = 1000), `RUN_STEP2 <- TRUE` | `Step2_MakeCorrelations_V4.R` | ~55 min (capped at 15 cores, hardcoded for reproducibility) |
+| Empirics Path B: full WRDS rebuild | `Step1_PrepareAllData.py` | ~55 min, of which `MakeSIGMA.py` (CRSP daily returns) ~37 min and `MakeMainDataFile_V1.py` ~14 min; the other scripts take under 2 min each |
+| Documentation of the industry table | `MakeFF48.py` | ~2 min |
 
-The theory `RECOMPUTE=false` path loads `Data/DataFile.mat` instead of re-solving, skipping the
-multi-hour solve and simulation (only the table and figure post-processing re-runs).
+The theory `RECOMPUTE=false` path loads `Data/DataFile.mat` (~2 GB) instead of re-solving, which skips
+the multi-hour solve and simulation. It still computes the statistics of the tables from the
+simulated economies and draws all figures; in our full run this stage took 26 minutes.
 
-Path A alone (the default, reading the shipped `Data/Estimates/`) completes in seconds. Step 2 and
-the full Python rebuild are only needed to regenerate the estimates or the firm/industry panels from
-scratch; both are WRDS- and CPU-bound, so wall-clock time scales with core count and WRDS load.
+Step 2 and the full Python rebuild are only needed to regenerate the estimates or the
+firm/industry panels from scratch. Both depend on the number of cores and on the load of the WRDS
+server, so the time can differ across machines and days.
 
 ## 5. Programs/Code
 
@@ -262,7 +266,7 @@ Two ways to run, set by the `RECOMPUTE` flag at the top of `main.m`:
 
 - **Path A: read the precomputed solutions (fast, the default).** With `RECOMPUTE = false` (the
   default), `main.m` loads the model solutions from `Data/DataFile.mat` and produces all theory
-  exhibits without re-solving (minutes instead of ~10 h). Requires `Data/DataFile.mat` (~2 GB),
+  exhibits without re-solving (~25 to 30 min instead of ~10 h). Requires `Data/DataFile.mat` (~2 GB),
   shipped with the package.
 - **Path B: recompute from scratch (slow).** Set `RECOMPUTE = true`: `main.m` re-solves the model
   and re-runs the simulation (~10 h, see Section 4), saves a fresh `Data/DataFile.mat`, then produces the
@@ -330,7 +334,7 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
    runs, in order, `iclink.py`, `MakeMainDataFile_V1.py`, `MakeSIGMA.py`, `MakePROB.py`,
    `MakeCreditSpread.py`, `MakePortfolios_v2.py`, `MakeSorts.py`, and `MakeAggShocks_v1.py`, stops
    if one of them fails, and saves the console output to `output/log/step1_build.log`
-   (~1 h 25 min, see Section 4).
+   (~55 min, see Section 4).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
 
 `code/python/MakeFF48.py` is documentation only and is not run by `Step1_PrepareAllData.py`. It shows
