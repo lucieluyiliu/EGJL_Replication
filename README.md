@@ -97,8 +97,8 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
 ~55 min, see §7), set `RUN_STEP2 <- TRUE` near the top of `master.R`.
 
 ### Path B — Full rebuild from WRDS
-1. Ensure WRDS credentials are configured; obtain the third-party files listed in
-   `DATA_AVAILABILITY.md` and place them in `Data/`.
+1. Ensure WRDS credentials are configured. The third-party input files (bond data and industry
+   tags, see `DATA_AVAILABILITY.md`) are already in `Data/`.
 2. `python code/python/iclink.py` then `python code/python/Step1_PrepareAllData.py`
    (builds the firm/industry panels; ~1 h 25 min, see §7).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
@@ -144,5 +144,6 @@ scratch; both are WRDS- and CPU-bound, so wall-clock time scales with core count
 ## 8. Notes
 - The pre-shipped `output/tables` and `output/figures` are the paper's exact exhibits; reproduction
   should overwrite them with identical content.
-- See `DATA_AVAILABILITY.md` for data sources and the files that must be obtained from WRDS.
+- See `DATA_AVAILABILITY.md` for the data sources, the June 2026 data vintage shipped in `Data/`, and
+  the scripts that rebuild each file from WRDS.
 - Contact: Kristoffer Glover (Kristoffer.Glover@uts.edu.au), Lucie Lu (lucie.lu@unimelb.edu.au).

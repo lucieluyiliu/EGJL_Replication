@@ -23,7 +23,8 @@ DATA_AVAILABILITY.md     data sources, what's included vs obtained from WRDS, li
    `MakeMainDataFile_V1 → MakeSIGMA → MakePROB → MakeCreditSpread → MakePortfolios_v2 →
    MakeSorts → MakeAggShocks`. Needs WRDS (CRSP/Compustat/IBES) + FINRA TRACE; `iclink.py`
    must run first to create `Data/iclink.pkl`. PROB is computed in-house by `MakePROB.py`
-   (predictors × published `drcoefficients2021.xlsx` coefficients → logit).
+   (predictors × `drcoefficients2021.xlsx` coefficients → logit; coefficients originally from
+   Jens Hilscher, shared by Kevin Aretz).
 2. **Correlations — R** `code/r/Step2_MakeCorrelations_V4.R` (sources `functions_V4.1.R`)
    reads `Data/industry_sorts.csv`, `Data/FF48_industry.csv`, `Data/AggShocks/Agg_shocks.csv`
    → estimates in `Data/Estimates/` and `Data/Estimates/length4/`.

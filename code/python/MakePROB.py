@@ -6,9 +6,10 @@ Last modified: 2026-06-22
 Author:        Lucie Lu <lucie.lu@unimelb.edu.au>
 
 Computes the firm-level default probability (cdr/PROB). Builds the Campbell-style
-predictors from raw_data.hdf + sigma.h5 (winsorized 5%/95%), applies the published
-logit coefficients in drcoefficients2021.xlsx, and aggregates equal- and value-
-weighted PROB. The S&P 500 series (for rsize/exret) is pulled live from WRDS CRSP.
+predictors from raw_data.hdf + sigma.h5 (winsorized 5%/95%), applies the logit
+coefficients in drcoefficients2021.xlsx (originally from Jens Hilscher, shared by
+Kevin Aretz), and aggregates equal- and value-weighted PROB. The S&P 500 series (for
+rsize/exret) is pulled live from WRDS CRSP.
 Inputs:  raw_data.hdf, sigma.h5, drcoefficients2021.xlsx, WRDS (crsp.msp500_v2)
 Outputs: PROB.h5, PROB_agg.csv
 Validation: campbelldefrisk_2021.sas7bdat holds Kevin Aretz's precomputed CDR; the
