@@ -103,6 +103,11 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
    (builds the firm/industry panels; ~1 h 25 min, see §7).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
 
+`code/python/MakeFF48.py` is documentation only and is not run by `Step1_PrepareAllData.py`. It shows
+how the shared industry table `Data/FF48_Stocks.h5` is constructed, rebuilds it from WRDS into
+`Data/FF48_Stocks_WRDS.h5`, and prints a comparison (99.76% of stock-months agree). The pipeline reads
+the shared table.
+
 ## 6. Empirics: exhibit → producing script
 All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `master.R`).
 

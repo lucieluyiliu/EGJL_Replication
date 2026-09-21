@@ -20,14 +20,18 @@ pulls are not shipped (Path B rebuilds them from WRDS).
 | `sigma.h5` | Equity return volatility | CRSP daily |
 | `CS.h5` | Firm-level 5Y/10Y credit spreads | FINRA TRACE |
 | `iclink.pkl` | CRSP–IBES link table | CRSP + IBES |
+| `FF48_Stocks.h5` | Firm-month Fama–French 48 industry tags, January 1960 to December 2022 (input to `MakePortfolios_v2.py`). Shared by A. Dickerson. `code/python/MakeFF48.py` documents its construction and rebuilds it from WRDS: CRSP stock-months (`crsp.msf_v2`) with each stock's SIC code as of end-2022 (`crsp.stocknames`), mapped with Kenneth French's SIC ranges. The rebuild matches the shared table for 99.76% of stock-months; the pipeline reads the shared table | CRSP |
 | `Estimates/`, `Estimates/length4/` | Correlation + block-bootstrap outputs feeding the tables | (this package's R code) |
 | `AggShocks/Agg_shocks.csv` | Quarterly aggregate macro/financial shocks | public macro sources (below) |
+| `DataFile.mat` | Precomputed solutions of the calibrated two-tree model (equity and debt values, default boundaries, default probabilities, simulated paths, counterfactual values), ~2 GB. Read by `code/matlab/main.m` when `RECOMPUTE = false`; rebuilt from scratch when `RECOMPUTE = true` | None (model output of this package's MATLAB code; no external data) |
 
 ### Public data (redistributable; included for convenience)
 | File(s) | Source |
 |---|---|
 | `BAA.csv`, `BAA10Y.csv`, `BAMLC0A0CM.csv`, `USREC.csv`, `USRECP.csv` | FRED (Federal Reserve) |
 | `drcoefficients2021.xlsx` | Published default-risk (CDR) logit coefficients |
+| `Siccodes48.txt` (SIC ranges defining the Fama–French 48 industries; read by `MakeFF48.py`) | Kenneth French's data library |
+| `FF48_industry.csv` (Fama–French 48 industry codes and short names; lookup table read by `Step2_MakeCorrelations_V4.R`) | Kenneth French's data library |
 | `Market_CMDI.xlsx`, `Moodys_NB_QTRLy_US_Defaults_US_21072020.xlsx` | Published aggregate default / credit series |
 | `AggShocks/` source files (INDPRO, UNRATE, FEDFUNDS from FRED; CFNAI real-time from the Chicago Fed; US Economic Policy Uncertainty; HKM intermediary factors; the liquidity series `liq_data_1962_2024.csv`; Jurado–Ludvigson–Ng macro/financial/real uncertainty; SPF mean GDP growth) | FRED and the respective authors' websites |
 
@@ -43,8 +47,6 @@ pulls are not shipped (Path B rebuilds them from WRDS).
 | `comp_quarter.hdf`, `comp_annual.h5` | Compustat fundamentals | WRDS Compustat |
 | `trace_29_04_2025.parquet` | Corporate bond transactions | FINRA TRACE / Dickerson–Robotti–Rossetti WRDS dataset. This snapshot was shared directly by Alex Dickerson (author of the Open Source Bond Asset Pricing data) ahead of its public release; confirm redistribution rights before posting publicly. |
 | `WRDS_MMN_Corrected_Data_2024_July.csv` | MMN-corrected bond data | WRDS |
-| `FF48_Stocks.h5` | Firm-level FF48 industry tags | Shared by A. Dickerson |
-| `monthly_vol.csv.gzip`, `monthly_mom.csv.gzip` | Monthly volatility / momentum factor data | Shared by A. Dickerson (WRDS-derived) |
 
 ## Licensing
 CRSP, Compustat, and FINRA TRACE data are subject to their respective license agreements and may
