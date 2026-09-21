@@ -301,6 +301,10 @@ All theory exhibits are produced by `code/matlab/main.m`.
 The asset-pricing moment values reported in Sections 2.1 and 3.3 are printed to the MATLAB console
 and recorded in `output/log/matlab_run.log`.
 
+In the paper, Panel A of Figure 3 carries two arrows and the label "Distance-to-default". They are an
+illustration added by hand and are not drawn by the code. `Fig3.eps` contains all plotted data of the
+figure.
+
 Key functions (full list in `code/matlab/readme.txt`): `TWOTREEY.m` (debt and equity value with the
 optimal default boundary, via the PSOR finite-difference method), `CorrEst.m` (distance-to-default
 correlation, Equation 11), `Simulation.m` and `DefaultTimes.m` (simulated economies and default
