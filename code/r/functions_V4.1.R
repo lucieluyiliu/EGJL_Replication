@@ -1,7 +1,30 @@
-# Function for sorting industry-pairs into two and compare average 
-# Excess correlations
-
-#Last update 20241124 remove correlation types/
+# functions_V4.1.R -- EGJL "Excess Co-movement in Default Risk"
+#
+# Settings and functions shared by Step2_MakeCorrelations_V4.R and main_empirics.Rmd.
+# Sourced from the package root; it defines objects and functions only and produces
+# no output of its own.
+#
+# Contents
+#   Parameters          ggplot themes and colours; the 18 unrelated industry pairs
+#                       (unrelated_pairnames)
+#   Helper functions    fctCorrSE        Pearson correlation of two series with its standard error
+#                       fctPairCorr      correlation of every industry pair, for each variable
+#                       fctTSRes0        residuals of one variable from a regression on the control
+#                                        variables (and aggregate shocks), estimated on the
+#                                        industry-quarter panel passed to it
+#                       fctTSRes         the same for a list of variables
+#                       fctFormPairs     all pairs of industries in a table
+#                       fctSort, fctSortTcl, fctSortHL
+#                                        industry pairs within bins of a sorting variable
+#                       fctCorrSEtable   table with correlations and standard errors
+#   Bootstrap           fctResample      row indices of one stationary block bootstrap draw
+#                       fctMeanCorr      average correlation over a set of industry pairs
+#                       fctBstrapCorr    bootstrap standard error of that average
+#                       fctBstrapCorr2   the same for two sets of pairs and their difference
+#                       fctBstrapAll, fctBstrapAll2
+#                                        the two functions above, applied to a list of variables
+#                       opt_block_length_REV_dec07
+#                                        optimal block length of the stationary bootstrap
 
 # Parameters---------
 
@@ -58,6 +81,9 @@ orange='#F97A1F'
 
 LineWidth=0.75
 
+# The 18 pairs of unrelated industries used in the paper, by Fama-French 48 short name.
+# unrelated_pairnames holds each pair in both orders (for example "Smoke_MedEq" and
+# "MedEq_Smoke"), so that a pair is found whichever industry comes first.
 unrelated_ind <- data.frame(pairno = integer(), ind1 = character(), ind2 = character(), stringsAsFactors = FALSE)
 
 unrelated_ind<-rbind(unrelated_ind, data.frame(pairno=1, ind1="Smoke",ind2="MedEq"))
@@ -106,6 +132,9 @@ fctCorrSE <- function(x, y) {
   
 }
 
+# Correlation, with its standard error, between the two industries of every pair in
+# industry_pairs (an object of the calling script), separately for each variable and,
+# if given, for each value of group_vars.
 fctPairCorr <- function(data, group_vars = character()) {
   #This is a versatile function that computes the pairwise correlation for each yvar, groupped by group_vars 
   out<-industry_pairs %>%
@@ -338,6 +367,9 @@ fctCorrSEtable<-function(table){
 
 
 
+# One draw of the stationary block bootstrap: returns T row indices. A block continues with
+# the next observation with probability 1 - 1/block_length (wrapping around at the end of the
+# sample) and otherwise restarts at a random date, so blocks have average length block_length.
 fctResample <- function(T, block_length) {
   # Arguments:
   # T: Number of rows in the data matrix (time series length)
@@ -550,6 +582,8 @@ fctBstrapCorr2 <- function(data, pairs1, pairs2, B = 1000, block_length=4, num_c
 }
 
 
+# Applies fctBstrapCorr to each variable in `variables` and stacks the results: the average
+# correlation across `pairs` (all pairs if NULL) and its bootstrap standard error.
 fctBstrapAll <- function(data, variables, pairs, B = 1000, block_length=4, num_cores = NULL) {
   # Loop over all varaibles
   out<-map_dfr(variables, function(var) {
@@ -577,6 +611,8 @@ fctBstrapAll <- function(data, variables, pairs, B = 1000, block_length=4, num_c
 }
 
 
+# Applies fctBstrapCorr2 to each variable in `variables` and stacks the results: the average
+# correlation in `pairs1` and in `pairs2`, their difference, and the bootstrap standard errors.
 fctBstrapAll2 <- function(data, variables, pairs1, pairs2, B = 1000, block_length=4, num_cores = NULL) {
   # Wrapper to loop over all variables
    out<-map_dfr(variables, function(var) {
