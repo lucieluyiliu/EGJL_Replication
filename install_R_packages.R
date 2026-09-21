@@ -1,5 +1,5 @@
 ## ----------------------------------------------------------------------------
-## R package dependencies for the EGJL "Excess Default Correlations" package.
+## R package dependencies for the EGJL "Excess Co-movement in Default Risk" package.
 ## Run once from the package root:  Rscript install_R_packages.R
 ##
 ## NOTE: exact versions are not pinned here (no R env export was available).

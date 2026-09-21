@@ -1,4 +1,4 @@
-# CLAUDE.md — EGJL "Excess Default Correlations" Replication Package
+# CLAUDE.md — EGJL "Excess Co-movement in Default Risk" Replication Package
 
 This is the cleaned replication package for the empirical component of the paper
 (Management Science, R2). It was assembled by copying the canonical scripts from the

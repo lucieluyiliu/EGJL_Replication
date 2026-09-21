@@ -1,5 +1,5 @@
 ## ----------------------------------------------------------------------------
-## Central relative paths for the EGJL "Excess Default Correlations" package.
+## Central relative paths for the EGJL "Excess Co-movement in Default Risk" package.
 ## MNSC item 13: all paths are RELATIVE to the package ROOT. Run R from the
 ## package root (the master script does this). For .Rmd files, the setup chunk
 ## sets knitr root.dir = "../.." so chunks also evaluate from the package root.

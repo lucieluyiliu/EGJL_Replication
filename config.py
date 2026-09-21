@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Central paths for the EGJL "Excess Default Correlations" replication package.
+Central paths for the EGJL "Excess Co-movement in Default Risk" replication package.
 
 MNSC item 13: paths are PORTABLE. The package root is derived from this file's own
 location, so every script resolves files against the package root regardless of the

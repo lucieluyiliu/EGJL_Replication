@@ -1,4 +1,4 @@
-# Python dependencies for the EGJL "Excess Default Correlations" replication package.
+# Python dependencies for the EGJL "Excess Co-movement in Default Risk" replication package.
 #
 # Versions are pinned to the conda env that produced the published results
 # (Python 3.11; see environment.yml).

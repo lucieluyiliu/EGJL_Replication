@@ -1,5 +1,5 @@
 ## ============================================================================
-## MASTER SCRIPT (analysis) — EGJL "Excess Default Correlations" replication
+## MASTER SCRIPT (analysis) — EGJL "Excess Co-movement in Default Risk" replication
 ##
 ## Path A (no WRDS): regenerate every empirical exhibit from the shipped derived
 ## data in Data/. Run from the package ROOT:
@@ -28,7 +28,7 @@ sink(.logcon, type = "message")    # messages / warnings / errors -> log file
 
 ## --- Optional: regenerate the bootstrap estimates in Data/Estimates/ ---------
 ## The package ships these (read directly by the exhibits). Set TRUE to recompute
-## them from Data/industry_sorts.csv (stationary block bootstrap; ~hours).
+## them from Data/industry_sorts.csv (stationary block bootstrap; ~55 min).
 RUN_STEP2 <- FALSE
 if (RUN_STEP2) {
   message(">> Step 2: correlations + block bootstrap ...")

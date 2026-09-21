@@ -1,4 +1,4 @@
-# Step2_MakeCorrelations_V4.R — EGJL "Excess Default Correlations"
+# Step2_MakeCorrelations_V4.R — EGJL "Excess Co-movement in Default Risk"
 # Author: Lucie Lu <lucie.lu@unimelb.edu.au>
 # Date:   2026-06-21
 #

@@ -16,6 +16,8 @@ Data/
 # ── Working references, not deliverables ───────────────────────────────────
 # The MNSC checklist PDF is our internal guide; its footer says not to ship it.
 MNSC-replication-package-checklist-*.pdf
+# The journal's README template, kept for reference only.
+MNSC-readme-template.rtf
 
 # ── OS / editor cruft ──────────────────────────────────────────────────────
 .DS_Store

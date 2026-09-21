@@ -1,4 +1,4 @@
-# Conda environment for the EGJL "Excess Default Correlations" replication package.
+# Conda environment for the EGJL "Excess Co-movement in Default Risk" replication package.
 # Mirrors the env that produced the published results (Python 3.11).
 #   conda env create -f environment.yml
 #   conda activate egjl-replication
