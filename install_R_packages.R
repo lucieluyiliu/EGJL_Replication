@@ -2,9 +2,9 @@
 ## R package dependencies for the EGJL "Excess Co-movement in Default Risk" package.
 ## Run once from the package root:  Rscript install_R_packages.R
 ##
-## NOTE: exact versions are not pinned here (no R env export was available).
-## For a fully reproducible R environment, capture versions on the machine that
-## produced the results (e.g. renv::snapshot(), or save sessionInfo()), and pin.
+## NOTE: this script installs the current CRAN versions; it does not pin versions.
+## The exact versions that produced the results are recorded in renv.lock. For that
+## environment use renv::restore() instead (see README.md, Section 4).
 ## `parallel` is part of base R (no install needed).
 ## ----------------------------------------------------------------------------
 
@@ -13,8 +13,8 @@ cran <- c(
   "tidyverse",   # dplyr, tidyr, ggplot2, purrr, stringr, readr, ...
   "fixest", "kableExtra", "viridis", "stringi", "psych",
   "ggforce", "ggrepel", "cowplot", "knitr", "pander",
-  "lmtest", "sandwich", "broom", "gt", "modelsummary",
-  "zoo", "patchwork", "readxl", "openxlsx", "rmarkdown"
+  "broom", "gt", "modelsummary",
+  "zoo", "readxl", "openxlsx", "rmarkdown"
 )
 new <- cran[!cran %in% rownames(installed.packages())]
 if (length(new)) {

@@ -133,14 +133,53 @@ The definitions of the firm variables follow Table OA.3 of the Online Appendix.
 ## 4. Computational requirements
 
 ### Software
-- **MATLAB R2026a** for the theory exhibits, with the **Statistics and Machine Learning Toolbox**
-  (`normrnd`, `unifrnd`, `prctile`) and the **Parallel Computing Toolbox** (`parfor`; the code still
-  runs without it, just serially).
-- **R 4.5.1** with the packages pinned in `renv.lock` (tidyverse, fixest, kableExtra, rhdf5, zoo,
-  psych, broom, modelsummary, viridis, ggforce, ggrepel, cowplot, knitr, pander, gt). Installed via
-  `renv` (see Environment setup below).
-- **Python 3.11** with pandas, numpy, scipy, pyreadstat, duckdb, wrds, pandas-datareader, tqdm,
-  pinned in `pyproject.toml` / `uv.lock`. Only needed for the full WRDS rebuild (Path B).
+The runs reported in the paper and in `output/log/` were made on **macOS 26.5** (Tahoe, build 25F71)
+on an Apple M5 Pro (arm64).
+
+- **MATLAB R2026a** (version 26.1, Update 3) for the theory exhibits, with the **Statistics and
+  Machine Learning Toolbox** 26.1 (`normrnd`, `unifrnd`, `prctile`) and the **Parallel Computing
+  Toolbox** 26.1 (`parfor`; the code still runs without it, just serially). The code was developed
+  and tested on R2026a. It uses the figure `theme` function, which older MATLAB releases do not have.
+- **R 4.5.1**. The packages loaded by the code, with the versions we used:
+
+  | Package | Version | Package | Version |
+  |---|---|---|---|
+  | tidyverse (dplyr 1.1.4, tidyr 1.3.2, purrr 1.2.0, ggplot2 4.0.1) | 2.0.0 | psych | 2.5.6 |
+  | fixest | 0.13.2 | broom | 1.0.9 |
+  | kableExtra | 1.4.0 | modelsummary | 2.5.0 |
+  | rhdf5 (Bioconductor) | 2.52.1 | viridis | 0.6.5 |
+  | zoo | 1.8-15 | ggforce | 0.5.0 |
+  | readxl | 1.4.5 | ggrepel | 0.9.6 |
+  | openxlsx | 4.2.8 | cowplot | 1.2.0 |
+  | stringi | 1.8.7 | gt | 1.0.0 |
+  | knitr | 1.50 | pander | 0.6.6 |
+  | rmarkdown | 2.29 | renv | 1.2.3 |
+
+  The block bootstrap also uses the `parallel` package, which is part of R. `renv.lock` records
+  these versions together with the versions of all their dependencies (161 packages in total), and
+  `renv::restore()` installs exactly those versions (see Environment setup below).
+- **Python 3.11** (we used 3.11.15), only needed for the full WRDS rebuild (Path B). The packages
+  used by the code, with the versions we used:
+
+  | Package | Version | Used for |
+  |---|---|---|
+  | pandas | 2.2.2 | data handling |
+  | numpy | 1.26.4 | numerical routines |
+  | scipy | 1.12.0 | statistics |
+  | wrds | 3.2.0 | WRDS connection (CRSP, Compustat, IBES) |
+  | tables | 3.10.1 | reading and writing the `.h5` / `.hdf` files |
+  | duckdb | 1.3.2 | reading the TRACE parquet file |
+  | pyarrow | 19.0.0 | parquet support |
+  | pyreadstat | 1.2.7 | reading the `.sas7bdat` file |
+  | openpyxl | 3.1.2 | reading the `.xlsx` files |
+  | pandas-datareader | 0.10.0 | loaded by the build scripts |
+  | fuzzywuzzy | 0.18.0 | company name matching in `iclink.py` |
+  | python-dateutil | 2.8.2 | date arithmetic |
+  | tqdm | 4.66.4 | progress bars |
+  | matplotlib | 3.9.0 | loaded by `MakeCreditSpread.py` |
+
+  The same versions are pinned in `pyproject.toml`, `uv.lock`, and `requirements.txt`, and the
+  setup commands below install exactly those versions.
 - **Pandoc ≥ 1.12.3** (we used 3.10), a system tool `rmarkdown` needs to knit the exhibits.
 - A **WRDS account** with CRSP, Compustat, IBES, and TRACE access, only for the full rebuild.
 
@@ -152,7 +191,10 @@ A fresh clone ships the **lockfiles, not the packages**, so build the environmen
     Rscript -e 'if (!requireNamespace("renv", quietly=TRUE)) install.packages("renv"); renv::restore()'
 
 `renv::restore()` installs every package at its locked version into a project-local library, and warns
-if your R version differs from the lock. (Quick alternative, *not* version-pinned: `Rscript install_R_packages.R`.)
+if your R version differs from the lock. When R starts in the package folder it may print
+"The project is out-of-sync -- use `renv::status()` for details." This is expected and harmless:
+`renv.lock` also records a few packages that the code does not load, and `renv` reports them. All
+packages that the code loads are installed at their locked versions. (Quick alternative, *not* version-pinned: `Rscript install_R_packages.R`.)
 
 **Pandoc** (required to knit the exhibits; command-line `Rscript` has no bundled pandoc):
 
