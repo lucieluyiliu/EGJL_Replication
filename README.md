@@ -22,10 +22,10 @@ Contents of the package:
 |---|---|
 | `README.md` | This file |
 | `DATA_DICTIONARY.md` | Variable dictionaries for the datasets in `Data/` (see Section 3) |
-| `config.py`, `config.R` | Central paths; they detect the package root, so no path needs editing |
+| `config.py`, `config.R` | Central paths, all relative to the package root, so no path needs editing |
 | `master.R` | Master script for the empirical exhibits |
 | `code/matlab/` | Theory code: `main.m` plus its functions (documented in `code/matlab/readme.txt`) |
-| `code/python/` | Data build from WRDS (`iclink.py`, then `Step1_PrepareAllData.py`, which runs the `Make*.py` scripts) |
+| `code/python/` | Data build from WRDS: the driver `Step1_PrepareAllData.py` runs `iclink.py` and the `Make*.py` scripts. `MakeFF48.py` is documentation only |
 | `code/r/` | Correlations and block bootstrap (`Step2_MakeCorrelations_V4.R`, `functions_V4.1.R`) and the exhibits (`main_empirics.Rmd`) |
 | `Data/` | All data read and written by the code (see Section 2) |
 | `output/tables/`, `output/figures/` | The tables (`.tex`) and figures of the paper, as produced by the code |
@@ -53,7 +53,9 @@ section describes every dataset used, where it comes from, and how it can be obt
 
 The theory component uses no external data. The empirical analysis uses data from **WRDS**
 (CRSP, Compustat, IBES), corporate bond data from the **Open Source Bond Asset Pricing** project
-(Dickerson, Robotti, and Rossetti), and public sources (FRED and authors' websites).
+(Dickerson, Robotti, and Rossetti), public sources (FRED and authors' websites), a Moody's default
+series, and a few files shared with us by other researchers. Each file is listed below with its
+source.
 
 ### Data vintage
 WRDS revises its databases continuously, so a fresh download does not return exactly the data
