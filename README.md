@@ -203,10 +203,18 @@ The model exhibits are produced by the MATLAB code in `code/matlab/` (author: Kr
 Per-function documentation is in `code/matlab/readme.txt`.
 
 **Run:** open `code/matlab/main.m` in MATLAB and run it (it sets its own working directory, so the
-helper functions resolve from any starting folder). It generates the data for Tables 1–2, OA.1–OA.2,
-and OA.10, writes the figures for Figures 2–6 and OA.1–OA.4 (`.pdf`/`.eps`) to `output/figures/`, and
-prints the asset-pricing moment values reported in Sections 2.1 and 3.3. Calibration parameters are
-those in Sections 2.1, 3.3, and 2.6.
+helper functions resolve from any starting folder). Alternatively, run it from a terminal without
+opening the MATLAB desktop:
+
+    cd code/matlab
+    matlab -batch "main"
+
+(On macOS the `matlab` command is inside the application, for example
+`/Applications/MATLAB_R2026a.app/bin/matlab`.) The script writes Tables 1–2, OA.1–OA.2, and OA.10
+as `.tex` files to `output/tables/`, writes Figures 2–6 and OA.1–OA.4 (`.pdf`/`.eps`) to
+`output/figures/`, and prints the asset-pricing moment values reported in Sections 2.1 and 3.3.
+The console output is saved to `output/log/matlab_run.log`. Calibration parameters are those in
+Sections 2.1, 3.3, and 2.6.
 
 Two ways to run, set by the `RECOMPUTE` flag at the top of `main.m`:
 
@@ -260,10 +268,27 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
 ~55 min, see Section 4), set `RUN_STEP2 <- TRUE` near the top of `master.R`.
 
 #### Path B: full rebuild from WRDS
-1. Ensure WRDS credentials are configured. The third-party input files (bond data and industry
-   tags, see Section 2) are already in `Data/`.
-2. `python code/python/iclink.py` then `python code/python/Step1_PrepareAllData.py`
-   (builds the firm/industry panels; ~1 h 25 min, see Section 4).
+1. Set up WRDS access. Open `config.py` and set `wrds_username` to your own WRDS username (it
+   ships with the authors' username). Store your WRDS password in `~/.pgpass` so that the scripts can
+   connect without a prompt; the `wrds` package creates this file for you when you run, once,
+
+       python -c "import wrds; wrds.Connection(wrds_username='your_username').create_pgpass_file()"
+
+   The build runs the scripts non-interactively, so it stops at the first WRDS call if the password
+   is not stored. The third-party input files (bond data and industry tags, see Section 2) are
+   already in `Data/`.
+2. Activate the Python environment of Section 4, then run the driver from the package root:
+
+       python code/python/Step1_PrepareAllData.py
+
+   The driver starts each script with the command `python`, so that command must point to the
+   environment that has the packages installed. With `uv` this is done in one step by
+   `uv run python code/python/Step1_PrepareAllData.py`; with a virtual environment or conda,
+   activate it first (`source .venv/bin/activate` or `conda activate egjl-replication`). The driver
+   runs, in order, `iclink.py`, `MakeMainDataFile_V1.py`, `MakeSIGMA.py`, `MakePROB.py`,
+   `MakeCreditSpread.py`, `MakePortfolios_v2.py`, `MakeSorts.py`, and `MakeAggShocks_v1.py`, stops
+   if one of them fails, and saves the console output to `output/log/step1_build.log`
+   (~1 h 25 min, see Section 4).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
 
 `code/python/MakeFF48.py` is documentation only and is not run by `Step1_PrepareAllData.py`. It shows
@@ -292,4 +317,7 @@ All empirical exhibits are produced by `code/r/main_empirics.Rmd` (run via `mast
   `RECOMPUTE = true` and `master_R.log` with `RUN_STEP2 <- TRUE`. The package ships with both flags
   off, so the default run reads the saved model solutions and bootstrap estimates and reproduces the
   same exhibits.
+- **Running the code overwrites these log files.** `main.m` replaces `matlab_run.log`, `master.R`
+  replaces `master_R.log`, and `Step1_PrepareAllData.py` replaces `step1_build.log`, each with the
+  log of the new run. To keep our logs for comparison, copy the folder `output/log/` before running.
 - Contact: Kristoffer Glover (Kristoffer.Glover@uts.edu.au), Lucie Lu (lucie.lu@unimelb.edu.au).

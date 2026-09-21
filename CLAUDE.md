@@ -21,8 +21,8 @@ README.md                follows the MNSC readme template: overview, data availa
 ## Pipeline (canonical versions only)
 1. **Build — Python** `code/python/Step1_PrepareAllData.py` runs, in order:
    `MakeMainDataFile_V1 → MakeSIGMA → MakePROB → MakeCreditSpread → MakePortfolios_v2 →
-   MakeSorts → MakeAggShocks`. Needs WRDS (CRSP/Compustat/IBES) + FINRA TRACE; `iclink.py`
-   must run first to create `Data/iclink.pkl`. PROB is computed in-house by `MakePROB.py`
+   MakeSorts → MakeAggShocks`. Needs WRDS (CRSP/Compustat/IBES) + FINRA TRACE. The driver runs
+   `iclink.py` first, which creates `Data/iclink.pkl`. PROB is computed in-house by `MakePROB.py`
    (predictors × `drcoefficients2021.xlsx` coefficients → logit; coefficients originally from
    Jens Hilscher, shared by Kevin Aretz).
 2. **Correlations — R** `code/r/Step2_MakeCorrelations_V4.R` (sources `functions_V4.1.R`)
