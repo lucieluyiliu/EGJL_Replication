@@ -29,7 +29,7 @@ sink(.logcon, type = "message")    # messages / warnings / errors -> log file
 ## --- Optional: regenerate the bootstrap estimates in Data/Estimates/ ---------
 ## The package ships these (read directly by the exhibits). Set TRUE to recompute
 ## them from Data/industry_sorts.csv (stationary block bootstrap; ~hours).
-RUN_STEP2 <- TRUE
+RUN_STEP2 <- FALSE
 if (RUN_STEP2) {
   message(">> Step 2: correlations + block bootstrap ...")
   .t0 <- Sys.time()

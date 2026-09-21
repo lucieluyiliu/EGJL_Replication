@@ -14,8 +14,8 @@ Data/                    flat data folder the scripts read/write (mirrors the or
   AggShocks/             macro shock sources + Agg_shocks.csv
 output/tables/           final .tex tables
 output/figures/          final .png figures
-README.md                run instructions + exhibit→script map
-DATA_AVAILABILITY.md     data sources, what's included vs obtained from WRDS, licensing
+README.md                follows the MNSC readme template: overview, data availability and provenance,
+                         variable dictionaries, computational requirements, programs/code
 ```
 
 ## Pipeline (canonical versions only)
@@ -40,5 +40,6 @@ DATA_AVAILABILITY.md     data sources, what's included vs obtained from WRDS, li
 - Paths come from `config.py` / `config.R` — do not re-introduce hard-coded absolute paths.
 - `campbelldefrisk_2021.sas7bdat` is shipped only for the PROB-vs-Kevin comparison block in
   `MakePROB.py`; it is not an input to the final PROB.
-- Raw WRDS/TRACE pulls (`raw_data.hdf`, `comp_*`, `trace_*`, `WRDS_MMN_*`, `FF48_Stocks.h5`,
-  `monthly_vol/mom`) are NOT shipped — see DATA_AVAILABILITY.md.
+- Everything in `Data/` ships to the journal's data editor, including the raw WRDS/TRACE files
+  (`raw_data.hdf`, `comp_*`, `trace_*`, `WRDS_MMN_*`, `FF48_Stocks.h5`), frozen at the 25 June 2026
+  build. A public release would exclude the licensed files. See README Section 2.

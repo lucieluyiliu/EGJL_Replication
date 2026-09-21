@@ -1,9 +1,9 @@
 # ============================================================================
 # EGJL_Replication — Git ignore rules
 # Policy: the Git/GitHub repo tracks CODE + OUTPUTS + DOCS only.
-# The data (~2.4 GB, several files >100 MB) is distributed separately
+# The data (~7.8 GB, several files >100 MB) is distributed separately
 # (Dropbox / a DOI archive such as Zenodo or Dataverse) and is NOT versioned
-# in Git. See DATA_AVAILABILITY.md for how to obtain it.
+# in Git. See README.md, Section 2, for its sources and how to obtain it.
 # ============================================================================
 
 # ── Data: distributed separately, never committed ──────────────────────────
