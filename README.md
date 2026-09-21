@@ -240,9 +240,16 @@ server, so the time can differ across machines and days.
 ## 5. Programs/Code
 
 ### Package root and paths
-Paths are centralized in `config.py` and `config.R`, which auto-detect the package root.
-No editing is needed if you keep `config.py` / `config.R` at the package root. If R
-auto-detection fails, set `ROOT` on the marked line in `config.R`.
+All code uses relative paths that point to files inside the package, so no path needs editing.
+The paths are centralized in `config.py` and `config.R`, which must stay at the package root.
+
+- **Python:** `config.py` derives the package root from its own location, so the scripts work from
+  any working directory.
+- **R:** `config.R` defines the paths relative to the package root, so R must be started from the
+  package root. `master.R` checks this and stops with a message otherwise. `main_empirics.Rmd` also
+  knits correctly when opened from `code/r/`.
+- **MATLAB:** `main.m` finds its own folder and reads and writes relative to it, so it runs from any
+  working directory.
 
 ### Theory component (MATLAB)
 The model exhibits are produced by the MATLAB code in `code/matlab/` (author: Kristoffer Glover).
