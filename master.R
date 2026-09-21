@@ -42,6 +42,9 @@ if (RUN_STEP2) {
 }
 
 ## --- Empirical exhibits: Table 3, Tables OA.4-OA.9, Figure OA.5 --------------
+## Make sure the output folders exist (no effect if they are already there).
+dir.create(file.path("output", "tables"),  showWarnings = FALSE, recursive = TRUE)
+dir.create(file.path("output", "figures"), showWarnings = FALSE, recursive = TRUE)
 message(">> Building empirical exhibits (main_empirics.Rmd) ...")
 rmarkdown::render("code/r/main_empirics.Rmd",
                   knit_root_dir = root, output_dir = "output")
