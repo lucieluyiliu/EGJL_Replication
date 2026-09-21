@@ -63,6 +63,11 @@ the code that rebuilds every extract from WRDS (`code/python/`, Path B in Sectio
 Researchers with WRDS access can rerun that code; results from a later vintage can differ slightly
 from the published ones.
 
+The Python scripts obtain the WRDS data by querying the WRDS server directly, for January 1986 to
+December 2024. They need a WRDS subscription that covers CRSP, Compustat, and I/B/E/S, and the
+queries themselves are in the scripts (`MakeMainDataFile_V1.py`, `MakeSIGMA.py`, `MakePROB.py`, and
+`iclink.py`).
+
 ### Included in this package (`Data/`)
 
 #### Raw data
@@ -94,13 +99,24 @@ the derived files from WRDS.
 | `DataFile.mat` | Precomputed solutions of the calibrated two-tree model (equity and debt values, default boundaries, default probabilities, simulated paths, counterfactual values), ~2 GB. Read by `code/matlab/main.m` when `RECOMPUTE = false`; rebuilt from scratch when `RECOMPUTE = true` | `code/matlab/main.m` | None (model output; no external data) |
 
 #### Public data
-| File(s) | Source |
-|---|---|
-| `BAA10Y.csv`, `BAMLC0A0CM.csv` | FRED (Federal Reserve) |
-| `Siccodes48.txt` (SIC ranges defining the Fama–French 48 industries; read by `MakeFF48.py`) | Kenneth French's data library |
-| `FF48_industry.csv` (Fama–French 48 industry codes and short names; lookup table read by `Step2_MakeCorrelations_V4.R`) | Kenneth French's data library |
-| `Market_CMDI.xlsx` | Published aggregate credit series (Corporate Bond Market Distress Index) |
-| `AggShocks/` source files (INDPRO, UNRATE, FEDFUNDS from FRED; CFNAI real-time from the Chicago Fed; US Economic Policy Uncertainty; HKM intermediary factors; the liquidity series `liq_data_1962_2024.csv`; Jurado–Ludvigson–Ng macro/financial/real uncertainty; SPF mean GDP growth) | FRED and the respective authors' websites |
+These files were downloaded by hand from the websites below; no code is needed to obtain them.
+"Retrieved" is the date of the file in `Data/`. Files in `AggShocks/` are read by
+`MakeAggShocks_v1.py`.
+
+| File | Content | Source | Retrieved | Coverage |
+|---|---|---|---|---|
+| `BAA10Y.csv` | Moody's Baa corporate bond yield minus the 10-year Treasury yield, daily | FRED, https://fred.stlouisfed.org/series/BAA10Y | 21 Oct 2025 | Jan 1986 to Oct 2025 |
+| `BAMLC0A0CM.csv` | ICE BofA U.S. corporate index option-adjusted spread, daily | FRED, https://fred.stlouisfed.org/series/BAMLC0A0CM | 30 Sep 2025 | Dec 1996 to Sep 2025 |
+| `Market_CMDI.xlsx` | Corporate Bond Market Distress Index, weekly | Federal Reserve Bank of New York, https://www.newyorkfed.org/research/policy/cmdi | 30 Sep 2025 | Jan 2005 to Sep 2025 |
+| `AggShocks/INDPRO.csv`, `AggShocks/UNRATE.csv`, `AggShocks/FEDFUNDS.csv` | Industrial production index, unemployment rate, effective federal funds rate, monthly | FRED, https://fred.stlouisfed.org/series/INDPRO (and `/UNRATE`, `/FEDFUNDS`) | 2 Jul 2025 | Start of each series to mid-2025 |
+| `AggShocks/liq_data_1962_2024.csv` | Aggregate liquidity series of Pastor and Stambaugh (2003), monthly | Lubos Pastor's website, https://faculty.chicagobooth.edu/lubos-pastor/data | 2 Jul 2025 | Aug 1962 to Dec 2024 |
+| `AggShocks/cfnai-realtime-3-xlsx.xlsx` | Chicago Fed National Activity Index, real-time vintages, monthly | Federal Reserve Bank of Chicago, https://www.chicagofed.org/research/data/cfnai/current-data | 2 Jul 2025 | Mar 1967 to Dec 2024 (vintage of December 2024) |
+| `AggShocks/US_Policy_Uncertainty_Data.xlsx` | News-based U.S. economic policy uncertainty index of Baker, Bloom, and Davis, monthly | https://www.policyuncertainty.com/us_monthly.html | 2 Jul 2025 | Jan 1900 to Jun 2025 |
+| `AggShocks/MacroFinanceUncertainty_202506Update/` (three files) | Macroeconomic, real, and financial uncertainty indexes of Jurado, Ludvigson, and Ng, monthly | Sydney Ludvigson's website, https://www.sydneyludvigson.com/macro-and-financial-uncertainty-indexes | June 2025 update | Jul 1960 to Apr 2025 |
+| `AggShocks/meanGrowth.xlsx` | Survey of Professional Forecasters, mean forecasts of growth rates, quarterly | Federal Reserve Bank of Philadelphia, https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/mean-forecasts | 2 Jul 2025 | 1968Q4 to 2025Q2 |
+| `AggShocks/HKM_Factors.csv` | Intermediary capital ratio and risk factor of He, Kelly, and Manela (2017), quarterly | Zhiguo He's website, https://zhiguohe.net/data-and-empirical-patterns/intermediary-capital-ratio-and-risk-factor/ | 3 Nov 2024 | 1970Q1 to 2024Q2 |
+| `Siccodes48.txt` | SIC ranges that define the Fama–French 48 industries; read by `MakeFF48.py` | Kenneth French's data library, https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html | 21 Sep 2026 | not dated |
+| `FF48_industry.csv` | Fama–French 48 industry codes and short names; lookup table read by `Step2_MakeCorrelations_V4.R` | Kenneth French's data library (same page) | Feb 2024 | not dated |
 
 #### Comparison-only file
 | File | Note |
@@ -181,7 +197,8 @@ on an Apple M5 Pro (arm64).
   The same versions are pinned in `pyproject.toml`, `uv.lock`, and `requirements.txt`, and the
   setup commands below install exactly those versions.
 - **Pandoc ≥ 1.12.3** (we used 3.10), a system tool `rmarkdown` needs to knit the exhibits.
-- A **WRDS account** with CRSP, Compustat, IBES, and TRACE access, only for the full rebuild.
+- A **WRDS account** with CRSP, Compustat, and I/B/E/S access, only for the full rebuild. The bond
+  data are not pulled from WRDS; they ship in `Data/` (see Section 2).
 
 ### Environment setup (do this first)
 A fresh clone ships the **lockfiles, not the packages**, so build the environment before running anything.
