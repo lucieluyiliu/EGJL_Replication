@@ -206,7 +206,7 @@ ind_sorts_long<-ind_sorts%>%
 # horizons <- setdiff(unique(ind_sorts_long$horizon), '0')   # unused
 
 # Sanity check on variable date ranges (run manually if needed).
-# CS available 2002-12-31 to 2022-09-30; all others available throughout.
+# CS available from 2002-09-30 to the sample end; all others available throughout.
 # ind_date_range<-ind_sorts_long%>%
 #   filter(!is.na(value)) %>%
 #   group_by(variable, horizon) %>%

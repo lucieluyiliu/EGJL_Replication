@@ -21,6 +21,7 @@ Contents of the package:
 | Path | Content |
 |---|---|
 | `README.md` | This file |
+| `DATA_DICTIONARY.md` | Variable dictionaries for the datasets in `Data/` (see Section 3) |
 | `config.py`, `config.R` | Central paths; they detect the package root, so no path needs editing |
 | `master.R` | Master script for the empirical exhibits |
 | `code/matlab/` | Theory code: `main.m` plus its functions (documented in `code/matlab/readme.txt`) |
@@ -93,7 +94,7 @@ the derived files from WRDS.
 #### Public data
 | File(s) | Source |
 |---|---|
-| `BAA.csv`, `BAA10Y.csv`, `BAMLC0A0CM.csv`, `USREC.csv`, `USRECP.csv` | FRED (Federal Reserve) |
+| `BAA10Y.csv`, `BAMLC0A0CM.csv` | FRED (Federal Reserve) |
 | `Siccodes48.txt` (SIC ranges defining the Fama–French 48 industries; read by `MakeFF48.py`) | Kenneth French's data library |
 | `FF48_industry.csv` (Fama–French 48 industry codes and short names; lookup table read by `Step2_MakeCorrelations_V4.R`) | Kenneth French's data library |
 | `Market_CMDI.xlsx` | Published aggregate credit series (Corporate Bond Market Distress Index) |
@@ -113,7 +114,19 @@ exclude them. Researchers with the relevant WRDS subscriptions can rebuild them 
 openbondassetpricing.com. Public series (FRED and authors' websites) are included under their terms.
 
 ## 3. Variable dictionaries
-_To be completed: data dictionaries for all datasets._
+The data dictionaries are in `DATA_DICTIONARY.md`. For every dataset in `Data/` it lists the
+variables used in the paper, with the names used in the code and the files and a one-line
+description. It has three parts:
+
+1. **Analysis data**, read by the code that produces the exhibits: `industry_sorts.csv`,
+   `AggShocks/Agg_shocks.csv`, `PROB_agg.csv`, the public series behind Figure OA.5, the estimate
+   files in `Estimates/`, and the model solutions in `DataFile.mat`.
+2. **Intermediate firm-level files** built by the Python code: `raw_data.hdf`, `sigma.h5`,
+   `PROB.h5`, `CS.h5`, `_ret_quarterly_2.h5`, `_main_data_2.h5`, and `iclink.pkl`.
+3. **Third-party input files**: Compustat, the bond data, the industry tags, the default
+   probability coefficients, and the macroeconomic source files.
+
+The definitions of the firm variables follow Table OA.3 of the Online Appendix.
 
 ## 4. Computational requirements
 
