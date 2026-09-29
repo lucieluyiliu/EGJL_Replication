@@ -483,8 +483,7 @@ p_oa5 <- ggplot(plot_df, aes(x = date, y = value, color = series, linetype = ser
 print(p_oa5)
 ggsave(paste0(fig_dir, "FigureOA5_PROB_fit.png"), p_oa5, width = 8, height = 6, dpi = 300)
 
-## Correlation between Campbell et al. (2008) PROB and its fitted value, by subsample
-## (as in PROB_Goodness_of_Fit_V2.1.Rmd's fit_corr_split).
+## Correlation between Campbell et al. (2008) PROB and its fitted value, by subsample.
 fit_corr_split <- plot_df %>%
   pivot_wider(names_from = series, values_from = value) %>%
   mutate(subsample = ifelse(date <= as.Date("2008-12-31"), "Pre-2009", "Post-2008")) %>%

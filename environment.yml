@@ -8,7 +8,7 @@ channels:
   - defaults
 dependencies:
   - python=3.11
-  - pandoc>=1.12.3   # system tool required by R's rmarkdown to knit the Step 3 .Rmd exhibits
+  - pandoc>=1.12.3   # system tool required by R's rmarkdown to knit code/r/main_empirics.Rmd
   - pip
   - pip:
       - -r requirements.txt

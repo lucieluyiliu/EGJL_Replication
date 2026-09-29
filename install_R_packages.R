@@ -30,12 +30,12 @@ if (!requireNamespace("rhdf5", quietly = TRUE)) {
 }
 
 ## --- System dependency: pandoc (NOT an R package) ----------------------------
-## rmarkdown needs pandoc >= 1.12.3 to knit the Step 3 .Rmd exhibits. R cannot
+## rmarkdown needs pandoc >= 1.12.3 to knit code/r/main_empirics.Rmd. R cannot
 ## install it; this only checks and tells you how. RStudio bundles its own pandoc,
 ## but command-line Rscript does not.
 if (!rmarkdown::pandoc_available("1.12.3")) {
   message(
-    "\n[!] pandoc >= 1.12.3 not found. Install it system-wide before knitting Step 3:\n",
+    "\n[!] pandoc >= 1.12.3 not found. Install it system-wide before knitting main_empirics.Rmd:\n",
     "      macOS:  brew install pandoc\n",
     "      conda:  conda install -c conda-forge pandoc   (or use environment.yml)\n",
     "      Linux:  apt-get install pandoc\n",
