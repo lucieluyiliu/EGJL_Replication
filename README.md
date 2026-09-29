@@ -330,6 +330,10 @@ correlation, Equation 11), `Simulation.m` and `DefaultTimes.m` (simulated econom
 rates), `PROBDEF.m` (default probabilities under P and Q), and `CSpread.m` / `CPE1D.m` (equilibrium
 credit spreads, Table OA.10).
 
+`polyfix.m` (polynomial fit constrained to pass through given points, used by `Elasticity.m`) was
+written by Are Mjaavatten (Telemark University College, version 1.3, 2019) and is included with its
+original header.
+
 ### Empirics: two ways to reproduce
 
 #### Path A: from the shipped derived data (no WRDS needed)
@@ -366,6 +370,10 @@ This knits `code/r/main_empirics.Rmd`, writing the tables to `output/tables/`, F
    if one of them fails, and saves the console output to `output/log/step1_build.log`
    (~55 min, see Section 4).
 3. Continue with Path A (`Rscript master.R`, optionally with `RUN_STEP2 <- TRUE`).
+
+`code/python/iclink.py` is the Python version of the WRDS ICLINK program, written by Qingyi (Freda)
+Song Drechsler (2019, updated 2020), which links CRSP to IBES. It is adapted to this package: it reads the
+WRDS username from `config.py` and saves the link table to `Data/iclink.pkl`.
 
 `code/python/MakeFF48.py` is documentation only and is not run by `Step1_PrepareAllData.py`. It shows
 how the shared industry table `Data/FF48_Stocks.h5` is constructed, rebuilds it from WRDS into

@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This file reproduces the calculation and plots the figures in           %
-% "Excess Co-movement in Default"                                         % 
-% by Jan Ericsson, Kristoffer Glover, Alexandre Jeanneret and Lucie Y. Yu %
-% accepted at Management Science on XXX 2026                              % 
+% "Excess Co-movement in Default Risk"                                    % 
+% by Jan Ericsson, Kristoffer Glover, Alexandre Jeanneret and Lucie Y. Lu %
+% Management Science, MS-FIN-2025-00698                                   % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; close all; clc;
